@@ -1,0 +1,37 @@
+---
+import { getVar } from '../utils/ingest';
+const pages = await getVar()
+
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vault Test</title>
+  </head>
+  <body>
+    <style is:global> 
+body{
+    background: radial-gradient(hsl(0 0 10), hsl(0 0 2)) !important;
+    height: 100vh;
+    font-family: Noto Sans !important;
+    color: white; 
+} 
+</style>
+    <script define:vars={{ pages }}> console.log("test", pages.filter(x => x.inlineProperties.length).flatMap(x => x.inlineProperties)) </script>
+
+    <h1> This filter has {pages.filter(x => x.inlineProperties.length).length} files with inline props</h1>
+  {pages
+    .filter(x => x.inlineProperties.map(y => y.Name))
+    .map(x => {
+    return (<div style="margin-bottom: 32px;">
+        {x.inlineProperties.map(y => {
+            return (<div>
+                {y.Name}
+            </div>)
+        })}
+    </div>
+  )})}
+
+  </body>
+</html>
