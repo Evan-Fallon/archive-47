@@ -1,7 +1,10 @@
 ---
 import { getVar } from '../utils/ingest';
 const pages = await getVar()
-
+const inlineProps = pages
+  .flatMap(page => page.inlineProperties)
+  .filter(atom => atom.raw.toLowerCase().includes("the cecot lie"))
+  .sort((a, b) => Date.parse(a.Date) - Date.parse(b.Date))
 ---
 
 <html lang="en">
@@ -10,28 +13,88 @@ const pages = await getVar()
     <title>Vault Test</title>
   </head>
   <body>
-    <style is:global> 
-body{
-    background: radial-gradient(hsl(0 0 10), hsl(0 0 2)) !important;
-    height: 100vh;
-    font-family: Noto Sans !important;
-    color: white; 
-} 
+    <link rel="stylesheet" href="./src/styles/global.css"/>
+    <style> 
+
+.body-sizer {
+  display: grid;
+  grid-template-columns: 1fr 480px 480px 1fr;
+  > * {
+    grid-column: 2 / 4;
+  }
+}
+
+h1 {
+  font-weight: 1000;
+  font-size: 4rem;
+}
+
+.timeline-base {
+  display: grid;
+}
+
+.content-node {
+  padding: 32px;
+  margin-bottom: 16px;
+  border: 1px solid hsl(0 0 20);
+  background: hsl(0 0 3);
+  border-radius: 16px;
+  max-width: 600px;
+  transition-property: border-color;
+  transition-duration: 800ms;
+  &:hover {
+    border: 1px solid hsl(0 0 30);
+    transition-duration: 50ms;
+  }
+  .node-name {
+    a {
+      font-weight: bold;
+      color: white;
+    }
+  }
+  .content-embed {
+    font-size: 13px;
+    padding: 8px 0 0 0;
+    
+  }
+}
+img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 2px solid hsl(0 0 50);
+}
 </style>
-    <script define:vars={{ pages }}> console.log("test", pages.filter(x => x.inlineProperties.length).flatMap(x => x.inlineProperties)) </script>
-
-    <h1> This filter has {pages.filter(x => x.inlineProperties.length).length} files with inline props</h1>
-  {pages
-    .filter(x => x.inlineProperties.map(y => y.Name))
-    .map(x => {
-    return (<div style="margin-bottom: 32px;">
-        {x.inlineProperties.map(y => {
-            return (<div>
-                {y.Name}
-            </div>)
-        })}
-    </div>
-  )})}
-
-  </body>
+<script define:vars={{ pages }}> console.log("test", pages.filter(x => x.inlineProperties.length).flatMap(x => x.inlineProperties)) </script>
+<div class="body-sizer">
+  <h1> The C.E.C.O.T. Lie</h1>
+  <p>There are {pages.length} files and {inlineProps.length} CECOT related tags</p>
+  <img src=".\src\attachments\nayibbukelestatus1886606794614587573photo4.webp"/>
+  <h2>Timeline</h2>
+  <div class="timeline-base">
+    <div id="timeline-line" 
+    style = {{
+      gridRow: `1 / ${inlineProps.length + 1}`,
+      gridColumn: "1 / 2",
+      border: "1px solid white",
+      height: "100%",
+      width: "0px"
+    }}/>
+    {inlineProps.map(atom => {
+      return (
+        <div class="content-node" 
+          style={{
+            gridColumn: "2 / 3"
+          }}>
+          <div class="node-name">
+            <a href={atom.URL}>{atom.Name}</a>
+          </div>
+          <div class="content-embed">{atom.PriorLine}</div>
+        </div>
+      )
+    })}
+  </div>
+</div>
+</body>
 </html>

@@ -7,8 +7,11 @@ import matter from 'gray-matter'
 const vaultpath = import.meta.env.PUBLIC_PATH
 
 export interface InlineProperty {
-    line: number;
+    Line: number;
     Path: string;
+    raw: string;
+    PriorLine: string;
+    URL: string;
     [key: string]: any;
 }
 
@@ -31,13 +34,16 @@ export async function getVar(): Promise<VaultNote[]> {
         const regex = /%%\(([^:]+)::(.*?)\)%%/g;
         for (const match of rawfile.matchAll(regex)) {
             const matchIndex = match.index ?? 0
-            const lineNumber = rawfile.substring(0, matchIndex).split('\n').length;
+            const lineNumber = rawfile.substring(0, matchIndex).split('\n').length - 1;
+            const priorLine = rawfile.split('\n')[lineNumber - 1]
             const userInput =  match[2].trim()
             const propEntry: InlineProperty = {
-                line: lineNumber,
-                Path: file
+                Line: lineNumber,
+                Path: file,
+                URL: frontmatter.URL,
+                raw: userInput,
+                PriorLine: priorLine,
             }
-            propEntry.raw = userInput
             if (userInput.includes(" | ")) {
                     userInput.split(" | ").forEach(pair => {
                         const [key, value] = pair.split(": ").map(x => x.trim())
