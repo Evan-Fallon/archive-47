@@ -1,10 +1,19 @@
 ---
 import { getVar } from '../utils/ingest';
+import AtomDisplayNode from '../components/AtomDisplayNode.astro'
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 const pages = await getVar()
+let yIndex = 0;
 const inlineProps = pages
   .flatMap(page => page.inlineProperties)
   .filter(atom => atom.raw.toLowerCase().includes("the cecot lie"))
-  .sort((a, b) => Date.parse(a.Date) - Date.parse(b.Date))
+  .sort((a, b) => a.Date - b.Date)
+  .map((atom) => {
+    yIndex++
+    return (
+      {...atom, Index: yIndex}
+    )
+  })
 ---
 
 <html lang="en">
@@ -14,7 +23,7 @@ const inlineProps = pages
   </head>
   <body>
     <link rel="stylesheet" href="./src/styles/global.css"/>
-    <style> 
+    <style is:global> 
 
 .body-sizer {
   display: grid;
@@ -32,68 +41,33 @@ h1 {
 .timeline-base {
   display: grid;
 }
+.timeline-cell {
+  grid-column: 2 / 3;
+}
 
-.content-node {
-  padding: 32px;
-  margin-bottom: 16px;
-  border: 1px solid hsl(0 0 20);
-  background: hsl(0 0 3);
-  border-radius: 16px;
-  max-width: 600px;
-  transition-property: border-color;
-  transition-duration: 800ms;
-  &:hover {
-    border: 1px solid hsl(0 0 30);
-    transition-duration: 50ms;
-  }
-  .node-name {
-    a {
-      font-weight: bold;
-      color: white;
-    }
-  }
-  .content-embed {
-    font-size: 13px;
-    padding: 8px 0 0 0;
-    
-  }
-}
-img {
-  width: 100%;
-  max-height: 300px;
-  object-fit: cover;
-  border-radius: 16px;
-  border: 2px solid hsl(0 0 50);
-}
 </style>
-<script define:vars={{ pages }}> console.log("test", pages.filter(x => x.inlineProperties.length).flatMap(x => x.inlineProperties)) </script>
+<script define:vars={{ inlineProps }}> console.log("test", inlineProps) </script>
 <div class="body-sizer">
   <h1> The C.E.C.O.T. Lie</h1>
   <p>There are {pages.length} files and {inlineProps.length} CECOT related tags</p>
-  <img src=".\src\attachments\nayibbukelestatus1886606794614587573photo4.webp"/>
   <h2>Timeline</h2>
   <div class="timeline-base">
     <div id="timeline-line" 
     style = {{
       gridRow: `1 / ${inlineProps.length + 1}`,
       gridColumn: "1 / 2",
-      border: "1px solid white",
+      border: "1px solid hsl(0 0 20)",
       height: "100%",
       width: "0px"
     }}/>
-    {inlineProps.map(atom => {
-      return (
-        <div class="content-node" 
-          style={{
-            gridColumn: "2 / 3"
-          }}>
-          <div class="node-name">
-            <a href={atom.URL}>{atom.Name}</a>
-          </div>
-          <div class="content-embed">{atom.PriorLine}</div>
-        </div>
-      )
-    })}
+    {inlineProps.map(atom => (
+      <div class="timeline-cell" 
+      style={{
+        gridRow: `${atom.Index} / ${atom.Index + 1}`,
+      }}>
+        <AtomDisplayNode atom={atom}/> 
+      </div>  
+      ))}
   </div>
 </div>
 </body>

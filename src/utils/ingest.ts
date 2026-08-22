@@ -6,12 +6,17 @@ import matter from 'gray-matter'
 
 const vaultpath = import.meta.env.PUBLIC_PATH
 
+export interface frontmatter {
+    [key: string]: any;
+}
+
+
 export interface InlineProperty {
     Line: number;
     Path: string;
     raw: string;
     PriorLine: string;
-    URL: string;
+    Date: number;
     [key: string]: any;
 }
 
@@ -40,16 +45,18 @@ export async function getVar(): Promise<VaultNote[]> {
             const propEntry: InlineProperty = {
                 Line: lineNumber,
                 Path: file,
-                URL: frontmatter.URL,
                 raw: userInput,
                 PriorLine: priorLine,
+                Date: Date.now()
             }
             if (userInput.includes(" | ")) {
                     userInput.split(" | ").forEach(pair => {
                         const [key, value] = pair.split(": ").map(x => x.trim())
-                        if (key) propEntry[key] = value ?? ''
+                        if (key) {propEntry[key] = value ?? ''} 
+                        else if (key === "Date") {propEntry[key] = Date.parse(value) || Date.now()}
                     })
             }
+            propEntry.URL = (frontmatter as Record<string, any>)?.URL;
             inlineProperties.push(propEntry)
         }
 

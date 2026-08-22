@@ -1,0 +1,37 @@
+---
+const { atom } = Astro.props
+const basicDisplay = `
+<div class="display-node basic">
+    <div class="name-link">
+    <a href=${atom.URL}>${atom.Name}</a>
+    </div>
+    <div class="content-embed">${atom.PriorLine}</div>
+</div>`
+
+let outputDisplay = basicDisplay
+
+const minorDisplay = `
+<div class="display-node minor">
+    <div class="name-link">
+    <a href=${atom.URL}>${atom.Name}</a>
+    </div>
+</div>`
+
+const imageDisplay = `
+<div class="display-node image">
+    <div class="name-link">
+        <a href=${atom.URL}>${atom.Name}</a>
+    </div>
+    <div class="display-image">
+        <img src="./src/attachments/54410767940_25e2f2beff_o.webp"/>
+    </div>
+</div>`
+
+if (atom?.Display === "Minor") {
+    outputDisplay = minorDisplay
+} 
+if (atom?.Display === "Image") {
+    outputDisplay = imageDisplay
+} 
+---
+<Fragment set:html={outputDisplay}/>
