@@ -1,19 +1,49 @@
 ---
 import { getVar } from '../utils/ingest';
 import AtomDisplayNode from '../components/AtomDisplayNode.astro'
-const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 const pages = await getVar()
-let yIndex = 0;
 const inlineProps = pages
   .flatMap(page => page.inlineProperties)
   .filter(atom => atom.raw.toLowerCase().includes("the cecot lie"))
   .sort((a, b) => a.Date - b.Date)
-  .map((atom) => {
+
+
+let currentNodes: any[] = []
+let currentYears = [{year: new Date (inlineProps[0].Date).getFullYear(), yIndex: 1, yEnd: 2}]
+let currentMonths = [{month: months[new Date(inlineProps[0].Date).getMonth()], yIndex: 2}]
+let currentSpans = []
+let yIndex = 3
+inlineProps.forEach(atom => {
+  const thisYear = new Date(atom.Date).getFullYear()
+  const thisMonth = months[new Date(atom.Date).getMonth()]
+    if (thisYear !== currentYears[currentYears.length - 1].year) {
+        currentYears[currentYears.length - 1].yEnd = yIndex
+        currentYears.push({year: thisYear, yIndex: yIndex, yEnd: yIndex + 1})
+        yIndex++
+        currentMonths.push({month: thisMonth, yIndex: yIndex})
+        yIndex++
+    } 
+    else if (thisMonth !== currentMonths[currentMonths.length - 1].month) { 
+        yIndex++
+        currentMonths.push({month: thisMonth, yIndex: yIndex})
+        yIndex++
+    }
+    if (atom?.["Span Start"]) {
+        currentSpans.push({name: atom["Span Start"], date: atom.Date, yIndex: yIndex, yEnd: yIndex + 1})    
+    }
+    if (atom?.["Span End"]) {
+        const endSpan = currentSpans.find(span => span.name === atom["Span End"])
+        if (endSpan) {
+            endSpan.yEnd = yIndex
+        }
+    }
+    currentNodes.push({...atom, Index: yIndex})
     yIndex++
-    return (
-      {...atom, Index: yIndex}
-    )
-  })
+})  
+currentYears[currentYears.length - 1].yEnd = yIndex 
+
 ---
 
 <html lang="en">
@@ -40,9 +70,59 @@ h1 {
 
 .timeline-base {
   display: grid;
+  gap: 0px
 }
+
+.display-node {
+  margin: 16px 0;
+}
+
 .timeline-cell {
+  display: grid;
   grid-column: 2 / 3;
+  width: 100%;
+  p {
+    margin: 0;
+  }
+  &.year {
+  font-weight: 600;
+  font-size: 3rem;
+  text-align: center;
+  place-items: center;
+} 
+  hr {
+    width: 100%;
+    border: 1px solid hsl(0 0 30);
+  }
+  &.month {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+}
+.timeline-line {
+    background: hsl(0 0 30);
+    width: 1px;
+    height: 100%;
+    justify-self: center;
+    animation-name: line-go-down;
+    animation-duration: 6000ms;
+    animation-timing-function: ease-in;
+    animation-fill-mode: both;
+    margin: 48px 0;
+}
+
+.node-circles {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 1px solid hsl(0 0 30) ;
+    background: hsl(0 0 5);
+    place-self: center;
+}
+.node-day-time {
+    font-size: 0.8rem;
+    color: hsl(0 0 30);
+    place-self: center right;
 }
 
 </style>
@@ -52,22 +132,59 @@ h1 {
   <p>There are {pages.length} files and {inlineProps.length} CECOT related tags</p>
   <h2>Timeline</h2>
   <div class="timeline-base">
-    <div id="timeline-line" 
-    style = {{
-      gridRow: `1 / ${inlineProps.length + 1}`,
-      gridColumn: "1 / 2",
-      border: "1px solid hsl(0 0 20)",
-      height: "100%",
-      width: "0px"
-    }}/>
-    {inlineProps.map(atom => (
-      <div class="timeline-cell" 
+    {currentYears.map((year, yearInd) => {
+    
+    return (
+        <div class="timeline-line" style={`grid-column: 3 / 4; grid-row: ${year.yIndex + 1} / ${year.yEnd};}`}> 
+        </div>
+    )})}
+
+    {currentYears.map(year => (
+      <div class="timeline-cell year" 
       style={{
+        gridColumn: "1 / 5",
+        gridRow: `${year.yIndex} / ${year.yIndex + 1}`,
+      }}>
+        <p>{year.year}</p>
+        <hr/>
+      </div>
+      ))}
+  {currentMonths.map(month => (
+      <div class="timeline-cell month" 
+      style={{
+        gridColumn: "2 / 3",
+        gridRow: `${month.yIndex} / ${month.yIndex + 1}`,
+      }}>
+        <p>{month.month}</p>
+      </div>  
+      ))}
+    {currentNodes.map(atom => (
+      <div class="timeline-cell node" 
+      style={{
+        gridColumn: "4 / 5",
         gridRow: `${atom.Index} / ${atom.Index + 1}`,
       }}>
         <AtomDisplayNode atom={atom}/> 
       </div>  
       ))}
+    {currentNodes.map(atom => (
+      <div class="node-circles" 
+      style={{
+        gridColumn: "3 / 4",
+        gridRow: `${atom.Index} / ${atom.Index + 1}`,
+      }}/>
+    ))}
+    {currentNodes.map(atom => (
+      <div class="node-day-time" 
+      style={{
+        gridColumn: "2 / 3",
+        gridRow: `${atom.Index} / ${atom.Index + 1}`,
+      }}>
+        <p>{new Date(atom.Date).toLocaleDateString("en-US", {month: "short", day: "numeric"})}</p>
+      </div>
+    ))}
+
+
   </div>
 </div>
 </body>

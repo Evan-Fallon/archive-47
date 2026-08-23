@@ -17,11 +17,13 @@ export interface InlineProperty {
     raw: string;
     PriorLine: string;
     Date: number;
+    DateString?: string;
     [key: string]: any;
 }
 
 export interface VaultNote {
   name: string;
+  date: number;
   frontmatter: Record<string, any>;
   inlineProperties: InlineProperty[];
 }
@@ -52,8 +54,11 @@ export async function getVar(): Promise<VaultNote[]> {
             if (userInput.includes(" | ")) {
                     userInput.split(" | ").forEach(pair => {
                         const [key, value] = pair.split(": ").map(x => x.trim())
-                        if (key) {propEntry[key] = value ?? ''} 
-                        else if (key === "Date") {propEntry[key] = Date.parse(value) || Date.now()}
+                        if (key === "Date") {
+                                propEntry[key] = Date.parse(value) || Date.now() 
+                                propEntry["DateString"] = value
+                        }
+                        else if (key) {propEntry[key] = value ?? ''} 
                     })
             }
             propEntry.URL = (frontmatter as Record<string, any>)?.URL;
