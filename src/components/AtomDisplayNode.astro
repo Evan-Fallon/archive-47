@@ -19,12 +19,11 @@ const minorDisplay = `
 
 const imageDisplay = `
 <div class="display-node image">
+        <img src="./src/attachments/${atom["Display Image"]}"/>
     <div class="name-link">
         <a href=${atom.URL}>${atom.Name}</a>
     </div>
-    <div class="display-image">
-        <img src="./src/attachments/54410767940_25e2f2beff_o.webp"/>
-    </div>
+    
 </div>`
 
 if (atom?.Display === "Minor") {

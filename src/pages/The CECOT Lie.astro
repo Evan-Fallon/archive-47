@@ -1,49 +1,11 @@
 ---
 import { getVar } from '../utils/ingest';
-import AtomDisplayNode from '../components/AtomDisplayNode.astro'
-
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+import Layout from '../layouts/Layout.astro';
 const pages = await getVar()
 const inlineProps = pages
   .flatMap(page => page.inlineProperties)
   .filter(atom => atom.raw.toLowerCase().includes("the cecot lie"))
   .sort((a, b) => a.Date - b.Date)
-
-
-let currentNodes: any[] = []
-let currentYears = [{year: new Date (inlineProps[0].Date).getFullYear(), yIndex: 1, yEnd: 2}]
-let currentMonths = [{month: months[new Date(inlineProps[0].Date).getMonth()], yIndex: 2}]
-let currentSpans = []
-let yIndex = 3
-inlineProps.forEach(atom => {
-  const thisYear = new Date(atom.Date).getFullYear()
-  const thisMonth = months[new Date(atom.Date).getMonth()]
-    if (thisYear !== currentYears[currentYears.length - 1].year) {
-        currentYears[currentYears.length - 1].yEnd = yIndex
-        currentYears.push({year: thisYear, yIndex: yIndex, yEnd: yIndex + 1})
-        yIndex++
-        currentMonths.push({month: thisMonth, yIndex: yIndex})
-        yIndex++
-    } 
-    else if (thisMonth !== currentMonths[currentMonths.length - 1].month) { 
-        yIndex++
-        currentMonths.push({month: thisMonth, yIndex: yIndex})
-        yIndex++
-    }
-    if (atom?.["Span Start"]) {
-        currentSpans.push({name: atom["Span Start"], date: atom.Date, yIndex: yIndex, yEnd: yIndex + 1})    
-    }
-    if (atom?.["Span End"]) {
-        const endSpan = currentSpans.find(span => span.name === atom["Span End"])
-        if (endSpan) {
-            endSpan.yEnd = yIndex
-        }
-    }
-    currentNodes.push({...atom, Index: yIndex})
-    yIndex++
-})  
-currentYears[currentYears.length - 1].yEnd = yIndex 
-
 ---
 
 <html lang="en">
@@ -51,140 +13,25 @@ currentYears[currentYears.length - 1].yEnd = yIndex
     <meta charset="utf-8" />
     <title>Vault Test</title>
   </head>
-  <body>
-    <link rel="stylesheet" href="./src/styles/global.css"/>
-    <style is:global> 
+<body>
+    <a href="./">Back to Index</a>
+<Layout/>
+<style is:global> 
 
-.body-sizer {
-  display: grid;
-  grid-template-columns: 1fr 480px 480px 1fr;
-  > * {
-    grid-column: 2 / 4;
-  }
-}
 
 h1 {
   font-weight: 1000;
   font-size: 4rem;
 }
-
-.timeline-base {
-  display: grid;
-  gap: 0px
-}
-
-.display-node {
-  margin: 16px 0;
-}
-
-.timeline-cell {
-  display: grid;
-  grid-column: 2 / 3;
-  width: 100%;
-  p {
-    margin: 0;
-  }
-  &.year {
-  font-weight: 600;
-  font-size: 3rem;
-  text-align: center;
-  place-items: center;
-} 
-  hr {
-    width: 100%;
-    border: 1px solid hsl(0 0 30);
-  }
-  &.month {
-    font-weight: 600;
-    font-size: 1.1rem;
-  }
-}
-.timeline-line {
-    background: hsl(0 0 30);
-    width: 1px;
-    height: 100%;
-    justify-self: center;
-    animation-name: line-go-down;
-    animation-duration: 6000ms;
-    animation-timing-function: ease-in;
-    animation-fill-mode: both;
-    margin: 48px 0;
-}
-
-.node-circles {
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    border: 1px solid hsl(0 0 30) ;
-    background: hsl(0 0 5);
-    place-self: center;
-}
-.node-day-time {
-    font-size: 0.8rem;
-    color: hsl(0 0 30);
-    place-self: center right;
-}
-
-</style>
+    </style>
 <script define:vars={{ inlineProps }}> console.log("test", inlineProps) </script>
-<div class="body-sizer">
+<div class="content-scroller">
+<div class="content-sizer">
+<div class="topic-header">
   <h1> The C.E.C.O.T. Lie</h1>
   <p>There are {pages.length} files and {inlineProps.length} CECOT related tags</p>
-  <h2>Timeline</h2>
-  <div class="timeline-base">
-    {currentYears.map((year, yearInd) => {
-    
-    return (
-        <div class="timeline-line" style={`grid-column: 3 / 4; grid-row: ${year.yIndex + 1} / ${year.yEnd};}`}> 
-        </div>
-    )})}
-
-    {currentYears.map(year => (
-      <div class="timeline-cell year" 
-      style={{
-        gridColumn: "1 / 5",
-        gridRow: `${year.yIndex} / ${year.yIndex + 1}`,
-      }}>
-        <p>{year.year}</p>
-        <hr/>
-      </div>
-      ))}
-  {currentMonths.map(month => (
-      <div class="timeline-cell month" 
-      style={{
-        gridColumn: "2 / 3",
-        gridRow: `${month.yIndex} / ${month.yIndex + 1}`,
-      }}>
-        <p>{month.month}</p>
-      </div>  
-      ))}
-    {currentNodes.map(atom => (
-      <div class="timeline-cell node" 
-      style={{
-        gridColumn: "4 / 5",
-        gridRow: `${atom.Index} / ${atom.Index + 1}`,
-      }}>
-        <AtomDisplayNode atom={atom}/> 
-      </div>  
-      ))}
-    {currentNodes.map(atom => (
-      <div class="node-circles" 
-      style={{
-        gridColumn: "3 / 4",
-        gridRow: `${atom.Index} / ${atom.Index + 1}`,
-      }}/>
-    ))}
-    {currentNodes.map(atom => (
-      <div class="node-day-time" 
-      style={{
-        gridColumn: "2 / 3",
-        gridRow: `${atom.Index} / ${atom.Index + 1}`,
-      }}>
-        <p>{new Date(atom.Date).toLocaleDateString("en-US", {month: "short", day: "numeric"})}</p>
-      </div>
-    ))}
-
-
+  <a href="./The CECOT Lie - Timeline">Timeline</a>
+  </div>
   </div>
 </div>
 </body>

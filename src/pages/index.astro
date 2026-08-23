@@ -1,5 +1,25 @@
 ---
-import { getVar } from '../utils/ingest';
-const data = await getVar()
+import Layout from '../layouts/Layout.astro';
 ---
-<a href="./The CECOT Lie"> The CECOT Lie</a>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vault Test</title>
+  </head>
+  <body>
+    <Layout/>
+    <link rel="stylesheet" href="./src/styles/global.css"/>
+    <style is:global> 
+    </style>
+    <div class="content-scroller">
+      <div class="content-sizer">
+        <div class="topic-header">
+          <h1> Archive 47  </h1>
+                    <a href="./The CECOT Lie"> The CECOT Lie</a>
+          </div>
+
+      </div>
+    
+</div>
+</body>
+</html>
