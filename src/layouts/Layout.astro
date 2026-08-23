@@ -1,3 +1,6 @@
+---
+import '../styles/global.css';
+---
 <!doctype html>
 <html lang="en">
 	<head>
@@ -34,4 +37,93 @@
   }
 }
 	
+
+.pile {
+    display: grid;
+    grid-template-areas: "pile";
+    place-items: center;
+    > * {
+        grid-area: pile;
+    }
+}
+
+.content-sizer {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 1fr 480px 480px 1fr;
+    > * {
+        grid-column: 2 / 4;
+    }   
+}
+
+.display-node {
+    --title-padding: 16px;
+    max-width: 720px;
+    box-sizing: border-box;
+    .name-link {
+        a {
+            font-weight: bold;
+            font-size: 1.1em;
+            text-decoration: none;
+            color: hsl(0 0 80);
+        }
+    }
+    &.basic {
+        padding: var(--title-padding);
+        border: 1px solid hsl(0 0 20);
+        border-radius: 16px;
+        background: hsl(0 0 3);
+        transition-property: border-color;
+        transition-duration: 800ms; 
+        &:hover {
+            border: 1px solid hsl(0 0 30);
+            transition-duration: 50ms;
+        } 
+    }
+    &.minor {
+        .name-link a { 
+            color: hsl(0 0 60);
+            font-size: 1.05em;
+        }
+    }
+    &.image {
+        display: grid;
+        max-height: 180px;
+        border: 1px solid hsl(0 0 50);
+        border-radius: 16px;
+        overflow: hidden;
+        max-width: 720px;
+        grid-template-areas: "pile";
+        box-sizing: border-box;
+        > * {
+            grid-area: pile;
+        }
+        .name-link {
+            height: fit-content;
+            width: fit-content;
+            background: color-mix(in srgb, black, transparent 10%);
+            padding: 8px 24px;
+            border-radius: 0 0 12px 0;
+            z-index: 1;
+            a {
+                font-weight: bold;
+                font-size: 1.1em;
+                text-decoration: none;
+                color: hsl(0 0 80);
+            }
+        }
+        img {
+
+            width: 100%;
+            height: 100%;
+            min-height: 200px;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+    .content-embed {
+        font-size: 13px;
+        padding: 8px 0 0 0;
+    }
+}
 </style>
