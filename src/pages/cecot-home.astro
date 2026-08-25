@@ -21,6 +21,31 @@ h1 {
   font-weight: 1000;
   font-size: 4rem;
 }
+.view-link {
+  height: 250px;
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid hsl(0 0 20);
+  border-radius:32px;
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  font-size: 1.5rem;
+  vertical-align: text-top;
+  transition-property: border, background-color, transform;
+  transition-duration: 0.8s, 2s, 2s;
+
+  transition-timing-function: ease-in-out, ease-in-out, ease-out;
+  &:hover {
+    background-color: hsl(0 0 7);
+    border: 1px solid hsl(0 0 25);
+    transform: rotate3d(.5, 1, 0, 15deg);
+    transition-duration: 0.2s, 2s, .5s;
+  }
+}
+
     </style>
 <script define:vars={{ inlineProps }}> console.log("test", inlineProps) </script>
 <div class="content-scroller">
@@ -28,7 +53,8 @@ h1 {
 <div class="topic-header">
   <h1> The C.E.C.O.T. Lie</h1>
   <p>There are {pages.length} files and {inlineProps.length} CECOT related tags</p>
-  <a href="./cecot-timeline">Timeline</a>
+  <a class="view-link" href="./cecot-timeline">Timeline</a>
+  <a class="view-link" href="./cecot-directory">Directory</a>
   </div>
   </div>
 </div>

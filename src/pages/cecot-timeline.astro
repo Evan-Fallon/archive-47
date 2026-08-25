@@ -78,6 +78,7 @@ h1 {
 
 .display-node {
   margin: 16px 0;
+  
 }
 
 .timeline-cell {
@@ -85,8 +86,9 @@ h1 {
   grid-column: 2 / 3;
   width: 100%;
   &.node {
+    transform-origin: left;
       animation-name: node-reveal;
-  animation-duration: 1250ms;
+  animation-duration: 1000ms;
   animation-timing-function: ease-out;
   animation-fill-mode: both;
   animation-delay: var(--anim-delay);
@@ -170,12 +172,14 @@ h1 {
 }
 @keyframes node-reveal {
     from {
+      filter: blur(4px);
         opacity: 0;
-        transform: translateX(50px);
+        transform: rotate3d(.5, 1, 0, 15deg) translateY(70px);
     }
     to {
+      filter: blur(0px);
         opacity: 1;
-        transform: translateX(0px);
+        transform: rotate3d(.5, 1, 0, 0deg) translateY(0px);
     }
 } 
  @keyframes opacity-reveal{
@@ -229,7 +233,7 @@ h1 {
       style={`
         grid-column: 4 / 5;
         grid-row: ${atom.Index} / ${atom.Index + 1};
-        --anim-delay: ${atom.Index * 100}ms`
+        --anim-delay: ${atom.Index * 90}ms`
       }>
         <AtomDisplayNode atom={atom}/> 
       </div>  

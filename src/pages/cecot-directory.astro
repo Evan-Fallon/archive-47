@@ -1,0 +1,72 @@
+---
+import { getVar } from '../utils/ingest';
+import Layout from '../layouts/Layout.astro';
+
+const pages = await getVar()
+const filteredPages = pages
+    .filter(atom => atom.inlineProperties.some(prop => prop.raw.toLowerCase().includes("the cecot lie")))
+const classes = [...new Set (filteredPages
+    .flatMap(page => page.frontmatter?.Class?.[0] || [])
+    
+)]
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vault Test</title>
+  </head>
+<body>
+    <a href="./">Back to Index</a>
+<Layout>
+<style is:global> 
+:root {
+  interpolate-size: allow-keywords;
+}
+details {
+    max-height: 32px;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+    &[open] {
+        max-height: 1000px;
+        transition: max-height 0.5s ease-in-out;
+    }
+}
+
+    .class-button {
+        background-color: hsl(0 0 7);
+        border: 1px solid hsl(0 0 20);
+        border-radius: 32px;
+        padding: 1rem;
+        margin: 1rem;
+        color: white;
+        font-weight: 500;
+        font-size: 1.2rem;
+        &:open {
+            border: 1px solid hsl(0 0 30);
+        }
+        ul {
+            margin: 8px;
+        }
+    }
+</style>
+<div>
+{classes.map(className => {
+    return (
+        <details class="class-button">
+            <summary>{className}</summary>
+            <ul>
+                {filteredPages
+                    .filter(page => page.frontmatter?.Class?.[0] === className)
+                    .map(page => {
+                        return (
+                            <li>{page.name}</li>
+                        )
+                    })}       
+            </ul>
+        </details>
+    )
+})}
+</div>
+</Layout>
+</body>
+</html>
