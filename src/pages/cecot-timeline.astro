@@ -1,7 +1,7 @@
 ---
 import { getVar } from '../utils/ingest';
 import AtomDisplayNode from '../components/AtomDisplayNode.astro'
-import Layout from '../layouts/Layout.astro';
+import SubpageLayout from '../layouts/SubpageLayout.astro';
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 const pages = await getVar()
@@ -46,7 +46,7 @@ inlineProps.forEach(atom => {
 currentYears[currentYears.length - 1].yEnd = yIndex 
 
 ---
-<Layout>
+<SubpageLayout>
 <style is:global> 
 
 .timeline-base {
@@ -148,7 +148,7 @@ currentYears[currentYears.length - 1].yEnd = yIndex
         max-height: 100%;
     }
 }
-@keyframes node-reveal {
+/*@keyframes node-reveal {
     from {
       filter: blur(4px);
         opacity: 0;
@@ -168,6 +168,7 @@ currentYears[currentYears.length - 1].yEnd = yIndex
         opacity: 100%;
     }
 }
+*/
 
 </style>
 <script define:vars={{ inlineProps }}> console.log("test", inlineProps) </script>
@@ -236,4 +237,4 @@ currentYears[currentYears.length - 1].yEnd = yIndex
 
 
   </div>
-</Layout>
+</SubpageLayout>

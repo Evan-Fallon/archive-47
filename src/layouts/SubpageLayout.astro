@@ -1,0 +1,13 @@
+---
+import '../styles/global.css';
+import ArchiveHeader from '../components/ArchiveHeader.astro';
+import Layout from '../layouts/Layout.astro';
+---
+<Layout>
+<div class="content-scroller">
+            <ArchiveHeader/>
+            <div class="content-sizer">
+        	<slot/>
+        </div>
+        </div>
+</Layout>

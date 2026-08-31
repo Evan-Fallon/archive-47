@@ -1,6 +1,6 @@
 ---
 import { getVar } from '../utils/ingest';
-import Layout from '../layouts/Layout.astro';
+import SubpageLayout from '../layouts/SubpageLayout.astro';
 
 const pages = await getVar()
 const filteredPages = pages
@@ -10,7 +10,7 @@ const classes = [...new Set (filteredPages
     
 )]
 ---
-<Layout>
+<SubpageLayout>
 <style is:global> 
 :root {
   interpolate-size: allow-keywords;
@@ -63,4 +63,4 @@ details {
     )
 })}
 </div>
-</Layout>
+</SubpageLayout>
