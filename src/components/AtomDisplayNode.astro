@@ -2,16 +2,22 @@
 const { atom } = Astro.props
 
 let PriorLine = `
-<button class="commentary-button" popovertarget="commentary-${atom.Index}">...</button>
-<div popover id="commentary-${atom.Index}" class="node-commentary">
+<button class="content-button" popovertarget="content-${atom.Index}">"</button>
+<div popover id="content-${atom.Index}" class="node-content-popover">
     ${atom?.PriorLine}
+</div>
+`
+let Commentary = `
+<button class="commentary-button" popovertarget="commentary-${atom.Index}"> ? </button>
+<div popover id="commentary-${atom.Index}" class="node-commentary-popover">
+    ${atom?.Commentary}
 </div>
 `
 
 const basicDisplay = `
 <div class="display-node basic">
     <div class="name-link">
-    <a href=${atom.URL}>${atom.Name}</a> 
+    <a href=${atom.URL}>${atom.Name}</a> ${atom?.Commentary ? Commentary : ''}
     </div>
     <div class="content-embed">${atom.PriorLine}</div>
 </div>`
@@ -21,7 +27,7 @@ let outputDisplay = basicDisplay
 const minorDisplay = `
 <div class="display-node minor">
     <div class="name-link">
-    <a href=${atom.URL}>${atom.Name}</a> ${atom?.PriorLine ? PriorLine : ''}
+    <a href=${atom.URL}>${atom.Name}</a> ${PriorLine} ${atom?.Commentary ? Commentary : ''}
     </div>
 </div>`
 
@@ -29,7 +35,7 @@ const imageDisplay = `
 <div class="display-node image">
         <img src="./src/attachments/${atom["Display Image"]}"/>
     <div class="name-link">
-        <a href=${atom.URL}>${atom.Name}</a>
+        <a href=${atom.URL}>${atom.Name}</a> ${atom?.Commentary ? Commentary : ''}
     </div>  
 </div>`
 

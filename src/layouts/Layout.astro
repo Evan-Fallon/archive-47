@@ -34,7 +34,10 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
 .content-scroller {
     overflow-y: scroll;
 }
-
+h1 {
+  font-weight: 1000;
+  font-size: 4rem;
+}
 .pile {
     display: grid;
     grid-template-areas: "pile";
@@ -88,12 +91,14 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
     &.image {
         display: grid;
         max-height: 180px;
-        border: 1px solid hsl(0 0 50);
+        border: 1px solid hsl(0 0 20);
         border-radius: 16px;
         overflow: hidden;
         max-width: 720px;
         grid-template-areas: "pile";
         box-sizing: border-box;
+        transition-property: border-color;
+        transition-duration: 800ms; 
         > * {
             grid-area: pile;
         }
@@ -119,13 +124,17 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
             object-fit: cover;
             object-position: center;
         }
+        &:hover {
+            border: 1px solid hsl(0 0 30);
+            transition-duration: 50ms;
+        } 
     }
     .content-embed {
         font-size: 13px;
         padding: 8px 0 0 0;
     }
 }
-    .commentary-button {
+    .commentary-button, .content-button {
         opacity: 0;
         background: transparent;
         display: inline flex;
@@ -133,14 +142,16 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
         border: 1px solid hsl(0 0 20);
         border-radius: 4px;
         height: 1rem;
-        font-size: .6em;
+        font-size: .8em;
+        font-weight: 1000;
         text-align: center;
         place-content: center;
         place-items: center;
         transition-property: opacity;
         transition-duration: 250ms;
     }
-    .node-commentary {
+
+    .node-commentary-popover, .node-content-popover {
         max-width: 480px;
         border: 1px solid hsl(0 0 20);
         background: hsl(0 0 3);
@@ -161,7 +172,12 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
             }
         }
     }
-.timeline-cell:hover .commentary-button {
+        .commentary-button, .node-commentary-popover {
+        border-color: hsla(32, 100%, 57%, 0.358);
+        color: hsla(32, 100%, 57%, 0.358);
+    }
+.timeline-cell:hover .commentary-button,
+.timeline-cell:hover .content-button {
     opacity: 1;
 }
 
