@@ -1,0 +1,41 @@
+<style>
+    .web-header {
+        --bg-opac: 0;
+        background-color: transparent;
+        display: flex;
+        width: 100%;
+        place-content: center;
+        padding: 8px;
+        position: sticky;
+        top: -100px;
+        height: 30px;
+        border-bottom: 1px solid hsl(0 0 15);
+        animation: rounding ease-in-out forwards;
+        animation-timeline: scroll();
+        animation-range: 250px 800px;    
+        animation-duration: 100ms;
+        margin: auto; 
+        z-index: 10;
+        a { 
+            color: white;
+            margin: auto;
+        }
+    }
+
+    @keyframes rounding {
+    from {
+        top: -100px;
+        background: transparent;
+        width: 100%;
+    }
+    to {
+        top: 10px;
+        border-radius: 50px;
+        background-color: hsl(0 0 8);
+        width: 70%;
+    }
+}
+</style>
+<div class="web-header">
+<a href="./">Back to Index</a>
+</div>

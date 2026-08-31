@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ArchiveHeader from '../components/ArchiveHeader.astro';
 ---
 <!doctype html>
 <html lang="en">
@@ -10,33 +11,29 @@ import '../styles/global.css';
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
-
+        
 <style is:global>
 	html,
 	body {
 		margin: 0;
 		width: 100%;
 		height: 100%;
-		   margin: 0;
-    width: 100%;
-    height: 2080px;
-    background: radial-gradient(hsl(0 0 10), hsl(0 0 2)) !important;
-    font-family: Noto Sans !important;
-    color: hsl(0 0 80); 
+        margin: 0;
+        background: radial-gradient(hsl(0 0 10), hsl(0 0 2)) !important;
+        font-family: Noto Sans !important;
+        color: hsl(0 0 80); 
+        overflow: hidden;
 	}
 	.content-sizer {
-  display: grid;
-  grid-template-columns: 1fr 480px 480px 1fr;
-  > * {
-    grid-column: 2 / 4;
+        display: grid;
+        grid-template-columns: 1fr 480px 480px 1fr;
+        > * {
+        grid-column: 2 / 4;
   }
 }
-	
+.content-scroller {
+    overflow-y: scroll;
+}
 
 .pile {
     display: grid;
@@ -68,6 +65,7 @@ import '../styles/global.css';
             color: hsl(0 0 80);
         }
     }
+
     &.basic {
         padding: var(--title-padding);
         border: 1px solid hsl(0 0 20);
@@ -81,9 +79,10 @@ import '../styles/global.css';
         } 
     }
     &.minor {
+        margin: 12px 0;
         .name-link a { 
             color: hsl(0 0 60);
-            font-size: 1.05em;
+            font-size: .85em;
         }
     }
     &.image {
@@ -126,4 +125,55 @@ import '../styles/global.css';
         padding: 8px 0 0 0;
     }
 }
+    .commentary-button {
+        opacity: 0;
+        background: transparent;
+        display: inline flex;
+        color: hsl(0 0 20);;
+        border: 1px solid hsl(0 0 20);
+        border-radius: 4px;
+        height: 1rem;
+        font-size: .6em;
+        text-align: center;
+        place-content: center;
+        place-items: center;
+        transition-property: opacity;
+        transition-duration: 250ms;
+    }
+    .node-commentary {
+        max-width: 480px;
+        border: 1px solid hsl(0 0 20);
+        background: hsl(0 0 3);
+        color: grey;
+        font-family: Noto Sans;
+        font-size: .75em;
+        padding: 1em;
+        border-radius: 16px;
+        position-area: top;
+        position-try: flip-block;
+        margin-bottom: 10px;
+        opacity: 0;
+        transition: opacity 200ms;
+        &:popover-open {
+            opacity: 1;
+            @starting-style {
+                opacity: 0;
+            }
+        }
+    }
+.timeline-cell:hover .commentary-button {
+    opacity: 1;
+}
+
 </style>
+
+	</head>
+	<body>
+        <div class="content-scroller">
+            <ArchiveHeader/>
+            <div class="content-sizer">
+        	<slot/>
+        </div>
+        </div>
+	</body>
+</html>
