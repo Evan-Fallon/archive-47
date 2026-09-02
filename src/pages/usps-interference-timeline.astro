@@ -7,14 +7,14 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 const pages = await getVar()
 const inlineProps = pages
   .flatMap(page => page.inlineProperties)
-  .filter(atom => atom.raw.toLowerCase().includes("the cecot lie"))
+  .filter(atom => atom.raw.toLowerCase().includes("2026 usps election interference"))
   .sort((a, b) => a.Date - b.Date)
 
 
 let currentNodes: any[] = []
 let currentYears = [{year: new Date (inlineProps[0].Date).getFullYear(), yIndex: 1, yEnd: 2}]
 let currentMonths = [{month: months[new Date(inlineProps[0].Date).getMonth()], yIndex: 2}]
-let currentSpans: any[] = []
+let currentSpans = []
 let yIndex = 3
 inlineProps.forEach(atom => {
   const thisYear = new Date(atom.Date).getFullYear()
@@ -44,29 +44,6 @@ inlineProps.forEach(atom => {
     yIndex++
 })  
 currentYears[currentYears.length - 1].yEnd = yIndex 
-
-currentYears[currentYears.length - 1].yEnd = yIndex 
-
-const spanTracks = []
-for (const span of currentSpans) {
-    let assigned = false
-    for (let i = 0; i < spanTracks.length; i++) {
-        if (!spanTracks[i].some(t => !(t.yEnd <= span.yIndex || span.yEnd <= t.yIndex))) {
-            spanTracks[i].push(span)
-            assigned = true
-            break
-        }
-    }
-    if (!assigned) spanTracks.push([span])
-}
-const numberedSpans = spanTracks.map((track, trackInd) => {
-    return (
-        track.map(span => {
-        return (
-         {...span, trackInd: trackInd}
-        )})
-     )
- }).flat()
 
 ---
 <SubpageLayout>
@@ -105,6 +82,7 @@ const numberedSpans = spanTracks.map((track, trackInd) => {
     grid-column: 1 / 5 !important;
     margin: 0 -2rem;
     width: calc(100% + 4rem);
+    z-index: 2;
     .display-node {
       border-width: 1px 0 1px 0;
       border-style: solid;
@@ -167,8 +145,8 @@ const numberedSpans = spanTracks.map((track, trackInd) => {
     animation-fill-mode: both;
     animation-delay: var(--anim-delay);
      &.Minor {
-        width: 12px;
-        height: 12px;
+        width: 15px;
+        height: 15px;
         border-radius: 15px;
         border: 1px solid hsl(0 0 25) ;
         background: hsl(0 0 5);
@@ -184,50 +162,6 @@ const numberedSpans = spanTracks.map((track, trackInd) => {
     animation-fill-mode: both;
     animation-delay: var(--anim-delay);
 }
-
-#span-column {
-    display: grid;
-    width: auto;
-    height: 100%;
-    grid-template-rows: subgrid;
-    margin-right: 8px;
-    position: relative;
-    gap: 0 4px;
-}
-.timeline-span {
-    width: 20px;
-    height: calc(100% - 8px);
-    margin: -48px auto auto 0;
-    background: hsl(from var(--border-basic) h s l / .1);
-    border-color:  hsl(from var(--border-basic) h s l / .4);
-    border-width: 0 1px 0 1px;
-    border-style: solid;
-
-    transition: border 250ms ease, background 400ms ease;
-    &:hover {
-        border-color: hsl(from var(--border-basic) h s l / .7);
-        background: hsl(from var(--border-basic) h s l / .2);
-        .span-name {
-            opacity: 1;
-            transform: translateX(25px);
-        }
-    }
-}
-.span-name {
-    opacity: 0;
-    pointer-events: none;
-    place-self: center;
-    position: sticky;
-    width: 125px;
-    top: 50%;
-    padding: .5em;
-    border-radius: 8px;
-    transition: opacity 100ms ease, transform 300ms ease;
-    background: hsl(0 0 10);
-    border: 1px solid hsl(0 0 30);
-    z-index: 2;
-}
-
 
  @keyframes line-go-down {
     from {
@@ -261,9 +195,7 @@ const numberedSpans = spanTracks.map((track, trackInd) => {
 
 </style>
   <div class="topic-header">
-  <h1> The C.E.C.O.T. Lie </h1>
-
-  <a href="./cecot-home">Back to Summary</a>
+  <h1>The USPS Mid-Term Interference Timeline</h1>
   </div>
   <div class="timeline-base">
     {currentYears.map((year, yearInd) => {
@@ -272,18 +204,7 @@ const numberedSpans = spanTracks.map((track, trackInd) => {
         <div class="timeline-line" style={`grid-column: 3 / 4; grid-row: ${year.yIndex + 1} / ${year.yEnd};}`}> 
         </div>
     )})}
-    <div id="span-column" style={`grid-column: 1 / 2; grid-row: 1 / ${yIndex};`}>
-        {numberedSpans.map(span => {
-        return (<div style="display:contents">
-            <div class="timeline-span" style={`grid-row: ${span.yIndex + 1} / ${span.yEnd +1}; grid-column: ${span.trackInd + 1}`}>
-            <div class="span-name" style={`grid-row: ${span.yIndex} / ${span.yEnd +1}; grid-column: ${span.trackInd + 1}`}>
-                {span.name}
-            </div>
-            </div>
-            
-        </div>
-        )})}
-    </div>
+
     {currentYears.map(year => (
       <div class="timeline-cell year" 
       style={{
@@ -304,7 +225,16 @@ const numberedSpans = spanTracks.map((track, trackInd) => {
         <p>{month.month}</p>
       </div>  
       ))}
-
+    {currentNodes.map(atom => (
+      <div class="timeline-cell node" 
+      style={`
+        grid-column: 4 / 5;
+        grid-row: ${atom.Index} / ${atom.Index + 1};
+        --anim-delay: ${atom.Index * 90}ms`
+      }>
+        <AtomDisplayNode atom={atom}/> 
+      </div>  
+      ))}
     {currentNodes.map(atom => (
       <div class={`node-circles ${atom.Display}`}
       style={`
@@ -323,16 +253,7 @@ const numberedSpans = spanTracks.map((track, trackInd) => {
         <p>{atom.DateString.split("T")[0].split("-")[2]} {atom.DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""}</p>
       </div>
     ))}
-    {currentNodes.map(atom => (
-      <div class="timeline-cell node" 
-      style={`
-        grid-column: 4 / 5;
-        grid-row: ${atom.Index} / ${atom.Index + 1};
-        --anim-delay: ${atom.Index * 90}ms`
-      }>
-        <AtomDisplayNode atom={atom}/> 
-      </div>  
-      ))}
+
 
   </div>
 </SubpageLayout>

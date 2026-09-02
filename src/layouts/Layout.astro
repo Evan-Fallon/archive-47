@@ -16,10 +16,13 @@
             }
             body {
                 --color-accent: hsl(32, 75%, 55%);
-                --primary-bg: light-dark(hsl(0 0 90), hsl(0 0 5));
-                --secondary-bg: light-dark(hsl(0 0 85), hsl(0 0 15));
-                --text-color: light-dark(hsl(0 0 0), hsl(0 0 100));
+                --primary-bg: light-dark(hsl(0 0 90), hsl(0 0 3));
+                --secondary-bg: light-dark(hsl(0 0 85), hsl(0 0 6));
+                --text-color: light-dark(hsl(0 0 0), hsl(0 0 50));
+                --text-color-important: light-dark(hsl(0 0 0), hsl(0 0 75));
                 --border-basic: light-dark( hsl(0 0 78), hsl(0 0 30));
+                --border-hover: light-dark( hsl(0 0 68), hsl(0 0 40));
+                background: var(--primary-bg);
                 margin: 0;
                 width: 100%;
                 height: 100%;
@@ -28,24 +31,12 @@
                 color: --text-color; 
                 overflow: hidden;              
             }
-            .content-scroller {
-                overflow-y: scroll;
-                max-height: 100%;
-                height: 100%;
-                background: var(--primary-bg);
-            }
-            .content-sizer {
-                display: grid;
-                height: fit-content;
-                grid-template-columns: 1fr 480px 480px 1fr;
-                > * {
-                    grid-column: 2 / 4;
-                }
-            }
+
         
             h1 {
             font-weight: 1000;
             font-size: 4rem;
+            text-align: center;
             }
             .pile {
                 display: grid;
@@ -60,7 +51,6 @@
             }
             .display-node {
                 --title-padding: 16px;
-                max-width: 720px;
                 box-sizing: border-box;
                 .name-link {
                     a {
@@ -73,29 +63,33 @@
                 &.basic {
                     padding: var(--title-padding);
                     border: 1px solid var(--border-basic);
-                    border-radius: 16px;
+                    border-radius: 6px;
                     background: var(--secondary-bg);
                     transition-property: border-color;
                     transition-duration: 800ms; 
+                    color: var(--text-color);
+                    a {
+                        color: var(--text-color-important)
+                    }
                     &:hover {
-                        border: 1px solid hsl(0 0 30);
+                        border: 1px solid var(--border-hover);
                         transition-duration: 50ms;
                     } 
                 }
                 &.minor {
                     margin: 12px 0;
                     .name-link a { 
-                        color: var(--text-color);
-                        font-size: .85em;
+                        color: var(--text-color-important);
+                        font-size: 1.1em;
                     }
                 }
                 &.image {
                     display: grid;
-                    max-height: 180px;
+                    
+                    max-height: 225px;
                     border: 1px solid hsl(0 0 20);
-                    border-radius: 16px;
+                    border-radius: 6px;
                     overflow: hidden;
-                    max-width: 720px;
                     grid-template-areas: "pile";
                     box-sizing: border-box;
                     transition-property: border-color;
@@ -114,7 +108,7 @@
                             font-weight: bold;
                             font-size: 1.1em;
                             text-decoration: none;
-                            color: hsl(0 0 80);
+                            color: var(--text-color-important);
                         }
                     }
                     img {
