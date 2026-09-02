@@ -15,13 +15,13 @@
                 height: 100%;
             }
             body {
-                --color-accent: hsl(32, 75%, 55%);
+                --color-accent: light-dark(hsl(229, 100%, 62%), hsl(27, 86%, 60%));
                 --primary-bg: light-dark(hsl(0 0 90), hsl(0 0 3));
                 --secondary-bg: light-dark(hsl(0 0 85), hsl(0 0 6));
-                --text-color: light-dark(hsl(0 0 0), hsl(0 0 50));
-                --text-color-important: light-dark(hsl(0 0 0), hsl(0 0 75));
-                --border-basic: light-dark( hsl(0 0 78), hsl(0 0 30));
-                --border-hover: light-dark( hsl(0 0 68), hsl(0 0 40));
+                --text-color: light-dark(hsl(0 0 30), hsl(0 0 50));
+                --text-color-important: light-dark(hsl(0 0 10), hsl(0 0 70));
+                --border-basic: light-dark( hsl(0 0 70), hsl(0 0 20));
+                --border-hover: light-dark( hsl(0 0 50), hsl(0 0 30));
                 background: var(--primary-bg);
                 margin: 0;
                 width: 100%;
@@ -37,6 +37,7 @@
             font-weight: 1000;
             font-size: 4rem;
             text-align: center;
+            color: var(--text-color-important);
             }
             .pile {
                 display: grid;
@@ -49,132 +50,7 @@
             .topic-header {
                 height: min-content;
             }
-            .display-node {
-                --title-padding: 16px;
-                box-sizing: border-box;
-                .name-link {
-                    a {
-                        font-weight: bold;
-                        font-size: 1.1em;
-                        text-decoration: none;
-                        color: var(--text-color);
-                    }
-                }
-                &.basic {
-                    padding: var(--title-padding);
-                    border: 1px solid var(--border-basic);
-                    border-radius: 6px;
-                    background: var(--secondary-bg);
-                    transition-property: border-color;
-                    transition-duration: 800ms; 
-                    color: var(--text-color);
-                    a {
-                        color: var(--text-color-important)
-                    }
-                    &:hover {
-                        border: 1px solid var(--border-hover);
-                        transition-duration: 50ms;
-                    } 
-                }
-                &.minor {
-                    margin: 12px 0;
-                    .name-link a { 
-                        color: var(--text-color-important);
-                        font-size: 1.1em;
-                    }
-                }
-                &.image {
-                    display: grid;
-                    
-                    max-height: 225px;
-                    border: 1px solid hsl(0 0 20);
-                    border-radius: 6px;
-                    overflow: hidden;
-                    grid-template-areas: "pile";
-                    box-sizing: border-box;
-                    transition-property: border-color;
-                    transition-duration: 800ms; 
-                    > * {
-                        grid-area: pile;
-                    }
-                    .name-link {
-                        height: fit-content;
-                        width: fit-content;
-                        background: color-mix(in srgb, black, transparent 10%);
-                        padding: 8px 24px;
-                        border-radius: 0 0 12px 0;
-                        z-index: 1;
-                        a {
-                            font-weight: bold;
-                            font-size: 1.1em;
-                            text-decoration: none;
-                            color: var(--text-color-important);
-                        }
-                    }
-                    img {
-
-                        width: 100%;
-                        height: 100%;
-                        min-height: 200px;
-                        object-fit: cover;
-                        object-position: center;
-                    }
-                    &:hover {
-                        border: 1px solid hsl(0 0 30);
-                        transition-duration: 50ms;
-                    } 
-                }
-                .content-embed {
-                    font-size: 13px;
-                    padding: 8px 0 0 0;
-                }
-            }
-            .commentary-button, .content-button {
-                opacity: 0;
-                background: transparent;
-                display: inline flex;
-                color: hsl(0 0 20);;
-                border: 2px solid hsl(0 0 20);
-                border-radius: 4px;
-                height: 1rem;
-                font-size: .8em;
-                font-weight: 1000;
-                text-align: center;
-                place-content: center;
-                place-items: center;
-                transition-property: opacity;
-                transition-duration: 250ms;
-            }
-
-            .node-commentary-popover, .node-content-popover {
-                max-width: 480px;
-                border: 1px solid hsl(0 0 20);
-                background: hsl(0 0 3);
-                color: grey;
-                font-family: Noto Sans;
-                font-size: .75em;
-                padding: 1em;
-                border-radius: 16px;
-                position-area: top;
-                position-try: flip-block;
-                margin-bottom: 10px;
-                opacity: 0;
-                transition: opacity 200ms;
-                &:popover-open {
-                    opacity: 1;
-                    @starting-style {
-                        opacity: 0;
-                    }
-                }
-            }
-                .commentary-button, .node-commentary-popover {
-                border-color: var(--color-accent);
-                color: var(--color-accent);
-            }
-            .timeline-cell:hover .commentary-button,
-            .timeline-cell:hover .content-button {
-                opacity: 1;
-            }
+            
         </style>
     </head>
     <body>

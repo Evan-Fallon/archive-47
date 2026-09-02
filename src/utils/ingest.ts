@@ -2,7 +2,7 @@ import glob from 'fast-glob'
 import fs from 'node:fs'
 import path from 'node:path';
 import matter from 'gray-matter'
-
+import { getOrdinal } from './getOrdinal';
 
 const vaultpath = import.meta.env.PUBLIC_PATH
 
@@ -18,7 +18,8 @@ export interface InlineProperty {
     PriorLine: string;
     Date: number;
     DateString?: string;
-    DisplayImage?: string
+    OrdinalDay: string;
+    DisplayImage?: string;
     [key: string]: any;
 }
 
@@ -49,7 +50,8 @@ export async function getVar(): Promise<VaultNote[]> {
                 Path: file,
                 raw: userInput,
                 PriorLine: priorLine,
-                Date: Date.now()
+                Date: Date.now(),
+                OrdinalDay: "1st",
             }
             if (userInput.includes(" | ")) {
                     userInput.split(" | ").forEach(pair => {
@@ -57,6 +59,7 @@ export async function getVar(): Promise<VaultNote[]> {
                         if (key === "Date") {
                                 propEntry[key] = Date.parse(value) || Date.now() 
                                 propEntry["DateString"] = value
+                                propEntry["OrdinalDay"] = getOrdinal(Number(value.split("T")[0].split("-")[2]))
                         }
                         else if (key === "Display Image") {
                             propEntry[key] = value.trim().slice(2, -2)

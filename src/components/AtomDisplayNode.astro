@@ -35,7 +35,7 @@ const imageDisplay = `
 <div class="display-node image">
         <img src="./src/attachments/${atom["Display Image"]}"/>
     <div class="name-link">
-       <a href=${atom.URL}>${atom.DateString.split("T")[0].split("-")[2]} ${atom.DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""} - ${atom.Name}</a> ${atom?.Commentary ? Commentary : ''}
+       <a href=${atom.URL}>${atom.OrdinalDay} ${atom.DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""} - ${atom.Name}</a> ${atom?.Commentary ? Commentary : ''}
     </div>  
 </div>`
 

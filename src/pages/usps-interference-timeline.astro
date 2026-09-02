@@ -1,7 +1,7 @@
 ---
 import { getVar } from '../utils/ingest';
 import AtomDisplayNode from '../components/AtomDisplayNode.astro'
-import SubpageLayout from '../layouts/SubpageLayout.astro';
+import TimelineLayout from '../layouts/TimelineLayout.astro';
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 const pages = await getVar()
@@ -46,154 +46,8 @@ inlineProps.forEach(atom => {
 currentYears[currentYears.length - 1].yEnd = yIndex 
 
 ---
-<SubpageLayout>
-<style is:global> 
-.topic-header {
-  background: var(--secondary-bg);
-  padding: 0 2rem;
-}
-.timeline-base {
-  display: grid;
-  grid-template-columns: min-content auto 40px auto;
-  gap: 0px;
-  background: var(--secondary-bg);
-  padding: 0 2rem;
-}
-.display-node {
-  margin: 16px 0;
-  &.basic {
-    background: var(--primary-bg);
-  }
-}
+<TimelineLayout>
 
-.timeline-cell {
-  display: grid;
-  grid-column: 2 / 3;
-  width: 100%;
-  &.node {
-    transform-origin: left;
-      animation-name: node-reveal;
-  animation-duration: 1000ms;
-  animation-timing-function: ease-out;
-  animation-fill-mode: both;
-  animation-delay: var(--anim-delay);
-  }
-  &:has(.display-node.image) {
-    grid-column: 1 / 5 !important;
-    margin: 0 -2rem;
-    width: calc(100% + 4rem);
-    z-index: 2;
-    .display-node {
-      border-width: 1px 0 1px 0;
-      border-style: solid;
-      border-color: var(--border-basic);
-      border-radius: 0;
-    } 
-  }
-  p {
-    margin: 0;
-  }
-  &.year {
-  font-weight: 600;
-  font-size: 3rem;
-  text-align: center;
-  place-items: center;
-  margin: 0 -2rem;
-  width: calc(100% + 4rem);
-} 
-  hr {
-    width: 100%;
-    border: none;
-    border-bottom: 1px solid hsl(0 0 30);
-    margin: 0px;
-  }
-  &.month {
-    text-align: right;
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: hsl(0 0 70);
-    animation-name: opacity-reveal;
-    animation-duration: 800ms;
-    animation-timing-function: ease-in;
-    animation-fill-mode: both;
-    animation-delay: var(--anim-delay);
-    margin-top: 24px;
-  }
-}
-.timeline-line {
-    background: hsl(0 0 30);
-    width: 1px;
-    height: calc(100% - 64px);
-    justify-self: center;
-    animation-name: line-go-down;
-    animation-duration: 3000ms;
-    animation-timing-function: ease-in;
-    animation-fill-mode: both;
-    margin: 48px 0;
-}
-
-.node-circles {
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    border: 1px solid hsl(0 0 30) ;
-    background: hsl(0 0 5);
-    place-self: center;
-    animation-name: opacity-reveal;
-    animation-duration: 500ms;
-    animation-timing-function: ease-in;
-    animation-fill-mode: both;
-    animation-delay: var(--anim-delay);
-     &.Minor {
-        width: 15px;
-        height: 15px;
-        border-radius: 15px;
-        border: 1px solid hsl(0 0 25) ;
-        background: hsl(0 0 5);
-    }
-}
-.node-day-time {
-    font-size: 0.8rem;
-    color: hsl(0 0 30);
-    place-self: center right;
-        animation-name: opacity-reveal;
-    animation-duration: 500ms;
-    animation-timing-function: ease-in;
-    animation-fill-mode: both;
-    animation-delay: var(--anim-delay);
-}
-
- @keyframes line-go-down {
-    from {
-        max-height: 0%;
-    }
-    to {
-        max-height: 100%;
-    }
-}
-/*@keyframes node-reveal {
-    from {
-      filter: blur(4px);
-        opacity: 0;
-        transform: rotate3d(.5, 1, 0, 15deg) translateY(70px);
-    }
-    to {
-      filter: blur(0px);
-        opacity: 1;
-        transform: rotate3d(.5, 1, 0, 0deg) translateY(0px);
-    }
-} 
- @keyframes opacity-reveal{
-    from {
-        opacity: 0%;
-    }
-    to {
-        opacity: 100%;
-    }
-}
-*/
-
-</style>
   <div class="topic-header">
   <h1>The USPS Mid-Term Interference Timeline</h1>
   </div>
@@ -225,16 +79,7 @@ currentYears[currentYears.length - 1].yEnd = yIndex
         <p>{month.month}</p>
       </div>  
       ))}
-    {currentNodes.map(atom => (
-      <div class="timeline-cell node" 
-      style={`
-        grid-column: 4 / 5;
-        grid-row: ${atom.Index} / ${atom.Index + 1};
-        --anim-delay: ${atom.Index * 90}ms`
-      }>
-        <AtomDisplayNode atom={atom}/> 
-      </div>  
-      ))}
+
     {currentNodes.map(atom => (
       <div class={`node-circles ${atom.Display}`}
       style={`
@@ -250,10 +95,19 @@ currentYears[currentYears.length - 1].yEnd = yIndex
         grid-row: ${atom.Index} / ${atom.Index + 1};
         --anim-delay: ${atom.Index * 125}ms`
       }>
-        <p>{atom.DateString.split("T")[0].split("-")[2]} {atom.DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""}</p>
+        <p>{atom.OrdinalDay} {atom.DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""}</p>
       </div>
     ))}
-
+    {currentNodes.map(atom => (
+      <div class="timeline-cell node" 
+      style={`
+        grid-column: 4 / 5;
+        grid-row: ${atom.Index} / ${atom.Index + 1};
+        --anim-delay: ${atom.Index * 90}ms`
+      }>
+        <AtomDisplayNode atom={atom}/> 
+      </div>  
+      ))}
 
   </div>
-</SubpageLayout>
+</TimelineLayout>
