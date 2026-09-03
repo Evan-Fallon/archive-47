@@ -44,8 +44,6 @@ inlineProps.forEach(atom => {
 })  
 currentYears[currentYears.length - 1].yEnd = yIndex 
 
-currentYears[currentYears.length - 1].yEnd = yIndex 
-
 const spanTracks = []
 for (const span of currentSpans) {
     let assigned = false
@@ -108,7 +106,7 @@ const numberedSpans = spanTracks.map((track, trackInd) => {
       style={`
         --anim-delay: ${month.yIndex * 75}ms;
         grid-column: 2 / 3;
-        grid-row: ${month.yIndex} / ${month.yIndex + 1};,
+        grid-row: ${month.yIndex} / ${month.yIndex + 1};
       `}>
         <p>{month.month}</p>
       </div>  
