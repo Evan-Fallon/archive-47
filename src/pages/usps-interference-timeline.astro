@@ -45,6 +45,27 @@ inlineProps.forEach(atom => {
 })  
 currentYears[currentYears.length - 1].yEnd = yIndex 
 
+const spanTracks = []
+for (const span of currentSpans) {
+    let assigned = false
+    for (let i = 0; i < spanTracks.length; i++) {
+        if (!spanTracks[i].some(t => !(t.yEnd <= span.yIndex || span.yEnd <= t.yIndex))) {
+            spanTracks[i].push(span)
+            assigned = true
+            break
+        }
+    }
+    if (!assigned) spanTracks.push([span])
+}
+const numberedSpans = spanTracks.map((track, trackInd) => {
+    return (
+        track.map(span => {
+        return (
+         {...span, trackInd: trackInd}
+        )})
+     )
+ }).flat()
+
 ---
 <TimelineLayout>
 
@@ -58,6 +79,18 @@ currentYears[currentYears.length - 1].yEnd = yIndex
         <div class="timeline-line" style={`grid-column: 3 / 4; grid-row: ${year.yIndex + 1} / ${year.yEnd};}`}> 
         </div>
     )})}
+      <div id="span-column" style={`grid-column: 1 / 2; grid-row: 1 / ${yIndex};`}>
+        {numberedSpans.map(span => {
+        return (<div style="display:contents">
+            <div class="timeline-span" style={`grid-row: ${span.yIndex + 1} / ${span.yEnd +1}; grid-column: ${span.trackInd + 1}`}>
+            <div class="span-name" style={`grid-row: ${span.yIndex} / ${span.yEnd +1}; grid-column: ${span.trackInd + 1}`}>
+                {span.name}
+            </div>
+            </div>
+            
+        </div>
+        )})}
+    </div>
 
     {currentYears.map(year => (
       <div class="timeline-cell year" 
