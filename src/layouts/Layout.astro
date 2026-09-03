@@ -31,8 +31,6 @@
                 color: var(--text-color); 
                 overflow: hidden;              
             }
-
-        
             h1 {
             font-weight: 1000;
             font-size: 4rem;
@@ -50,7 +48,152 @@
             .topic-header {
                 height: min-content;
             }
+            .content-scroller {
+                overflow-y: scroll;
+                max-height: 100%;
+                height: 100%;
+            }
+            .content-sizer {
+                display: grid;
+                height: fit-content;
+                grid-template-columns: 1fr 540px 540px 1fr;
+                color: var(--text-color);
+                & > * {
+                    grid-column: 2 / 4;
+                }
+            }
+            .display-node {
+    margin: 16px 0;
+    --title-padding: 16px;
+    box-sizing: border-box;
+    .name-link {
+        a {
+            font-weight: bold;
+            font-size: 1.1em;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+    }
+    &.basic {
+        padding: var(--title-padding);
+        border: 1px solid var(--border-basic);
+        border-radius: 6px;
+        background: var(--primary-bg);
+        transition-property: border-color;
+        transition-duration: 800ms; 
+        color: var(--text-color);
+        a {
+            color: var(--text-color-important)
+        }
+        &:hover {
+            border: 1px solid var(--border-hover);
+            transition-duration: 50ms;
+        } 
+    }
+    &.minor {
+        margin: 12px 0;
+        .name-link {
+            display: flex;
+            gap: .5em;
+            align-items: center;
+            height: fit-content;
+            width: fit-content;
+            a { 
+                color: var(--text-color-important);
+                font-size: 1em;
+                text-box-trim: trim-both;
+                text-box-edge: ex alphabetic;
+            }
+        }
+    }
+    &.image {
+        display: grid;
+        max-height: 225px;
+        border: 1px solid var(--border-basic);
+        border-radius: 6px;
+        overflow: hidden;
+        grid-template-areas: "pile";
+        box-sizing: border-box;
+        transition-property: border-color;
+        transition-duration: 800ms; 
+        > * {
+            grid-area: pile;
+        }
+        .name-link {
+            display: flex;
+            gap: .5em;
+            align-items: center;
+            height: fit-content;
+            width: fit-content;
+            background: hsl(from var(--primary-bg) h s l / .8);
+            padding: 8px 24px;
+            border-radius: 0 0 12px 0;
+            z-index: 1;
             
+            a {
+                text-box-trim: trim-both;
+                text-box-edge: cap alphabetic;
+                font-weight: bold;
+                font-size: 1.1em;
+                text-decoration: none;
+                color: var(--text-color-important);
+            }
+        }
+        img {
+            width: 100%;
+            height: 100%;
+            min-height: 200px;
+            object-fit: cover;
+            object-position: center;
+        }
+        &:hover {
+            border: 1px solid hsl(0 0 30);
+            transition-duration: 50ms;
+        } 
+    }
+    .content-embed {
+        font-size: 13px;
+        padding: 8px 0 0 0;
+    }
+}
+.commentary-button, .content-button {
+    opacity: 0;
+    background: var(--primary-bg);
+    display: inline flex;
+    color: var(--border-hover);
+    border: 1px solid hsl(from var(--border-basic) h s l);
+    border-radius: 2px;
+    height: 1rem;
+    font-size: .8em;
+    font-weight: 1000;
+    text-align: center;
+    place-content: center;
+    place-items: center;
+    transition-property: opacity;
+    transition-duration: 250ms;
+}
+
+.node-commentary-popover, .node-content-popover {
+    max-width: 480px;
+    border: 1px solid var(--border-basic);
+    background: var(--primary-bg);
+    color: var(--text-color);
+    font-family: Noto Sans;
+    font-size: .75em;
+    padding: 1em;
+    border-radius: 6px;
+    position-area: top;
+    position-try: flip-block;
+    margin-bottom: 10px;
+    opacity: 0;
+    transition: opacity 200ms;
+    &:popover-open {
+        opacity: 1;
+        @starting-style {
+            opacity: 0;
+        }
+    }
+}
         </style>
     </head>
     <body>
