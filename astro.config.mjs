@@ -14,5 +14,5 @@ export default defineConfig({
         },
     },
     site: 'https://Evan-Fallon.github.io',
-    base: '/archive-47/'
+    base: '/archive-47'
 })
