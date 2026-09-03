@@ -12,7 +12,5 @@ export default defineConfig({
         // Set to 0 to completely disable inlining and force separate files
         assetsInlineLimit: 10240, 
         },
-    },
-    site: 'https://Evan-Fallon.github.io',
-    base: '/archive-47'
+    }
 })
