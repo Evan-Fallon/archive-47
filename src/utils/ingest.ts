@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path';
 import matter from 'gray-matter'
 import { getOrdinal } from './getOrdinal';
+import { Temporal } from '@js-temporal/polyfill'
 
 const vaultpath = import.meta.env.PUBLIC_PATH
 
@@ -16,7 +17,7 @@ export interface InlineProperty {
     Path: string;
     raw: string;
     PriorLine: string;
-    Date: number;
+    Date: Temporal.PlainDateTime;
     DateString?: string;
     OrdinalDay: string;
     DisplayImage?: string;
@@ -50,14 +51,14 @@ export async function getVar(): Promise<VaultNote[]> {
                 Path: file,
                 raw: userInput,
                 PriorLine: priorLine,
-                Date: Date.now(),
+                Date: Temporal.Now.plainDateTimeISO(),
                 OrdinalDay: "1st",
             }
             if (userInput.includes(" | ")) {
                     userInput.split(" | ").forEach(pair => {
                         const [key, value] = pair.split(": ").map(x => x.trim())
                         if (key === "Date") {
-                                propEntry[key] = Date.parse(value) || Date.now() 
+                                propEntry[key] = Temporal.PlainDateTime.from(value) || Temporal.Now.plainDateTimeISO()
                                 propEntry["DateString"] = value
                                 propEntry["OrdinalDay"] = getOrdinal(Number(value.split("T")[0].split("-")[2]))
                         }

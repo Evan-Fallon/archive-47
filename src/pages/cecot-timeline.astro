@@ -7,17 +7,17 @@ const pages = await getVar()
 const inlineProps = pages
   .flatMap(page => page.inlineProperties)
   .filter(atom => atom.raw.toLowerCase().includes("the cecot lie"))
-  .sort((a, b) => a.Date - b.Date)
+  .sort((a, b) => Temporal.PlainDateTime.compare(a.Date, b.Date))
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 let currentNodes: any[] = []
-let currentYears = [{year: new Date (inlineProps[0].Date).getFullYear(), yIndex: 1, yEnd: 2}]
-let currentMonths = [{month: months[new Date(inlineProps[0].Date).getMonth()], yIndex: 2}]
+let currentYears = [{year: inlineProps[0].Date.year, yIndex: 1, yEnd: 2}]
+let currentMonths = [{month: months[inlineProps[0].Date.month], yIndex: 2}]
 let currentSpans: any[] = []
 let yIndex = 3
 inlineProps.forEach(atom => {
-  const thisYear = new Date(atom.Date).getFullYear()
-  const thisMonth = months[new Date(atom.Date).getMonth()]
+  const thisYear = atom.Date.year
+  const thisMonth = months[atom.Date.month]
     if (thisYear !== currentYears[currentYears.length - 1].year) {
         currentYears[currentYears.length - 1].yEnd = yIndex
         currentYears.push({year: thisYear, yIndex: yIndex, yEnd: yIndex + 1})

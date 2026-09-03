@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@js-temporal/polyfill": "^0.5.1",
     "astro": "^7.2.3",
     "fast-glob": "^3.3.3",
     "gray-matter": "^4.0.3"
