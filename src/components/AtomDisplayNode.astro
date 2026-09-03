@@ -1,6 +1,8 @@
 ---
 const { atom } = Astro.props
 
+
+
 let PriorLine = `
 <button class="content-button" popovertarget="content-${atom.Index}">"</button>
 <div popover id="content-${atom.Index}" class="node-content-popover">
@@ -33,7 +35,7 @@ const minorDisplay = `
 
 const imageDisplay = `
 <div class="display-node image">
-        <img src="./src/attachments/${atom["Display Image"]}"/>
+        <img src="/archive-47/attachments/${atom["Display Image"]}"/>
     <div class="name-link">
        <a href=${atom.URL}>${atom.OrdinalDay} ${atom.DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""} - ${atom.Name}</a> ${atom?.Commentary ? Commentary : ''}
     </div>  
