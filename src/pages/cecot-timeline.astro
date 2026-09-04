@@ -2,6 +2,8 @@
 import { getVar } from '../utils/ingest';
 import TimelineLayout from '../layouts/TimelineLayout.astro';
 import AtomDisplayNode from '../components/AtomDisplayNode.astro'
+import { Temporal } from '@js-temporal/polyfill';
+
 
 const pages = await getVar()
 const inlineProps = pages
@@ -12,12 +14,12 @@ const inlineProps = pages
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 let currentNodes: any[] = []
 let currentYears = [{year: inlineProps[0].Date.year, yIndex: 1, yEnd: 2}]
-let currentMonths = [{month: months[inlineProps[0].Date.month], yIndex: 2}]
+let currentMonths = [{month: months[inlineProps[0].Date.month - 1], yIndex: 2}]
 let currentSpans: any[] = []
 let yIndex = 3
 inlineProps.forEach(atom => {
   const thisYear = atom.Date.year
-  const thisMonth = months[atom.Date.month]
+  const thisMonth = months[atom.Date.month - 1]
     if (thisYear !== currentYears[currentYears.length - 1].year) {
         currentYears[currentYears.length - 1].yEnd = yIndex
         currentYears.push({year: thisYear, yIndex: yIndex, yEnd: yIndex + 1})
