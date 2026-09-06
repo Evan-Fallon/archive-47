@@ -1,7 +1,8 @@
 import { n as __exportAll, t as createComponent } from "./compiler_BmZrZZfK.mjs";
 import { d as maybeRenderHead, p as addAttribute, r as renderComponent, u as renderTemplate } from "./server_BtBKAhcd.mjs";
-import { t as getVar } from "./ingest_70Yz-jOX.mjs";
-import { n as $$TimelineLayout, t as $$AtomDisplayNode } from "./AtomDisplayNode_BgVDmh8H.mjs";
+import { t as getVar } from "./ingest_Ckffx8tg.mjs";
+import { n as $$TimelineLayout, t as $$AtomDisplayNode } from "./AtomDisplayNode_BkbSibYO.mjs";
+import { Temporal } from "@js-temporal/polyfill";
 //#region src/pages/cecot-timeline.astro
 var cecot_timeline_exports = /* @__PURE__ */ __exportAll({
 	default: () => $$CecotTimeline,
@@ -31,14 +32,14 @@ var $$CecotTimeline = createComponent(async ($$result, $$props, $$slots) => {
 		yEnd: 2
 	}];
 	let currentMonths = [{
-		month: months[inlineProps[0].Date.month],
+		month: months[inlineProps[0].Date.month - 1],
 		yIndex: 2
 	}];
 	let currentSpans = [];
 	let yIndex = 3;
 	inlineProps.forEach((atom) => {
 		const thisYear = atom.Date.year;
-		const thisMonth = months[atom.Date.month];
+		const thisMonth = months[atom.Date.month - 1];
 		if (thisYear !== currentYears[currentYears.length - 1].year) {
 			currentYears[currentYears.length - 1].yEnd = yIndex;
 			currentYears.push({
@@ -116,8 +117,8 @@ var $$CecotTimeline = createComponent(async ($$result, $$props, $$slots) => {
         grid-column: 4 / 5;
         grid-row: ${atom.Index} / ${atom.Index + 1};
         --anim-delay: ${atom.Index * 90}ms`, "style")}>${renderComponent($$result, "AtomDisplayNode", $$AtomDisplayNode, { "atom": atom })}</div>`)}</div>` })}`;
-}, "/home/evan/archive-47/src/pages/cecot-timeline.astro", void 0);
-var $$file = "/home/evan/archive-47/src/pages/cecot-timeline.astro";
+}, "C:/Users/fallone/archive-47/src/pages/cecot-timeline.astro", void 0);
+var $$file = "C:/Users/fallone/archive-47/src/pages/cecot-timeline.astro";
 var $$url = "/cecot-timeline.html";
 //#endregion
 //#region \0virtual:astro:page:src/pages/cecot-timeline@_@astro

@@ -1,7 +1,7 @@
 import { n as __exportAll, t as createComponent } from "./compiler_BmZrZZfK.mjs";
 import { d as maybeRenderHead, r as renderComponent, u as renderTemplate } from "./server_BtBKAhcd.mjs";
-import { t as getVar } from "./ingest_70Yz-jOX.mjs";
-import { t as $$SubpageLayout } from "./SubpageLayout_BFu_BL4E.mjs";
+import { t as getVar } from "./ingest_Ckffx8tg.mjs";
+import { t as $$SubpageLayout } from "./SubpageLayout_6p-Ip94I.mjs";
 //#region src/pages/cecot-directory.astro
 var cecot_directory_exports = /* @__PURE__ */ __exportAll({
 	default: () => $$CecotDirectory,
@@ -16,8 +16,8 @@ var $$CecotDirectory = createComponent(async ($$result, $$props, $$slots) => {
 			return renderTemplate`<li>${page.name}</li>`;
 		})}</ul></details>`;
 	})}</div>` })}`;
-}, "/home/evan/archive-47/src/pages/cecot-directory.astro", void 0);
-var $$file = "/home/evan/archive-47/src/pages/cecot-directory.astro";
+}, "C:/Users/fallone/archive-47/src/pages/cecot-directory.astro", void 0);
+var $$file = "C:/Users/fallone/archive-47/src/pages/cecot-directory.astro";
 var $$url = "/cecot-directory.html";
 //#endregion
 //#region \0virtual:astro:page:src/pages/cecot-directory@_@astro

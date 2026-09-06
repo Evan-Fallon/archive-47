@@ -16,7 +16,7 @@ function getOrdinal(n) {
 }
 //#endregion
 //#region src/utils/ingest.ts
-var vaultpath = "/home/evan/Documents/Mitty's everything/";
+var vaultpath = "C:\\Users\\fallone\\Documents\\Mitty's Everything";
 async function getVar() {
 	return (await glob("**/*.md", {
 		cwd: vaultpath,

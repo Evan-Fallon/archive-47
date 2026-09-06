@@ -1,11 +1,11 @@
 import { t as createComponent } from "./compiler_BmZrZZfK.mjs";
 import { b as createAstro, d as maybeRenderHead, i as Fragment, r as renderComponent, s as renderSlot, u as renderTemplate, v as unescapeHTML } from "./server_BtBKAhcd.mjs";
-import { t as $$ArchiveHeader } from "./ArchiveHeader_DTf8PFYS.mjs";
-import { t as $$Layout } from "./Layout_DFCs1B57.mjs";
+import { t as $$ArchiveHeader } from "./ArchiveHeader_DhYKBZhP.mjs";
+import { t as $$Layout } from "./Layout_CQSQkbFv.mjs";
 //#region src/layouts/TimelineLayout.astro
 var $$TimelineLayout = createComponent(($$result, $$props, $$slots) => {
 	return renderTemplate`${renderComponent($$result, "Layout", $$Layout, {}, { "default": ($$result) => renderTemplate`${maybeRenderHead($$result)}<div class="content-scroller">${renderComponent($$result, "ArchiveHeader", $$ArchiveHeader, {})}<div class="content-sizer">${renderSlot($$result, $$slots["default"])}</div></div>` })}`;
-}, "/home/evan/archive-47/src/layouts/TimelineLayout.astro", void 0);
+}, "C:/Users/fallone/archive-47/src/layouts/TimelineLayout.astro", void 0);
 //#endregion
 //#region src/components/AtomDisplayNode.astro
 createAstro("https://astro.build");
@@ -48,6 +48,6 @@ var $$AtomDisplayNode = createComponent(($$result, $$props, $$slots) => {
 	if (atom?.Display === "Minor") outputDisplay = minorDisplay;
 	if (atom?.Display === "Image") outputDisplay = imageDisplay;
 	return renderTemplate`${renderComponent($$result, "Fragment", Fragment, {}, { "default": ($$result) => renderTemplate`${unescapeHTML(outputDisplay)}` })}`;
-}, "/home/evan/archive-47/src/components/AtomDisplayNode.astro", void 0);
+}, "C:/Users/fallone/archive-47/src/components/AtomDisplayNode.astro", void 0);
 //#endregion
 export { $$TimelineLayout as n, $$AtomDisplayNode as t };

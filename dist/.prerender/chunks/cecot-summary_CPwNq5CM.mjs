@@ -8,8 +8,8 @@ var cecot_summary_exports = /* @__PURE__ */ __exportAll({
 });
 var $$CecotSummary = createComponent(($$result, $$props, $$slots) => {
 	return renderTemplate``;
-}, "/home/evan/archive-47/src/pages/cecot-summary.astro", void 0);
-var $$file = "/home/evan/archive-47/src/pages/cecot-summary.astro";
+}, "C:/Users/fallone/archive-47/src/pages/cecot-summary.astro", void 0);
+var $$file = "C:/Users/fallone/archive-47/src/pages/cecot-summary.astro";
 var $$url = "/cecot-summary.html";
 //#endregion
 //#region \0virtual:astro:page:src/pages/cecot-summary@_@astro

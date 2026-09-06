@@ -1,7 +1,8 @@
 import { n as __exportAll, t as createComponent } from "./compiler_BmZrZZfK.mjs";
 import { d as maybeRenderHead, p as addAttribute, r as renderComponent, u as renderTemplate } from "./server_BtBKAhcd.mjs";
-import { t as getVar } from "./ingest_70Yz-jOX.mjs";
-import { n as $$TimelineLayout, t as $$AtomDisplayNode } from "./AtomDisplayNode_BgVDmh8H.mjs";
+import { t as getVar } from "./ingest_Ckffx8tg.mjs";
+import { n as $$TimelineLayout, t as $$AtomDisplayNode } from "./AtomDisplayNode_BkbSibYO.mjs";
+import { Temporal } from "@js-temporal/polyfill";
 //#region src/pages/usps-interference-timeline.astro
 var usps_interference_timeline_exports = /* @__PURE__ */ __exportAll({
 	default: () => $$UspsInterferenceTimeline,
@@ -31,14 +32,14 @@ var $$UspsInterferenceTimeline = createComponent(async ($$result, $$props, $$slo
 		yEnd: 2
 	}];
 	let currentMonths = [{
-		month: months[inlineProps[0].Date.month],
+		month: months[inlineProps[0].Date.month - 1],
 		yIndex: 2
 	}];
 	let currentSpans = [];
 	let yIndex = 3;
 	inlineProps.forEach((atom) => {
 		const thisYear = atom.Date.year;
-		const thisMonth = months[atom.Date.month];
+		const thisMonth = months[atom.Date.month - 1];
 		if (thisYear !== currentYears[currentYears.length - 1].year) {
 			currentYears[currentYears.length - 1].yEnd = yIndex;
 			currentYears.push({
@@ -64,7 +65,7 @@ var $$UspsInterferenceTimeline = createComponent(async ($$result, $$props, $$slo
 			name: atom["Span Start"],
 			date: atom.Date,
 			yIndex,
-			yEnd: yIndex + 1
+			yEnd: false
 		});
 		if (atom?.["Span End"]) {
 			const endSpan = currentSpans.find((span) => span.name === atom["Span End"]);
@@ -77,6 +78,7 @@ var $$UspsInterferenceTimeline = createComponent(async ($$result, $$props, $$slo
 		yIndex++;
 	});
 	currentYears[currentYears.length - 1].yEnd = yIndex;
+	if (!currentSpans[currentSpans.length - 1].yEnd) currentSpans[currentSpans.length - 1].yEnd = currentNodes[currentNodes.length - 1].Index;
 	const spanTracks = [];
 	for (const span of currentSpans) {
 		let assigned = false;
@@ -116,8 +118,8 @@ var $$UspsInterferenceTimeline = createComponent(async ($$result, $$props, $$slo
         grid-column: 4 / 5;
         grid-row: ${atom.Index} / ${atom.Index + 1};
         --anim-delay: ${atom.Index * 90}ms`, "style")}>${renderComponent($$result, "AtomDisplayNode", $$AtomDisplayNode, { "atom": atom })}</div>`)}</div>` })}`;
-}, "/home/evan/archive-47/src/pages/usps-interference-timeline.astro", void 0);
-var $$file = "/home/evan/archive-47/src/pages/usps-interference-timeline.astro";
+}, "C:/Users/fallone/archive-47/src/pages/usps-interference-timeline.astro", void 0);
+var $$file = "C:/Users/fallone/archive-47/src/pages/usps-interference-timeline.astro";
 var $$url = "/usps-interference-timeline.html";
 //#endregion
 //#region \0virtual:astro:page:src/pages/usps-interference-timeline@_@astro
