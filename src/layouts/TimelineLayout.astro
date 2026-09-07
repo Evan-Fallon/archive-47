@@ -101,7 +101,7 @@ import Layout from '../layouts/Layout.astro';
         } 
     }
     .content-embed {
-        font-size: 13px;
+        font-size: 1em;
         padding: 8px 0 0 0;
     }
 }
@@ -307,6 +307,74 @@ import Layout from '../layouts/Layout.astro';
     border: 1px solid var(--border-basic);
     color: var(--text-color);
     z-index: 2
+}
+@media only screen and (max-width: 480px) {
+    h1 {
+        font-size: 2em;
+    }
+    .display-node {    
+        &.basic  {
+            font-size: 1.15em;
+            border-width: 0px;
+
+            paddng: 4px;
+            .content-embed {
+                font-size: 1em;
+            }
+        }
+        &.minor {
+            margin-left: 12px;
+        }
+    }
+    .content-button, .commentary-button { 
+        opacity: 1;
+        height: 100%;
+        width: 2rem;
+        justify-self: right;
+    }
+    .timeline-base {
+        grid-template-columns: auto 10px auto;
+        gap: 0 4px;
+        padding: 0px;
+    }
+    .timeline-cell:has(.display-node.image) {
+        margin: 0px;
+        width: 100%;
+    }
+    .timeline-cell.month {
+        grid-column: 2 / 4 !important;
+    }
+    .node-circles {
+        grid-column: 2 / 3 !important;
+        display: none; 
+    }
+    .timeline-line { 
+        grid-column: 2 / 3 !important;
+        display: none;
+    }
+    .timeline-cell.node {
+        grid-column: 2 / 5 !important;
+    }
+    .node-day-time {
+        grid-column: 1 / 2 !important;
+        display: flex; 
+        background: var(--primary-bg);
+        padding: 0 4px;
+        border-radius: 16px;
+        border-color: var(--border-basic);
+        border-width: 0px;
+        border-style: solid;
+        justify-self: left;
+        margin: auto;
+        height: 24px;
+        padding: 0 4px;
+        border-radius: 2px;
+        p {
+            padding: 0;
+            height: auto;
+            margin: auto;
+        }
+    }
 }
 
 @keyframes line-go-down {

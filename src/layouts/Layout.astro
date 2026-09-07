@@ -16,8 +16,8 @@
             }
             body {
                 --color-accent: hsl(27, 86%, 60%);
-                --primary-bg: hsl(0 0 3);
-                --secondary-bg: light-dark(hsl(0 0 85), hsl(0 0 6));
+                --primary-bg: light-dark(hsl(0 0 95), hsl(0 0 3));
+                --secondary-bg: light-dark(hsl(0 0 90), hsl(0 0 6));
                 --text-color: light-dark(hsl(0 0 30), hsl(0 0 50));
                 --text-color-important: light-dark(hsl(0 0 10), hsl(0 0 70));
                 --border-basic: light-dark(hsl(0 0 70), hsl(0 0 20));
@@ -52,12 +52,14 @@
                 overflow-y: scroll;
                 max-height: 100%;
                 height: 100%;
+                overflow-x: hidden;
             }
             .content-sizer {
                 display: grid;
                 height: fit-content;
-                grid-template-columns: 1fr 540px 540px 1fr;
+                grid-template-columns: auto minmax(1fr, 540px) minmax(1fr, 540px) auto;
                 color: var(--text-color);
+                
                 & > * {
                     grid-column: 2 / 4;
                 }
