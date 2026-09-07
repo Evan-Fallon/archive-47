@@ -347,7 +347,7 @@ import Layout from '../layouts/Layout.astro';
             grid-row: 1 / 2;
             grid-template-columns: subgrid;
             margin: 0;
-            z-index: 3;
+
             border: none !important;
             .name-link {
                 width: auto;
@@ -388,34 +388,27 @@ import Layout from '../layouts/Layout.astro';
     }
 
     .year {
-        font-size: 2.5rem;
+        font-size: 2.3rem;
         margin: 0;
         padding: 0;        
-        &:not(.spacer) > * {
-           
-           display: flex;
-           place-content: center;
-           top: 0%;
-           background: var(--secondary-bg);
-           width: 100%;
-           top: 0%;
-           z-index: 7;
-           height: 55px;
         }
-    }
     .timeline-range.year {
         display: flex;
         align-items: start;
         overflow-y: visible;
         height: 100%;
         position: relative;
+        pointer-events: none;
         div {
+            box-sizing: border-box;
             position: sticky;
             text-align: center;
-            height: 55px;
-            top: 0px;
+            height: 50px;
+            top: 40px;
             width: 100%;
             margin: 0px;
+            background: var(--secondary-bg);
+            z-index: 7;
             p {
                 margin: auto;
                 font-weight: 600;
@@ -423,7 +416,7 @@ import Layout from '../layouts/Layout.astro';
         }
     }
     .timeline-cell.year {
-        height: 55px;
+        height: 50px;
     }
     
     .timeline-cell.month {
@@ -438,11 +431,12 @@ import Layout from '../layouts/Layout.astro';
         position: relative;
         overflow-y: visible;
         height: 100%;
+        pointer-events: none;
         &:not(.spacer) p {
              height: min-content;
            background: var(--border-basic);    
            position: sticky;
-           top: 55px;
+           top: 90px;
            z-index: 6;
         }
     }
@@ -510,7 +504,11 @@ import Layout from '../layouts/Layout.astro';
         }
     }
     .web-header.web-header {
+        height: 40px;
+        box-sizing: border-box;
         animation-name: none;
+        top: 0px;
+        background: var(--primary-bg);
     }
 }
 
