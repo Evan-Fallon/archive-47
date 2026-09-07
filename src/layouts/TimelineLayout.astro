@@ -31,6 +31,10 @@ import Layout from '../layouts/Layout.astro';
         transition-property: border-color;
         transition-duration: 800ms; 
         color: var(--text-color);
+        .name-link {
+            display: flex;
+            align-items: center;
+        }
         a {
             color: var(--text-color-important)
         }
@@ -41,8 +45,8 @@ import Layout from '../layouts/Layout.astro';
     }
     &.minor {
         margin: 12px 0;
-        .name-link {
-            display: flex;
+        display: flex;
+        .name-link {   
             gap: .5em;
             align-items: center;
             height: fit-content;
@@ -53,6 +57,10 @@ import Layout from '../layouts/Layout.astro';
                 text-box-trim: trim-both;
                 text-box-edge: ex alphabetic;
             }
+        }
+        .commentary-button, .content-button {
+            margin-left: auto;
+            margin-right: 4px;
         }
     }
     &.image {
@@ -105,21 +113,33 @@ import Layout from '../layouts/Layout.astro';
         padding: 8px 0 0 0;
     }
 }
+.popover-buttons {
+    display: flex;
+    margin-left: 32px;
+}
 .commentary-button, .content-button {
     opacity: 0;
-    background: var(--primary-bg);
+    border: none;
     display: inline flex;
-    color: var(--border-hover);
-    border: 1px solid hsl(from var(--border-basic) h s l);
-    border-radius: 2px;
-    height: 1rem;
-    font-size: .8em;
     font-weight: 1000;
     text-align: center;
     place-content: center;
     place-items: center;
     transition-property: opacity;
     transition-duration: 250ms;
+    flex-shrink: 0;
+    
+    background: var(--border-basic);
+    color: var(--primary-bg);
+    font-size: 1.3rem;
+    overflow: hidden;
+    height: 28px;
+    width: 28px;
+    border-radius: 64px;
+    &.commentary-button {
+        background: var(--color-accent);
+        color: var(--primary-bg);
+    }
 }
 
 .node-commentary-popover, .node-content-popover {
@@ -250,13 +270,8 @@ import Layout from '../layouts/Layout.astro';
 }
 .node-day-time {
     font-size: 0.8rem;
-    color: hsl(0 0 30);
+    color: var(--text-color);
     place-self: center right;
-    animation-name: opacity-reveal;
-    animation-duration: 500ms;
-    animation-timing-function: ease-in;
-    animation-fill-mode: both;
-    animation-delay: var(--anim-delay);
 }
 #span-column {
     display: grid;
@@ -316,8 +331,10 @@ import Layout from '../layouts/Layout.astro';
         &.basic  {
             font-size: 1.15em;
             border-width: 0px;
-
             paddng: 4px;
+            &:hover {
+                border-width: 0px;
+            }
             .content-embed {
                 font-size: 1em;
             }
@@ -326,11 +343,12 @@ import Layout from '../layouts/Layout.astro';
             margin-left: 12px;
         }
     }
+    .popover-buttons {
+        margin-left: auto;
+    }
     .content-button, .commentary-button { 
         opacity: 1;
-        height: 100%;
-        width: 2rem;
-        justify-self: right;
+
     }
     .timeline-base {
         grid-template-columns: auto 10px auto;
@@ -369,6 +387,7 @@ import Layout from '../layouts/Layout.astro';
         height: 24px;
         padding: 0 4px;
         border-radius: 2px;
+        z-index: 3;
         p {
             padding: 0;
             height: auto;

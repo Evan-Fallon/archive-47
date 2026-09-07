@@ -29,7 +29,10 @@ let outputDisplay = basicDisplay
 const minorDisplay = `
 <div class="display-node minor">
     <div class="name-link">
-    <a href=${atom.URL}>${atom.Name}</a> ${PriorLine} ${atom?.Commentary ? Commentary : ''}
+    <a href=${atom.URL}>${atom.Name}</a> 
+    </div>
+    <div class="popover-buttons">
+        ${PriorLine} ${atom?.Commentary ? Commentary : ''}
     </div>
 </div>`
 
