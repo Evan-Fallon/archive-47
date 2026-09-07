@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,5 +12,17 @@ export default defineConfig({
         // Set to 0 to completely disable inlining and force separate files
         assetsInlineLimit: 10240, 
         },
+    },
+    fonts: [{
+    provider: fontProviders.local(),
+    name: "Noto Sans",
+    cssVariable: "--font-noto-sans",
+    options: {
+      variants: [{
+        src: ['./src/assets/fonts/NotoSans/NotoSans-Regular.ttf'],
+        weight: 'normal',
+        style: 'normal'
+      }]
     }
+  }]
 })

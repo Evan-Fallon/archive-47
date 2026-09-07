@@ -40,7 +40,7 @@ const imageDisplay = `
 <div class="display-node image">
         <img src="images/${atom["Display Image"]}"/>
     <div class="name-link">
-       <a href=${atom.URL}>${atom.OrdinalDay} ${atom.DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""} - ${atom.Name}</a> ${atom?.Commentary ? Commentary : ''}
+       <a href=${atom.URL}><span class="image-node-day">${atom.OrdinalDay} ${atom.DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""} - </span>${atom.Name}</a> ${atom?.Commentary ? Commentary : ''}
     </div>  
 </div>`
 
