@@ -89,24 +89,41 @@ const numberedSpans = spanTracks.map((track, trackInd) => {
         </div>
         )})}
     </div>
-    {currentYears.map(year => (
-      <div class="timeline-cell year" 
+    {currentYears.map((year, yearsInd) => (
+      <div class="timeline-cell year spacer"
       style={{
         gridColumn: "1 / 5",
         gridRow: `${year.yIndex} / ${year.yIndex + 1}`,
       }}>
-        <p>{year.year}</p>
-        <hr/>
+      <div><p>{year.year}</p></div>
+      <hr/>
+      </div>
+      <div class="timeline-range year" 
+      style={{
+        gridColumn: "1 / 5",
+        gridRow: `${year.yIndex} / ${currentYears[Math.min(yearsInd + 1, currentYears.length - 1)].yIndex + 1}`,
+      }}>
+        <div><p>{year.year}</p></div>
+        
       </div>
       ))}
-  {currentMonths.map(month => (
+  {currentMonths.map((month, monthInd) => (
+    <div class="timeline-cell month spacer"
+      style={{
+        gridColumn: "1 / 5",
+        gridRow: `${month.yIndex} / ${month.yIndex + 1}`,
+      }}>
+        <p>
+      {month.month} 
+      </p>
+      </div>
       <div class="timeline-cell month" 
       style={`
         --anim-delay: ${month.yIndex * 75}ms;
         grid-column: 2 / 3;
-        grid-row: ${month.yIndex} / ${month.yIndex + 1};
+        grid-row: ${month.yIndex} / ${currentMonths[Math.min(monthInd + 1, currentMonths.length - 1)].yIndex};
       `}>
-        <p>{month.month}</p>
+        <p>{month.month} </p>
       </div>  
       ))}
 
