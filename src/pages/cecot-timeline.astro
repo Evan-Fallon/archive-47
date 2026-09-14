@@ -1,11 +1,13 @@
 ---
-import { getVar } from '../utils/ingest';
+import { dataQuery } from '../utils/dataQuery';
 import TimelineLayout from '../layouts/TimelineLayout.astro';
-import AtomDisplayNode from '../components/AtomDisplayNode.astro'
+import NodeBasic from '../components/DisplayNodes/NodeBasic.astro';
+import NodeMinor  from '../components/DisplayNodes/NodeMinor.astro';
 import { Temporal } from '@js-temporal/polyfill';
+import { dynamicContentImporter } from '../utils/dynamicContentImporter'
 
-
-const pages = await getVar()
+const pages = await dataQuery()
+dynamicContentImporter(pages)
 const inlineProps = pages
   .flatMap(page => page.inlineProperties)
   .filter(atom => atom.raw.toLowerCase().includes("the cecot lie"))
@@ -152,7 +154,7 @@ const numberedSpans = spanTracks.map((track, trackInd) => {
         grid-row: ${atom.Index} / ${atom.Index + 1};
         --anim-delay: ${atom.Index * 90}ms`
       }>
-        <AtomDisplayNode atom={atom}/> 
+        <NodeBasic atom={atom}/> 
       </div>  
       ))}
 

@@ -29,7 +29,7 @@ export interface VaultNote {
   frontmatter: Record<string, any>;
   inlineProperties: InlineProperty[];
 }
-export async function getVar(): Promise<VaultNote[]> {
+export async function dataQuery(): Promise<VaultNote[]> {
     const files = await glob('**/*.md', { cwd: vaultpath, absolute: true });
     const mapped = files.map(file => {
         const rawfile = fs.readFileSync(file, 'utf8');

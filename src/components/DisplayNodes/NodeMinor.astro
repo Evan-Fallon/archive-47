@@ -1,0 +1,63 @@
+---
+
+const { atom } = Astro.props
+
+let Commentary 
+
+if (atom.Commentary) {
+Commentary = `<button class="commentary-button" popovertarget="commentary-${atom.Index}">?</button>
+<div popover id="commentary-${atom.Index}" class="node-commentary-popover">
+    ${atom?.Commentary}
+</div>`
+}
+
+let PriorLine = `
+<button class="content-button" popovertarget="content-${atom.Index}">"</button>
+<div popover id="content-${atom.Index}" class="node-content-popover">
+    ${atom?.PriorLine}
+</div>
+`
+
+---
+<style>
+.display-node {
+    margin: 16px 0;
+    --title-padding: 16px;
+    box-sizing: border-box;
+    .name-link {
+        a {
+            font-weight: bold;
+            font-size: 1.1em;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+    }
+    &.minor {
+        margin: 12px 0;
+        display: flex;
+        align-items: center;
+        .name-link {   
+            gap: .5em;
+            align-items: center;
+            height: fit-content;
+            width: fit-content;
+            a { 
+                color: var(--text-color-important);
+                font-size: 1em;
+                text-box-trim: trim-both;
+                text-box-edge: ex alphabetic;
+            }
+        }
+
+    }
+}
+</style>
+<div class="display-node minor">
+    <div class="name-link">
+    <a href={atom.URL}>{atom.Name}</a> 
+    </div>
+    <div class="popover-buttons">
+        <Fragment set:html={PriorLine} /> 
+        <Fragment set:html={Commentary}/>
+    </div>
+</div>

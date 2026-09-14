@@ -1,0 +1,52 @@
+---
+const { atom } = Astro.props
+
+let Commentary = `
+<button class="commentary-button" popovertarget="commentary-${atom.Index}"> ? </button>
+<div popover id="commentary-${atom.Index}" class="node-commentary-popover">
+    ${atom?.Commentary}
+</div>
+`
+---
+<style>
+.display-node {
+    margin: 16px 0;
+    --title-padding: 16px;
+    box-sizing: border-box;
+    .name-link {
+        a {
+            font-weight: bold;
+            font-size: 1.1em;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+    }
+    &.basic {
+        padding: var(--title-padding);
+        border: 1px solid var(--border-basic);
+        border-radius: 6px;
+        background: var(--primary-bg);
+        transition-property: border-color;
+        transition-duration: 800ms; 
+        color: var(--text-color);
+        .name-link {
+            display: flex;
+            align-items: center;
+        }
+        a {
+            color: var(--text-color-important)
+        }
+        &:hover {
+            border: 1px solid var(--border-hover);
+            transition-duration: 50ms;
+        } 
+    }
+}
+</style>
+<div class="display-node basic">
+
+    <div class="name-link">
+    <a href=${atom.URL}>{atom.Name}</a> {atom?.Commentary ? <Fragment set:html={Commentary}/> : ''}
+    </div>
+    <div class="content-embed">{atom.PriorLine}</div>
+</div>
