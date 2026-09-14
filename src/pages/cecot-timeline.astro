@@ -4,10 +4,9 @@ import TimelineLayout from '../layouts/TimelineLayout.astro';
 import NodeBasic from '../components/DisplayNodes/NodeBasic.astro';
 import NodeMinor  from '../components/DisplayNodes/NodeMinor.astro';
 import { Temporal } from '@js-temporal/polyfill';
-import { dynamicContentImporter } from '../utils/dynamicContentImporter'
 
 const pages = await dataQuery()
-dynamicContentImporter(pages)
+
 const inlineProps = pages
   .flatMap(page => page.inlineProperties)
   .filter(atom => atom.raw.toLowerCase().includes("the cecot lie"))

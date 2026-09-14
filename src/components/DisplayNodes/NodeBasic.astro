@@ -42,6 +42,24 @@ let Commentary = `
         } 
     }
 }
+
+@media only screen and (max-width: 640px) {
+.display-node {    
+        &.basic  {
+            grid-column: 2 / 5; 
+            font-size: 1.15em;
+            border-width: 0px;
+            paddng: 4px;   
+            &:hover {
+                border-width: 0px;
+            }
+            .content-embed {
+                font-size: 1em;
+            }
+        }
+    }  
+}
+
 </style>
 <div class="display-node basic">
 
