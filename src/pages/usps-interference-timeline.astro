@@ -1,12 +1,12 @@
 ---
-import { getVar } from '../utils/dataQuery';
+import { dataQuery } from '../utils/dataQuery';
 import AtomDisplayNode from '../components/AtomDisplayNode.astro'
 import TimelineLayout from '../layouts/TimelineLayout.astro';
 import { Temporal } from '@js-temporal/polyfill';
 
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-const pages = await getVar()
+const pages = await dataQuery()
 const inlineProps = pages
   .flatMap(page => page.inlineProperties)
   .filter(atom => atom.raw.toLowerCase().includes("2026 usps election interference"))

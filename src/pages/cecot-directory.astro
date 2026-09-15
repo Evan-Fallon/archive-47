@@ -1,8 +1,8 @@
 ---
-import { getVar } from '../utils/dataQuery';
+import { dataQuery } from '../utils/dataQuery';
 import SubpageLayout from '../layouts/SubpageLayout.astro';
 
-const pages = await getVar()
+const pages = await dataQuery()
 const filteredPages = pages
     .filter(atom => atom.inlineProperties.some(prop => prop.raw.toLowerCase().includes("the cecot lie")))
 const classes = [...new Set (filteredPages
