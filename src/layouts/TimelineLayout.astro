@@ -10,6 +10,8 @@ import Layout from '../layouts/Layout.astro';
     gap: 0px;
     background: var(--secondary-bg);
     padding: 0 2rem;
+    width: 100%;
+    max-width: 100%;
 }
 .display-node {
 
@@ -296,6 +298,8 @@ import Layout from '../layouts/Layout.astro';
     h1 {
         font-size: 2em;
     }
+    .display-node {    
+
         &.image {
             grid-column: 1 / 5; 
             grid-row: 1 / 2;
@@ -335,6 +339,9 @@ import Layout from '../layouts/Layout.astro';
         grid-template-columns: auto 10px auto;
         gap: 0 4px;
         padding: 0px;
+        max-width: 100%;
+        width: 100%;
+        overflow: clip;
     }
     .timeline-cell:has(.display-node.image) {
         margin: 0px;
@@ -361,6 +368,7 @@ import Layout from '../layouts/Layout.astro';
             top: 40px;
             width: 100%;
             margin: 0px;
+            
             background: var(--secondary-bg);
             z-index: 7;
             p {
@@ -419,6 +427,7 @@ import Layout from '../layouts/Layout.astro';
     .timeline-cell.node {
         grid-column: 2 / 5 !important;
         margin: 0;
+        width: 100%;
     }
     .timeline-cell.node:has(.basic), .timeline-cell.node:has(.image) {
         grid-column: 1 / 5 !important;
