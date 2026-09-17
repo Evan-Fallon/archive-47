@@ -9,7 +9,7 @@ import Layout from '../layouts/Layout.astro';
     grid-template-columns: min-content auto 40px auto;
     gap: 0px;
     background: var(--secondary-bg);
-    padding: 0 2rem;
+    padding: 0 64px;
     width: 100%;
     max-width: 100%;
 }
@@ -172,8 +172,8 @@ import Layout from '../layouts/Layout.astro';
         font-size: 3rem;
         text-align: center;
         place-items: center;
-        margin: 0 -2rem;
-        width: calc(100% + 4rem);
+        margin: 0;
+        width: calc(100%);
     } 
     hr {
         width: 100%;
@@ -182,17 +182,25 @@ import Layout from '../layouts/Layout.astro';
         margin: 0px;
     }
     &.month {
-        text-align: right;
+        text-align: left;
         font-weight: 600;
         font-size: 1.1rem;
         color: var(--text-color);
+        z-index: 2;
         animation-name: opacity-reveal;
         animation-duration: 800ms;
         animation-timing-function: ease-in;
         animation-fill-mode: both;
         animation-delay: var(--anim-delay);
         margin-top: 24px;
+        p { 
+            background: hsl(from var(--secondary-bg) h s l / .5);
+            width: fit-content;
+        }
     }
+}
+.timeline-range {
+    display: none;
 }
 .timeline-line {
     background: var(--border-basic);
@@ -341,7 +349,7 @@ import Layout from '../layouts/Layout.astro';
         padding: 0px;
         max-width: 100%;
         width: 100%;
-        overflow: clip;
+
     }
     .timeline-cell:has(.display-node.image) {
         margin: 0px;
@@ -381,7 +389,7 @@ import Layout from '../layouts/Layout.astro';
         height: 50px;
     }
     
-    .timeline-cell.month {
+    .timeline-cell.month, .timeline-range.month {
         grid-column: 1 / 5 !important;
         align-items: start;
         margin: 0;
@@ -394,12 +402,23 @@ import Layout from '../layouts/Layout.astro';
         overflow-y: visible;
         height: 100%;
         pointer-events: none;
-        &:not(.spacer) p {
-             height: min-content;
-           background: var(--border-basic);    
-           position: sticky;
-           top: 90px;
-           z-index: 6;
+
+    }
+    .timeline-range.month {
+        display: flex;
+        align-items: start;
+        overflow-y: visible;
+        height: 100%;
+        position: relative;
+        pointer-events: none;
+        p {
+            height: min-content;
+            background: var(--border-basic);    
+            position: sticky;
+            top: 90px;
+            width: 100%;
+            z-index: 6;
+            margin: 0
         }
     }
     .node-circles {

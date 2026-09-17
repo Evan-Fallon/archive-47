@@ -35,7 +35,7 @@
             }
             h1 {
             font-weight: 1000;
-            font-size: 4rem;
+            font-size: calc(1rem + 2cqi);
             text-align: center;
             color: var(--text-color-important);
             }
@@ -64,11 +64,45 @@
                 grid-template-columns: auto minmax(auto, 540px) minmax(auto, 540px) auto;
                 color: var(--text-color);
                 max-width: 100%;
-                
                 & > * {
                     grid-column: 2 / 4;
                 }
             }
+
+            .link-holder {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+  padding: 64px;
+}
+.view-link {
+  height: auto;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  box-sizing: border-box;
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 1px solid var(--border-basic);
+  
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text-normal);
+  padding: 2rem;
+  font-weight: 600;
+  font-size: 1.2rem;
+  vertical-align: text-top;
+  transition-property: border, background-color, ;
+  transition-duration: 0.8s, 2s, 2s;
+  background: var(--secondary-bg);
+  transition-timing-function: ease-in-out, ease-in-out, ease-out;
+  &:hover {
+    border: 1px solid hsl(0 0 25);
+    transition-duration: 0.2s, .5s;
+  }
+}
             
         </style>
     </head>
