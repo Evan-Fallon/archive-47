@@ -1,3 +1,6 @@
+---
+import ArchiveHeader from '../components/ArchiveHeader.astro';
+---
 <!doctype html>
 <html lang="en">
 	<head>
@@ -107,6 +110,11 @@
         </style>
     </head>
     <body>
-        <slot/>
+        <div class="content-scroller">
+            <ArchiveHeader/>
+            <div class="content-sizer">
+                <slot/>
+            </div>
+        </div>
     </body>
 </html>
