@@ -9,81 +9,13 @@ import Layout from '../layouts/Layout.astro';
     grid-template-columns: min-content auto 40px auto;
     gap: 0px;
     background: var(--secondary-bg);
-    padding: 0 64px;
+
     width: 100%;
     max-width: 100%;
+    min-width: 0%;
 }
-.display-node {
 
-    &.minor {
-        margin: 12px 0;
-        display: flex;
-        align-items: center;
-        .name-link {   
-            gap: .5em;
-            align-items: center;
-            height: fit-content;
-            width: fit-content;
-            a { 
-                color: var(--text-color-important);
-                font-size: 1em;
-                text-box-trim: trim-both;
-                text-box-edge: ex alphabetic;
-            }
-        }
 
-    }
-    &.image {
-        display: grid;
-        max-height: 225px;
-        border: 1px solid var(--border-basic);
-        border-radius: 6px;
-        overflow: hidden;
-        grid-template-areas: "pile";
-        box-sizing: border-box;
-        transition-property: border-color;
-        transition-duration: 800ms; 
-        > * {
-            grid-area: pile;
-        }
-        .name-link {
-            display: flex;
-            gap: .5em;
-            align-items: center;
-            height: fit-content;
-            width: fit-content;
-            background: hsl(from var(--primary-bg) h s l / .9);
-            padding: 8px 24px;
-            border-radius: 0 0 12px 0;
-            z-index: 1;
-            
-            a {
-                text-box-trim: trim-both;
-                text-box-edge: cap alphabetic;
-                font-weight: bold;
-                font-size: 1.1em;
-                text-decoration: none;
-                color: var(--text-color-important);
-            }
-        }
-
-        img {
-            width: 100%;
-            height: 100%;
-            min-height: 200px;
-            object-fit: cover;
-            object-position: center;
-        }
-        &:hover {
-            border: 1px solid hsl(0 0 30);
-            transition-duration: 50ms;
-        } 
-    }
-    .content-embed {
-        font-size: 1em;
-        padding: 8px 0 0 0;
-    }
-}
 .popover-buttons {
     display: flex;
     gap: 8px;
@@ -139,23 +71,20 @@ import Layout from '../layouts/Layout.astro';
 }
 
 .timeline-cell {
+    
     display: grid;
     align-items: center;
     grid-column: 2 / 3;
     width: 100%;
-    &.node {
-        transform-origin: left;
-        animation-name: node-reveal;
-        animation-duration: 1000ms;
-        animation-timing-function: ease-out;
-        animation-fill-mode: both;
-        animation-delay: var(--anim-delay);
+    box-sizing: border-box;
+    &:has(.basic) {
+        padding-right: 16px;
     }
     &:has(.display-node.image) {
         align-items: inherit;
         grid-column: 1 / 5 !important;
-        margin: 0 -2rem;
-        width: calc(100% + 4rem);
+        margin: 0 - 0rem;
+        width: calc(100% + 0rem);
         .display-node {
             border-width: 1px 0 1px 0;
             border-style: solid;
@@ -202,6 +131,7 @@ import Layout from '../layouts/Layout.astro';
 .timeline-range {
     display: none;
 }
+
 .timeline-line {
     background: var(--border-basic);
     width: 1px;
@@ -306,35 +236,7 @@ import Layout from '../layouts/Layout.astro';
     h1 {
         font-size: 2em;
     }
-    .display-node {    
 
-        &.image {
-            grid-column: 1 / 5; 
-            grid-row: 1 / 2;
-            grid-template-columns: subgrid;
-            margin: 0;
-
-            border: none !important;
-            .name-link {
-                width: auto;
-                grid-column: 2 / 5;
-                grid-row: 1 / 2;
-                margin: 0 0 0 -12px;
-                border-radius: 0;
-                padding: 8px 8px 12px 28px;
-                border-radius: 0 0 0 8px;
-                .commentary-button {
-                    margin-left: auto
-                }
-            }
-            img {
-                grid-column: 1 / 5;
-            }
-            .image-node-day {
-                display: none;
-            }
-        }
-    }
     .popover-buttons {
         margin-left: auto;
         padding-left: 8px;
@@ -388,7 +290,9 @@ import Layout from '../layouts/Layout.astro';
     .timeline-cell.year {
         height: 50px;
     }
-    
+    .timeline-cell.month {
+        opacity: 0
+    }
     .timeline-cell.month, .timeline-range.month {
         grid-column: 1 / 5 !important;
         align-items: start;
@@ -491,15 +395,6 @@ import Layout from '../layouts/Layout.astro';
         animation-name: none;
         top: 0px;
         background: var(--primary-bg);
-    }
-}
-
-@keyframes line-go-down {
-    from {
-        max-height: 0%;
-    }
-    to {
-        max-height: 100%;
     }
 }
 

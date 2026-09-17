@@ -1,0 +1,102 @@
+---
+const { atom } = Astro.props
+
+let Commentary = `
+<button class="commentary-button" popovertarget="commentary-${atom.Index}"> ? </button>
+<div popover id="commentary-${atom.Index}" class="node-commentary-popover">
+    ${atom?.Commentary}
+</div>
+`
+
+---
+<style>
+.timeline-cell.node img {
+    display: none !important;
+}
+.display-node.image {
+        display: grid;
+        max-height: 225px;
+        border: 1px solid var(--border-basic);
+        border-radius: 6px;
+        overflow: hidden;
+        grid-template-areas: "pile";
+        box-sizing: border-box;
+        transition-property: border-color;
+        transition-duration: 800ms; 
+        > * {
+            grid-area: pile;
+        }
+        .name-link {
+            display: flex;
+            gap: .5em;
+            align-items: center;
+            height: fit-content;
+            width: fit-content;
+            background: hsl(from var(--primary-bg) h s l / .9);
+            padding: 8px 24px;
+            border-radius: 0 0 12px 0;
+            z-index: 1;
+            
+            a {
+                text-box-trim: trim-both;
+                text-box-edge: cap alphabetic;
+                font-weight: bold;
+                font-size: 1.1em;
+                text-decoration: none;
+                color: var(--text-color-important);
+            }
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            min-height: 200px;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+    .content-embed {
+        font-size: 1em;
+        padding: 8px 0 0 0;
+    }
+
+
+@media only screen and (max-width: 640px) {
+.display-node.image {
+            grid-column: 1 / 5; 
+            grid-row: 1 / 2;
+            grid-template-columns: subgrid;
+            margin: 0;
+            border: none !important;
+            
+            .name-link {
+                width: auto;
+                grid-column: 2 / 5;
+                grid-row: 1 / 2;
+                margin: 0 0 0 -12px;
+                border-radius: 0;
+                padding: 8px 8px 12px 28px;
+                border-radius: 0 0 0 8px;
+                .commentary-button {
+                    margin-left: auto
+                }
+            }
+            img {
+                grid-column: 1 / 5 !important;
+                width: 100%;
+            }
+            .image-node-day {
+                display: none;
+            }
+        }
+    }
+
+
+
+</style>
+<div class="display-node image">
+        <img src={`images/${atom["Display Image"]}`}/>
+    <div class="name-link">
+       <a href=${atom.URL}><span class="image-node-day">{atom.OrdinalDay} {atom.DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""} - </span>{atom.Name}</a> {atom?.Commentary ? <Fragment set:html={Commentary}/> : ''}
+    </div>  
+</div>`

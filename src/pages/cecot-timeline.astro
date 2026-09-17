@@ -3,6 +3,7 @@ import { dataQuery } from '../utils/dataQuery';
 import TimelineLayout from '../layouts/TimelineLayout.astro';
 import NodeBasic from '../components/DisplayNodes/NodeBasic.astro';
 import NodeMinor  from '../components/DisplayNodes/NodeMinor.astro';
+import AtomDisplayNode from '../components/AtomDisplayNode.astro';
 import { Temporal } from '@js-temporal/polyfill';
 
 const pages = await dataQuery()
@@ -153,7 +154,7 @@ const numberedSpans = spanTracks.map((track, trackInd) => {
         grid-row: ${atom.Index} / ${atom.Index + 1};
         --anim-delay: ${atom.Index * 90}ms`
       }>
-        <NodeBasic atom={atom}/> 
+        <AtomDisplayNode atom={atom}/> 
       </div>  
       ))}
 
