@@ -3,14 +3,17 @@ const { atom } = Astro.props
 import NodeBasic from "./DisplayNodes/NodeBasic.astro"
 import NodeMinor from "./DisplayNodes/NodeMinor.astro"
 import NodeImage from "./DisplayNodes/NodeImage.astro"
+import NodeTwitter from "./DisplayNodes/NodeTwitter.astro"
+
 
 let NodeComponent = NodeBasic
 if (atom?.Display === "Minor") {
     NodeComponent = NodeMinor
 } else if (atom?.Display === "Image") {
     NodeComponent = NodeImage
+} else if (atom?.Display === "Twitter") {
+    NodeComponent = NodeTwitter
 }
-
 
 
 

@@ -1,6 +1,7 @@
 import matter from 'gray-matter'
 import { Temporal } from '@js-temporal/polyfill'
 import { propertyParser } from './propertyParser';
+import { extractContentSection } from './extractContentSection';
 
 export interface frontmatter {
     [key: string]: any;
@@ -24,9 +25,13 @@ export interface VaultNote {
   name: string;
   frontmatter: Record<string, any>;
   inlineProperties: InlineProperty[];
+  content?: string;
 }
 
 export function atomizeMarkdownFile(content: string, fileName: string): VaultNote {
+
+/* CONTENT */
+    const contentSection = extractContentSection(content)
 
 /* FRONTMATTER */
     let frontmatter: frontmatter = {}
@@ -58,6 +63,9 @@ export function atomizeMarkdownFile(content: string, fileName: string): VaultNot
             })
         }
         thisInline.URL = (frontmatter as Record<string, any>)?.URL;
+        if (thisInline.Display === "Twitter") {
+            thisInline.Content = contentSection
+        }
         inlineProperties.push(thisInline)
     }
     
@@ -67,5 +75,6 @@ export function atomizeMarkdownFile(content: string, fileName: string): VaultNot
         name: fileName,
         frontmatter: frontmatter,
         inlineProperties: inlineProperties,
+        content: contentSection
     }
 }

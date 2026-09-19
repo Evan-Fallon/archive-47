@@ -1,16 +1,16 @@
 ---
-import { dataQuery } from '../utils/inlineQuery';
-import SubpageLayout from '../layouts/SubpageLayout.astro';
+import { vaultQuery } from '../utils/vaultQuery';
+import Layout from '../layouts/Layout.astro';
 
-const pages = await dataQuery()
+const pages = await vaultQuery()
 const filteredPages = pages
-    .filter(atom => atom.inlineProperties.some(prop => prop.raw.toLowerCase().includes("the cecot lie")))
+    .filter(page => page.inlineProperties.some(property => property.Series === "the cecot lie"))
 const classes = [...new Set (filteredPages
     .flatMap(page => page.frontmatter?.Class?.[0] || [])
     
 )]
 ---
-<SubpageLayout>
+<Layout>
 <style is:global> 
 :root {
   interpolate-size: allow-keywords;
@@ -51,7 +51,7 @@ details {
         <details class="class-button">
             <summary>{className}</summary>
             <ul>
-                {filteredPages
+                {pages
                     .filter(page => page.frontmatter?.Class?.[0] === className)
                     .map(page => {
                         return (
@@ -63,4 +63,4 @@ details {
     )
 })}
 </div>
-</SubpageLayout>
+</Layout>

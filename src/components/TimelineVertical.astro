@@ -231,7 +231,7 @@ const { timeline } = Astro.props
 
 
 
-@media only screen and (max-width: var(--mobile-width)) {
+@media only screen and (max-width: 640px) {
     
     h1 {
         font-size: 2em;
@@ -289,9 +289,10 @@ const { timeline } = Astro.props
     }
     .timeline-cell.year {
         height: 50px;
+        opacity: 0;
     }
     .timeline-cell.month {
-        opacity: 0
+        opacity: 0;
     }
     .timeline-cell.month, .timeline-range.month {
         grid-column: 1 / 5 !important;

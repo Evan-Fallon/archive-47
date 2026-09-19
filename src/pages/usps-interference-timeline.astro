@@ -1,11 +1,17 @@
 ---
-import { inlineQuery } from '../utils/inlineQuery';
+import { vaultQuery } from '../utils/vaultQuery';
 import Layout from '../layouts/Layout.astro';
 import { queryToTimelineLists } from '../utils/queryToTimelineList';
 import  TimelineVertical from '../components/TimelineVertical.astro';
+import { Temporal } from '@js-temporal/polyfill';
 
-const inlineProps = await inlineQuery("2026 usps election interference")
-const timeline = queryToTimelineLists(inlineProps)
+
+const queryPromise = await vaultQuery()
+const inlineEvents = queryPromise
+  .flatMap(note => note.inlineProperties)
+  .filter(inline => inline.Series?.toLowerCase().includes("2026 usps election interference".toLowerCase()))
+  .sort((a, b) => Temporal.PlainDateTime.compare(a.Date, b.Date))
+const timeline = queryToTimelineLists(inlineEvents)
 
 
 
