@@ -25,11 +25,10 @@ output = output.replace(calloutRegex, (_match: string, type: string, body: strin
         return `<blockquote class="${type}">\n${parsedInner.trim()}\n</blockquote>\n\n`;
   });
 
-  console.log(output)
 ---
 <style>
 .display-node.twitter {
-    --twitter-border: rgb(47, 51, 54);
+    
     margin: 16px 0;
     
     transition-property: border-color;
