@@ -70,7 +70,6 @@ const { timeline } = Astro.props
 }
 
 .timeline-cell {
-    
     display: grid;
     align-items: center;
     grid-column: 2 / 3;
@@ -110,7 +109,8 @@ const { timeline } = Astro.props
         margin: 0px;
     }
     &.month {
-        text-align: left;
+        width: 100%;
+        text-align: right;
         font-weight: 600;
         font-size: 1.1rem;
         color: var(--text-color);
@@ -123,7 +123,7 @@ const { timeline } = Astro.props
         margin-top: 24px;
         p { 
             background: hsl(from var(--secondary-bg) h s l / .5);
-            width: fit-content;
+            width: 100%;
         }
     }
 }
@@ -177,6 +177,7 @@ const { timeline } = Astro.props
     place-self: center right;
 }
 #span-column {
+    padding-left: 8px;
     display: grid;
     width: auto;
     height: 100%;
@@ -192,11 +193,11 @@ const { timeline } = Astro.props
     margin: -48px auto auto 0;
     background: light-dark(
         hsl(from var(--border-basic) h s l / .3),
-        hsl(from var(--border-basic) h s l / .1)
+        hsl(from var(--border-basic) h s l / .2)
     );
     border-color:  light-dark(
         hsl(from var(--border-basic) h s l / 1),
-        hsl(from var(--border-basic) h s l / .4)
+        hsl(from var(--border-basic) h s l / .5)
     );
     border-width: 0 1px 0 1px;
     border-style: solid;
@@ -230,7 +231,7 @@ const { timeline } = Astro.props
 
 
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: var(--mobile-width)) {
     
     h1 {
         font-size: 2em;
@@ -388,13 +389,7 @@ const { timeline } = Astro.props
             background: var(--secondary-bg);
         }
     }
-    .web-header.web-header {
-        height: 40px;
-        box-sizing: border-box;
-        animation-name: none;
-        top: 0px;
-        background: var(--primary-bg);
-    }
+
 }
 
 </style>
@@ -436,7 +431,7 @@ const { timeline } = Astro.props
   {timeline.Months.map((month: { yIndex: number; month: unknown }, monthInd: number) => (
     <div class="timeline-cell month spacer"
       style={{
-        gridColumn: "1 / 5",
+        gridColumn: "1 / 3",
         gridRow: `${month.yIndex} / ${month.yIndex + 1}`,
       }}>
         <p>

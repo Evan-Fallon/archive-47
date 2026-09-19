@@ -26,6 +26,7 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
                 --text-color-important: light-dark(hsl(0 0 10), hsl(0 0 70));
                 --border-basic: light-dark(hsl(0 0 70), hsl(0 0 20));
                 --border-hover: light-dark(hsl(0 0 50), hsl(0 0 30));
+                --mobile-width: 640px;
                 background: var(--primary-bg);
                 margin: 0;
                 max-width: 100%;
@@ -106,7 +107,15 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
                 transition-duration: 0.2s, .5s;
             }
             }
-            
+            @media only screen and (max-width: var(--mobile-width)) {
+                .web-header.web-header {
+                    height: 40px;
+                    box-sizing: border-box;
+                    animation-name: none;
+                    top: 0px;
+                    background: var(--primary-bg);
+                }
+            }
         </style>
     </head>
     <body>
