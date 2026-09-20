@@ -28,13 +28,11 @@ output = output.replace(calloutRegex, (_match: string, type: string, body: strin
 ---
 <style>
 .display-node.twitter {
-    
+    --twitter-border: rgb(47, 51, 54);
     margin: 16px 0;
-    
     transition-property: border-color;
     transition-duration: 800ms; 
     color: white;
-    
     .name-link {
         a {
             font-weight: bold;
@@ -42,7 +40,6 @@ output = output.replace(calloutRegex, (_match: string, type: string, body: strin
             text-decoration: none;
             color: var(--text-color-important);
         }
-
     }
     .twitter-embed {
         zoom: .85;
@@ -50,17 +47,12 @@ output = output.replace(calloutRegex, (_match: string, type: string, body: strin
         margin-top: 10px;
         display: flex;
         flex-direction: column;
-        font-family: Roboto !important;
         background: black;
         border: 1px solid var(--border-basic);
         border-radius: 6px;
         --title-padding: 16px;
         box-sizing: border-box;
         padding: var(--title-padding);
-       
-    }
-    .twitter-embed > img {
-        display: none !important;
     }
     blockquote.img-grid { 
         display: grid;
@@ -69,12 +61,10 @@ output = output.replace(calloutRegex, (_match: string, type: string, body: strin
         place-items: center;
         margin: 24px 0 24px 0;
         width: auto;
-        
         height: auto;
         box-sizing: border-box;
         border-radius: 16px;
         gap: 6px;
-        box-sizing:;
         img {
             width: 100%;
             height: 100%;
@@ -97,7 +87,6 @@ output = output.replace(calloutRegex, (_match: string, type: string, body: strin
         .callout-title {
             display: none;
         }
-        
         ul {
             display: grid;
             grid-template-columns: 48px 1fr;
@@ -129,7 +118,7 @@ output = output.replace(calloutRegex, (_match: string, type: string, body: strin
             }
         }
     }
-    blockquote.twitter-metadata {
+    blockquote.Display: Truth-metadata {
         color: grey;
         margin: 10px 0 0 0;
         padding: 0;
@@ -138,27 +127,50 @@ output = output.replace(calloutRegex, (_match: string, type: string, body: strin
 
 
 @media only screen and (max-width: 640px) {
-.display-node {    
+.display-node.twitter {    
         grid-column: 2 / 5; 
+        margin: 0;
         font-size: 1.15em;
         border-width: 0px;
-        paddng: 4px;
+        padding: 4px;
         max-width: 100%;   
         width: 100%;
-        min-width: 10px;
+        min-width: 0%;
+        padding: 0;
         &:hover {
             border-width: 0px;
         }
-        .content-embed {
-            font-size: 1em;
+    .name-link {
+        border-left: 1px solid var(--twitter-border);
+        padding-left: 16px;
+        padding-bottom: 16px;
+        padding-top: 16px;
+        display: flex;
+        a {
+            font-weight: bold;
+            font-size: .9rem;
+            line-height: 1;
+            
         }
     }
+        .twitter-embed { 
+            font-size: 1em;
+            padding-left: 32px;
+            border: none;
+            margin: 0 24px 0 0;
+            border-left: 1px solid var(--twitter-border);
+            border-radius: 0;
+            blockquote.img-grid {
+                margin: 24px 0 0px 0;
+            }
+        }
+    }
+
 } 
 
 
 </style>
 <div class="display-node twitter">
-<p></p>
     <div class="name-link">
     <a href=${atom.URL}>{atom.Name}</a> {atom?.Commentary ? <Fragment set:html={Commentary}/> : ''}
     </div>

@@ -27,12 +27,10 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
                 --border-basic: light-dark(hsl(0 0 70), hsl(0 0 20));
                 --border-hover: light-dark(hsl(0 0 50), hsl(0 0 30));
                 --mobile-width: 640px;
-                --twitter-border: rgb(47, 51, 54);
                 background: var(--primary-bg);
                 margin: 0;
                 max-width: 100%;
                 height: 100%;
-                margin: 0;
                 font-family: "Noto Sans", "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
                 color: var(--text-color); 
                 overflow: hidden;     
@@ -61,6 +59,7 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
                 height: 100%;
                 overflow-x: hidden;
                 max-width: 100%;
+                min-width: 0%;
                 
             }
             .content-sizer {
@@ -69,6 +68,7 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
                 grid-template-columns: auto minmax(auto, 540px) minmax(auto, 540px) auto;
                 color: var(--text-color);
                 max-width: 100%;
+                min-width: 0%;
                 & > * {
                     grid-column: 2 / 4;
                 }
@@ -81,32 +81,32 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
                 padding: 64px;
                 }
             .view-link {
-            height: auto;
-            width: 100%;
-            aspect-ratio: 3 / 2;
-            box-sizing: border-box;
-            display: flex;
-            overflow: hidden;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            border: 1px solid var(--border-basic);
-            
-            border-radius: 12px;
-            text-decoration: none;
-            color: var(--text-normal);
-            padding: 2rem;
-            font-weight: 600;
-            font-size: 1.2rem;
-            vertical-align: text-top;
-            transition-property: border, background-color, ;
-            transition-duration: 0.8s, 2s, 2s;
-            background: var(--secondary-bg);
-            transition-timing-function: ease-in-out, ease-in-out, ease-out;
-            &:hover {
-                border: 1px solid hsl(0 0 25);
-                transition-duration: 0.2s, .5s;
-            }
+                height: auto;
+                width: 100%;
+                aspect-ratio: 3 / 2;
+                box-sizing: border-box;
+                display: flex;
+                overflow: hidden;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                border: 1px solid var(--border-basic);
+                
+                border-radius: 12px;
+                text-decoration: none;
+                color: var(--text-normal);
+                padding: 2rem;
+                font-weight: 600;
+                font-size: 1.2rem;
+                vertical-align: text-top;
+                transition-property: border, background-color;
+                transition-duration: 0.8s, 2s, 2s;
+                background: var(--secondary-bg);
+                transition-timing-function: ease-in-out, ease-in-out, ease-out;
+                &:hover {
+                    border: 1px solid hsl(0 0 25);
+                    transition-duration: 0.2s, .5s;
+                }
             }
             @media only screen and (max-width: 640px) {
                 .web-header.web-header {

@@ -18,6 +18,7 @@ export interface InlineProperty {
     DateString?: string;
     OrdinalDay: string;
     DisplayImage?: string;
+    PageProperties: frontmatter;
     [key: string]: any;
 }
 
@@ -55,6 +56,7 @@ export function atomizeMarkdownFile(content: string, fileName: string): VaultNot
             PriorLine: priorLine,
             Date: Temporal.Now.plainDateTimeISO(),
             OrdinalDay: "1st",
+            PageProperties: frontmatter
         }
         if (userInput.includes(" | ")) {
             userInput.split(" | ").forEach(pair => {
@@ -63,7 +65,7 @@ export function atomizeMarkdownFile(content: string, fileName: string): VaultNot
             })
         }
         thisInline.URL = (frontmatter as Record<string, any>)?.URL;
-        if (thisInline.Display === "Twitter") {
+        if (thisInline.Display === "Twitter" || thisInline.Display === "Truth") {
             thisInline.Content = contentSection
         }
         inlineProperties.push(thisInline)

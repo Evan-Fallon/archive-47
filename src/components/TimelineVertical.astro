@@ -8,10 +8,12 @@ const { timeline } = Astro.props
     grid-template-columns: min-content auto 40px auto;
     gap: 0px;
     background: var(--secondary-bg);
-
     width: 100%;
     max-width: 100%;
-    min-width: 0%;
+    min-width: 0% !important;
+    > * {
+        min-width: 0%;
+    }
 }
 
 
@@ -353,13 +355,23 @@ const { timeline } = Astro.props
         margin: 0;
         width: 100%;
     }
-    .timeline-cell.node:has(.basic), .timeline-cell.node:has(.image) {
+    .timeline-cell.node:has(.basic), 
+    .timeline-cell.node:has(.image), 
+    .timeline-cell.node:has(.twitter),
+    .timeline-cell.node:has(.truth){
         grid-column: 1 / 5 !important;
         background: var(--primary-bg);
         display: grid;
         grid-template-columns: subgrid;
     }
-    
+    .timeline-cell.node:has(.twitter) {
+        background: black;
+        padding-right: 16px;
+    }
+    .timeline-cell.node:has(.truth) {
+        background: white;
+        padding-right: 16px;
+    }
     .node-day-time {
         grid-column: 1 / 2 !important;
         font-size: 1em;

@@ -68,7 +68,6 @@ let Commentary = `
             grid-template-columns: subgrid;
             margin: 0;
             border: none !important;
-            
             .name-link {
                 width: auto;
                 grid-column: 2 / 5;
@@ -99,4 +98,4 @@ let Commentary = `
     <div class="name-link">
        <a href=${atom.URL}><span class="image-node-day">{atom.OrdinalDay} {atom.DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""} - </span>{atom.Name}</a> {atom?.Commentary ? <Fragment set:html={Commentary}/> : ''}
     </div>  
-</div>`
+</div>
