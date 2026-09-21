@@ -18,7 +18,7 @@ export interface InlineProperty {
     DateString?: string;
     OrdinalDay: string;
     DisplayImage?: string;
-    PageProperties: frontmatter;
+    Frontmatter: frontmatter;
     [key: string]: any;
 }
 
@@ -26,7 +26,7 @@ export interface VaultNote {
   name: string;
   frontmatter: Record<string, any>;
   inlineProperties: InlineProperty[];
-  content?: string;
+  content?: any;
 }
 
 export function atomizeMarkdownFile(content: string, fileName: string): VaultNote {
@@ -56,7 +56,7 @@ export function atomizeMarkdownFile(content: string, fileName: string): VaultNot
             PriorLine: priorLine,
             Date: Temporal.Now.plainDateTimeISO(),
             OrdinalDay: "1st",
-            PageProperties: frontmatter
+            Frontmatter: frontmatter
         }
         if (userInput.includes(" | ")) {
             userInput.split(" | ").forEach(pair => {
