@@ -29,7 +29,6 @@ let Commentary = `
     display: flex;
     flex-direction: column;
     background: black;
-    border: 1px solid var(--border-basic);
     border-radius: 6px;
     --title-padding: 24px;
     box-sizing: border-box;
@@ -39,24 +38,7 @@ let Commentary = `
         z-index: 2;
     }
 
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 0 0 0 0;
-        background: black;
-        border-radius: 6px;
-    }
-    &::before {
-        content: '';
-        position: absolute;
-        inset: 0 0 0 0;
-        transition-duration: 200ms;
-        border-radius: 8px;
-    }
-    &:hover::before {
-        background: white;
-        inset: 0 -16px 0 0;
-    }
+
 }
 .twitter.embed :global(p) {
     font-family: Mozilla, sans-serif;
@@ -158,6 +140,27 @@ img.twitter.user-icon {
 }
 .twitter.date {
     text-align: end;
+}
+
+@media only screen and (max-width: 640px) {
+    .display-node.twitter {
+        grid-column: 2 / 5;
+    }
+    .display-node.twitter {
+        grid-column: 2 / 5;
+        .twitter.content :global(p) {
+            font-size: 1.2rem;
+        }
+        .twitter.embed {
+            padding: 0;
+        }
+        .twitter.footer {
+            display: none;
+        }
+    }
+    .twitter.content :global(p) {
+            
+}
 }
 
 </style>

@@ -5,7 +5,7 @@ const { timeline } = Astro.props
 <style is:global>
 .timeline-base {
     display: grid;
-    grid-template-columns: min-content auto 40px auto;
+    grid-template-columns: min-content min-content 40px auto;
     gap: 0px;
     background: var(--secondary-bg);
     width: 100%;
@@ -85,12 +85,6 @@ const { timeline } = Astro.props
         grid-column: 1 / 5 !important;
         margin: 0 - 0rem;
         width: calc(100% + 0rem);
-        .display-node {
-            border-width: 1px 0 1px 0;
-            border-style: solid;
-            border-color: var(--border-basic);
-            border-radius: 0;
-        } 
     }
     p {
         margin: 0;
@@ -124,7 +118,6 @@ const { timeline } = Astro.props
         animation-delay: var(--anim-delay);
         margin-top: 24px;
         p { 
-            background: hsl(from var(--secondary-bg) h s l / .5);
             width: 100%;
         }
     }
@@ -135,7 +128,7 @@ const { timeline } = Astro.props
 
 .timeline-line {
     background: var(--border-basic);
-    width: 1px;
+    width: 4px;
     height: calc(100% - 64px);
     justify-self: center;
     animation-name: line-go-down;
@@ -144,21 +137,14 @@ const { timeline } = Astro.props
     animation-fill-mode: both;
     margin: 48px 0;
 }
-.node-circles {
-    width: 15px;
-    height: 15px;
-    border-radius: 20px;
-    border: 1px solid var(--border-basic);
-    background: var(--secondary-bg);
-    place-self: center;
-}
+
 
 .node-circles {
     width: 15px;
     height: 15px;
     border-radius: 20px;
-    border: 1px solid var(--border-basic);
-    background: var(--secondary-bg);
+    border: 0px solid var(--border-basic);
+    background: var(--border-basic);
     place-self: center;
     animation-name: opacity-reveal;
     animation-duration: 500ms;
@@ -169,8 +155,8 @@ const { timeline } = Astro.props
         width: 10px;
         height: 10px;
         border-radius: 15px;
-        border: 1px solid var(--border-basic);
-        background: var(--secondary-bg);
+        border: 0px solid var(--border-basic);
+         background: var(--border-basic);
     }
 }
 .node-day-time {
@@ -195,13 +181,13 @@ const { timeline } = Astro.props
     margin: -48px auto auto 0;
     background: light-dark(
         hsl(from var(--border-basic) h s l / .3),
-        hsl(from var(--border-basic) h s l / .2)
+        hsl(from var(--border-basic) h s l / .3)
     );
     border-color:  light-dark(
         hsl(from var(--border-basic) h s l / 1),
         hsl(from var(--border-basic) h s l / .5)
     );
-    border-width: 0 1px 0 1px;
+    border-width: 0 0px 0 0px;
     border-style: solid;
     transition: border 250ms ease, background 400ms ease;
     &:hover {
@@ -248,7 +234,7 @@ const { timeline } = Astro.props
 
     }
     .timeline-base {
-        grid-template-columns: auto 10px auto;
+        grid-template-columns: min-content auto auto;
         gap: 0 4px;
         padding: 0px;
         max-width: 100%;

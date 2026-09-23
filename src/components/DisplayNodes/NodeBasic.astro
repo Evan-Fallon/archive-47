@@ -9,10 +9,29 @@ let Commentary = `
 `
 ---
 <style>
-.display-node {
-    margin: 16px 0;
+.display-node.basic {
+    display: flex;
+    flex-direction: column;
+    margin: 6px 0;
+    max-width: 800px;
     --title-padding: 16px;
     box-sizing: border-box;
+    position: relative;
+    isolation: isolate;
+    padding: var(--title-padding);
+    border-radius: 6px;
+    background: var(--primary-bg);
+    transition-property: border-color;
+    transition-duration: 800ms; 
+    color: var(--text-color);
+    .name-link {
+        display: flex;
+        align-items: center;
+    }
+    a {
+        color: var(--text-color-important)
+    }
+
     .name-link {
         a {
             font-weight: bold;
@@ -21,25 +40,35 @@ let Commentary = `
             color: var(--text-color);
         }
     }
-    &.basic {
-        padding: var(--title-padding);
-        border: 1px solid var(--border-basic);
-        border-radius: 6px;
-        background: var(--primary-bg);
-        transition-property: border-color;
-        transition-duration: 800ms; 
-        color: var(--text-color);
-        .name-link {
-            display: flex;
-            align-items: center;
+    .content-embed {
+        font-size: .8em;
+    }
+}
+
+
+@media only screen and (min-width: 640px) {
+    .display-node.basic {    
+        > * {
+            z-index: 2;
         }
-        a {
-            color: var(--text-color-important)
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0 0 0 0;
+            background: black;
+            border-radius: 6px;
         }
-        &:hover {
-            border: 1px solid var(--border-hover);
-            transition-duration: 50ms;
-        } 
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0 0 0 0;
+            transition-duration: 200ms;
+            border-radius: 8px;
+        }
+        &:hover::before {
+            background: white;
+            inset: 0 -16px 0 0;
+        }
     }
 }
 
@@ -53,11 +82,11 @@ let Commentary = `
             max-width: 100%;   
             width: 100%;
             min-width: 10px;
-            &:hover {
-                border-width: 0px;
+            .name-link {
+                margin-bottom: 8px;
             }
             .content-embed {
-                font-size: 1em;
+                font-size: .9em;
             }
         }
     }  
