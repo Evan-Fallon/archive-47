@@ -13,8 +13,14 @@ const inlineEvents = queryPromise
 const timeline = queryToTimelineLists(inlineEvents)
 
 
+const pageTitle = "Whistleblower Disclosure of Erez Reuveni";
+// Drop .md and use encodeURIComponent to turn spaces into %20
+const pagePath = `/${encodeURIComponent(pageTitle)}#:~:text=in%20the%20weeks`;
 
 ---
+
+<a href={pagePath}>123</a>
+
 <Layout>
   <h1 class="topic-header">
       The C.E.C.O.T. Lie

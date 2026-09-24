@@ -166,7 +166,7 @@ img.twitter.user-icon {
 </style>
 <div class="display-node twitter">
     <div class="name-link">
-        <a href=${atom.URL}>{atom.Name}</a> {atom?.Commentary ? <Fragment set:html={Commentary}/> : ''}
+        <a href={atom.URL}>{atom.Name}</a> {atom?.Commentary ? <Fragment set:html={Commentary}/> : ''}
     </div>
     <div class="twitter embed">
         <div class="twitter header">

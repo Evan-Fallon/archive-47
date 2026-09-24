@@ -1,0 +1,284 @@
+---
+import type { MarkdownLayoutProps } from 'astro';
+
+interface Frontmatter {
+  title?: string;
+  courtName?: string;
+  plaintiff?: string;
+  defendant?: string;
+  caseNumber?: string;
+  documentTitle?: string;
+  judge?: string;
+}
+
+type Props = MarkdownLayoutProps<Frontmatter>;
+
+const { frontmatter } = Astro.props;
+
+// Render slot content and strip all %%[TEXT CONTENT]%% tags
+const rawHtml = await Astro.slots.render('default');
+const cleanedHtml = rawHtml.replace(/%%\[[\s\S]*?\]%%/g, '');
+
+// Frontmatter fallbacks
+const courtName = frontmatter.courtName ?? "IN THE UNITED STATES DISTRICT COURT FOR THE DISTRICT OF DELAWARE";
+const plaintiff = frontmatter.plaintiff ?? "ACME CORPORATION, a Delaware corporation,";
+const defendant = frontmatter.defendant ?? "BETA INDUSTRIES, INC., a California corporation,";
+const caseNumber = frontmatter.caseNumber ?? "Civil Action No. 1:26-cv-00123-LPS";
+const documentTitle = frontmatter.documentTitle ?? frontmatter.title ?? "MEMORANDUM OF LAW";
+const judge = frontmatter.judge ?? "Hon. Leonard P. Stark";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{documentTitle}</title>
+    
+    <!-- Legal Standard Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="legal-viewport">
+      <main class="legal-page">
+        
+        <!-- ROW 1: FULL WIDTH HEADER & CAPTION -->
+        <header class="row-1-header">
+          <div class="court-header">{courtName}</div>
+
+          <section class="caption-box">
+            <div class="parties-col">
+              <p class="party">{plaintiff}</p>
+              <p class="role">Plaintiff,</p>
+              <p class="versus">v.</p>
+              <p class="party">{defendant}</p>
+              <p class="role">Defendant.</p>
+            </div>
+            <div class="bracket-col">
+              )<br/>)<br/>)<br/>)<br/>)<br/>)<br/>)
+            </div>
+            <div class="case-meta-col">
+              <p><strong>{caseNumber}</strong></p>
+              {judge && <p>Judge: {judge}</p>}
+              <p class="doc-caption-title"><strong>{documentTitle.toUpperCase()}</strong></p>
+            </div>
+          </section>
+        </header>
+
+        <!-- ROW 2: SIDE-BY-SIDE COLUMNS -->
+        <div class="row-2-body">
+          
+          <!-- Left Column: Line Numbers (Filled dynamically via JS) -->
+          <div id="pleading-numbers" class="pleading-numbers" aria-hidden="true">
+            <!-- JavaScript will inject spans here -->
+          </div>
+
+          <!-- Right Column: Document Content -->
+          <div id="pleading-content" class="pleading-content">
+            <div class="main-document-title">
+              {documentTitle.toUpperCase()}
+            </div>
+            <article class="legal-body">
+              <Fragment set:html={cleanedHtml} />
+            </article>
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+    <!-- Script to perfectly sync line numbers with actual document height -->
+    <script>
+      function syncLineNumbers() {
+        const content = document.getElementById('pleading-content');
+        const numbersContainer = document.getElementById('pleading-numbers');
+        
+        if (!content || !numbersContainer) return;
+
+        // Base legal line height
+        const lineHeight = 28;
+        
+        // Measure actual rendered pixel height of the content column
+        const contentHeight = content.offsetHeight;
+        
+        // Calculate exactly how many lines are needed
+        const requiredLines = Math.max(1, Math.ceil(contentHeight / lineHeight));
+        
+        // Generate the exact number of line spans
+        numbersContainer.innerHTML = Array.from(
+          { length: requiredLines }, 
+          (_, i) => `<span class="line-num">${i + 1}</span>`
+        ).join('');
+      }
+
+      // Run on initialization and layout changes (like resizing or fonts loading)
+      window.addEventListener('DOMContentLoaded', syncLineNumbers);
+      window.addEventListener('load', syncLineNumbers);
+      window.addEventListener('resize', syncLineNumbers);
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --line-height: 28px;
+    --font-legal: 'Tinos', 'Times New Roman', Times, serif;
+    --font-mono: 'Courier Prime', Courier, monospace;
+    --bg-workspace: #d1d5db;
+    --bg-paper: #ffffff;
+    --text-color: #000000;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: var(--bg-workspace);
+    color: var(--text-color);
+    font-family: var(--font-legal);
+    font-size: 12pt;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .legal-viewport {
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .legal-page {
+    background-color: var(--bg-paper);
+    width: 8.5in;
+    min-height: 11in;
+    padding: 1in 0.75in 1in 0.5in;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Row 1: Headers */
+  .row-1-header {
+    width: 100%;
+    margin-bottom: var(--line-height);
+  }
+
+  .court-header {
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: var(--line-height);
+    margin-bottom: var(--line-height);
+  }
+
+  .caption-box {
+    display: grid;
+    grid-template-columns: 3.5in 0.3in 1fr;
+    box-shadow: 0 -1px 0 #000, 0 1px 0 #000;
+    padding: 7px 0;
+    font-size: 11pt;
+  }
+
+  .parties-col .party { font-weight: bold; line-height: 20px; }
+  .parties-col .role { margin-left: 1.5in; line-height: 20px; margin-bottom: 8px; }
+  .parties-col .versus { margin-left: 0.75in; line-height: 20px; margin-bottom: 8px; }
+  .bracket-col { font-family: var(--font-mono); line-height: 20px; text-align: center; }
+  .case-meta-col { padding-left: 0.15in; }
+  .case-meta-col p { line-height: 20px; }
+  .doc-caption-title { margin-top: 10px; font-size: 10pt; }
+
+  /* Row 2: Content */
+  .row-2-body {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  /* Left Column (Numbers) */
+  .pleading-numbers {
+    width: 0.45in;
+    flex-shrink: 0;
+    border-right: 1px solid #000000;
+    padding-right: 8px;
+    user-select: none;
+  }
+
+  /* This is applied to the injected JS spans */
+  .line-num {
+    display: block;
+    height: var(--line-height);
+    line-height: var(--line-height);
+    font-family: var(--font-mono);
+    font-size: 10pt;
+    color: #4b5563;
+    text-align: right;
+  }
+
+  /* Right Column (Content) */
+  .pleading-content {
+    flex: 1;
+    padding-left: 0.35in;
+  }
+
+  .main-document-title {
+    font-weight: bold;
+    text-align: center;
+    text-decoration: underline;
+    line-height: var(--line-height);
+    margin: 0 0 var(--line-height) 0;
+  }
+
+  /* --- Markdown Content --- */
+  .legal-body {
+    line-height: var(--line-height);
+  }
+
+  .legal-body p {
+    line-height: var(--line-height);
+    text-indent: 0.5in;
+    margin: 0;
+    text-align: justify;
+  }
+  
+  /* Enforces exact height on empty blank lines generated by markdown */
+  .legal-body p:empty {
+    height: var(--line-height);
+  }
+
+  .legal-body h1, 
+  .legal-body h2, 
+  .legal-body h3 {
+    font-size: 12pt;
+    font-weight: bold;
+    line-height: var(--line-height);
+    text-align: center;
+    margin-top: var(--line-height);
+    margin-bottom: 0;
+    text-indent: 0;
+  }
+
+  .legal-body h1 { text-transform: uppercase; }
+  .legal-body h2 { text-transform: uppercase; text-decoration: underline; }
+  .legal-body h3 { font-style: italic; }
+
+  .legal-body blockquote {
+    margin: 0 0.5in;
+    line-height: var(--line-height);
+    text-align: justify;
+  }
+  .legal-body blockquote p { text-indent: 0; }
+  .legal-body ul, .legal-body ol { margin-left: 0.75in; margin-top: 0; margin-bottom: 0; line-height: var(--line-height); }
+  .legal-body li { line-height: var(--line-height); }
+  .legal-body pre { font-family: var(--font-mono); font-size: 10pt; line-height: var(--line-height); margin: 0; }
+  .legal-body code { font-family: var(--font-mono); font-size: 10pt; }
+
+  @media print {
+    body { background-color: transparent; }
+    .legal-viewport { padding: 0; }
+    .legal-page { box-shadow: none; width: 100%; padding: 0.5in; }
+    @page { size: letter; margin: 0.5in; }
+  }
+</style>

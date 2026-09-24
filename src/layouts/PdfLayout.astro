@@ -1,0 +1,261 @@
+---
+import type { MarkdownLayoutProps } from 'astro';
+
+interface Frontmatter {
+  title?: string;
+  author?: string;
+  date?: string;
+  URL?: string;
+}
+
+type Props = MarkdownLayoutProps<Frontmatter>;
+
+const { frontmatter } = Astro.props;
+
+const title = frontmatter?.title ?? "Document";
+const author = frontmatter?.author;
+const date = frontmatter?.date ?? new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const url = frontmatter.URL
+
+// Render the slot content to a string and strip out %%[content]%% blocks
+const rawContent = await Astro.slots.render('default');
+const cleanContent = rawContent.replace(/<p>\s*%%[\s\S]*?%%\s*<\/p>|%%[\s\S]*?%%/g, '').replace(/\^[a-zA-Z0-9-]+/g, '')
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="md-archive-header">The following is a tool assisted archive of the publically available source in order to make navigation easier. Minor mistakes are likely, but are often corrected. View the original PDF <a href={url}>here.</a></div>
+    <div class="pdf-viewport">
+      <main class="pdf-page">
+        <header class="pdf-header">
+          {title && <h1 class="document-title">{title}</h1>}
+          <div class="document-meta">
+            {author && <span class="author">{author}</span>}
+            {author && date && <span class="separator">•</span>}
+            {date && <span class="date">{date}</span>}
+          </div>
+        </header>
+
+        <article class="pdf-body" set:html={cleanContent} />
+      </main>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg-workspace: #e5e7eb;
+    --bg-paper: #ffffff;
+    --text-primary: #111827;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+    --accent-color: #2563eb;
+    
+    --font-serif: 'Charis SIL', Georgia, Cambria, serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', Consolas, monospace;
+  }
+  .md-archive-header {
+    position: sticky;
+    top: 0px;
+    background: white;
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid grey;
+    width: 100%;
+    font-size: .8rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: var(--bg-workspace);
+    color: var(--text-primary);
+    font-family: var(--font-serif);
+    font-size: 11pt;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .pdf-viewport {
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .pdf-page {
+    background-color: var(--bg-paper);
+    width: 100%;
+    max-width: 8.5in;
+    min-height: 11in;
+    padding: 1in;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+  }
+
+  .pdf-header {
+    border-bottom: 2px solid var(--text-primary);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .document-title {
+    font-family: var(--font-sans);
+    font-size: 26pt;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .document-meta {
+    font-family: var(--font-sans);
+    font-size: 9.5pt;
+    color: var(--text-muted);
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .pdf-body h1, 
+  .pdf-body h2, 
+  .pdf-body h3, 
+  .pdf-body h4 {
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    font-weight: 600;
+    page-break-after: avoid;
+  }
+
+  .pdf-body h1 { font-size: 18pt; margin: 2rem 0 0.75rem 0; border-bottom: 1px solid var(--border-color); padding-bottom: 0.25rem; }
+  .pdf-body h2 { font-size: 14pt; margin: 1.5rem 0 0.5rem 0; }
+  .pdf-body h3 { font-size: 12pt; margin: 1.25rem 0 0.4rem 0; }
+
+  .pdf-body p {
+    margin-bottom: 1rem;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .pdf-body a {
+    color: var(--accent-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .pdf-body ul, 
+  .pdf-body ol {
+    margin: 0 0 1rem 1.5rem;
+  }
+
+  .pdf-body li {
+    margin-bottom: 0.25rem;
+  }
+
+  .pdf-body blockquote {
+    border-left: 3px solid var(--text-primary);
+    padding-left: 1rem;
+    margin: 1.25rem 0;
+    font-style: italic;
+    color: #374151;
+  }
+
+  .pdf-body code {
+    font-family: var(--font-mono);
+    font-size: 9.5pt;
+    background-color: #f3f4f6;
+    padding: 0.15em 0.3em;
+    border-radius: 3px;
+  }
+
+  .pdf-body pre {
+    background-color: #f9fafb;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.85rem 1rem;
+    margin: 1.25rem 0;
+    overflow-x: auto;
+  }
+
+  .pdf-body pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .pdf-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 10pt;
+    font-family: var(--font-sans);
+  }
+
+  .pdf-body th, 
+  .pdf-body td {
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  .pdf-body th {
+    background-color: #f9fafb;
+    font-weight: 600;
+  }
+
+  .pdf-body hr {
+    border: 0;
+    height: 1px;
+    background: var(--border-color);
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .pdf-viewport {
+      padding: 0;
+    }
+    .pdf-page {
+      padding: 1.5rem;
+      box-shadow: none;
+      min-height: 100vh;
+    }
+    .pdf-body p {
+      text-align: left;
+    }
+  }
+
+  @media print {
+    body {
+      background-color: transparent;
+    }
+    .pdf-viewport {
+      padding: 0;
+    }
+    .pdf-page {
+      box-shadow: none;
+      padding: 0;
+      width: 100%;
+      max-width: none;
+    }
+    @page {
+      margin: 1in;
+      size: letter;
+    }
+  }
+</style>

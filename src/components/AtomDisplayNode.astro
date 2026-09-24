@@ -6,20 +6,13 @@ import NodeImage from "./DisplayNodes/NodeImage.astro"
 import NodeTwitter from "./DisplayNodes/NodeTwitter.astro"
 import NodeTruth from "./DisplayNodes/NodeTruth.astro"
 
-
-let NodeComponent = NodeBasic
-if (atom?.Display === "Minor") {
-    NodeComponent = NodeMinor
-} else if (atom?.Display === "Image") {
-    NodeComponent = NodeImage
-} else if (atom?.Display === "Twitter") {
-    NodeComponent = NodeTwitter
-} else if (atom?.Display === "Truth") {
-    NodeComponent = NodeTruth
+const nodeMap = {
+    Basic: NodeBasic,
+    Minor: NodeMinor,
+    Image: NodeImage,
+    Twitter: NodeTwitter,
+    Truth: NodeTruth
 }
-
-
-
-
+const NodeComponent = nodeMap[atom?.Display as keyof typeof nodeMap] ?? NodeBasic
 ---
 <NodeComponent atom={atom}/>
