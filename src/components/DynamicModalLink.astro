@@ -1,0 +1,34 @@
+---
+// DynamicTextLink.astro
+interface Props {
+  targetUrl: string; // E.g. "https://example.com/page#:~:text=specific%20phrase"
+  buttonText?: string;
+}
+
+const { targetUrl, buttonText = "View Highlighted Text" } = Astro.props;
+---
+
+<button type="button" class="popup-trigger" data-url={targetUrl}>
+  {buttonText}
+</button>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.popup-trigger').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const url = btn.dataset.url;
+      if (!url) return;
+
+      const width = 900;
+      const height = 750;
+      const left = window.screenX + (window.outerWidth - width) / 2;
+      const top = window.screenY + (window.outerHeight - height) / 2;
+
+      // Opens top-level window where #:~:text= is allowed
+      window.open(
+        url,
+        'TextFragmentModal',
+        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
+      );
+    });
+  });
+</script>

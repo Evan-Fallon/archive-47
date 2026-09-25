@@ -141,13 +141,37 @@ img.twitter.user-icon {
 .twitter.date {
     text-align: end;
 }
+@media only screen and (min-width: 640px) {
+    .twitter.embed {
+        > * {
+            z-index: 2;
+        }
 
-@media only screen and (max-width: 640px) {
-    .display-node.twitter {
-        grid-column: 2 / 5;
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0 0 0 0;
+            background: black;
+            border-radius: 6px;
+        }
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0 0 0 0;
+            transition-duration: 200ms;
+            border-radius: 8px;
+        }
+        &:hover::before {
+            background: white;
+            inset: 0 -8px 0 0;
+        }
     }
+}
+@media only screen and (max-width: 640px) {
+
     .display-node.twitter {
         grid-column: 2 / 5;
+        padding-left: 16px;
         .twitter.content :global(p) {
             font-size: 1.2rem;
         }

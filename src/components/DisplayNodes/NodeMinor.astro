@@ -1,9 +1,18 @@
 ---
+import path from 'node:path' 
+import DynamicModalLink from '../DynamicModalLink.astro'
 
 const { atom } = Astro.props
 
-let Commentary 
+let link = atom.URL
+if (atom.Frontmatter?.["Archive-47"] === true) {
+    const linkBase = encodeURIComponent(path.basename(atom.Path, path.extname(atom.Path)))
+    const searchTerms = encodeURIComponent(atom.StrippedLine)
+    link = `${linkBase}#:~:text=${searchTerms}`
+    console.log(linkBase)
+}
 
+let Commentary 
 if (atom.Commentary) {
 Commentary = `<button class="commentary-button" popovertarget="commentary-${atom.Index}">?</button>
 <div popover id="commentary-${atom.Index}" class="node-commentary-popover">
@@ -14,7 +23,7 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${atom
 let PriorLine = `
 <button class="content-button" popovertarget="content-${atom.Index}">"</button>
 <div popover id="content-${atom.Index}" class="node-content-popover">
-    ${atom?.PriorLine}
+    ${atom?.StrippedLine}
 </div>
 `
 
@@ -66,10 +75,11 @@ let PriorLine = `
 </style>
 <div class="display-node minor">
     <div class="name-link">
-    <a href={atom.URL}>{atom.Name}</a> 
+    <a href={link}>{atom.Name}</a> 
     </div>
     <div class="popover-buttons">
         <Fragment set:html={PriorLine} /> 
         <Fragment set:html={Commentary}/>
     </div>
+    <DynamicModalLink targetUrl={link}/>
 </div>
