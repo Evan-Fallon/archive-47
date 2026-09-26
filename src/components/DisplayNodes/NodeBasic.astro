@@ -1,21 +1,23 @@
 ---
+import DynamicModalLink from '../DynamicModalLink.astro'
 const { atom } = Astro.props
 
-let Commentary = `
-<button class="commentary-button" popovertarget="commentary-${atom.Index}"> ? </button>
+let Commentary 
+if (atom.Commentary) {
+Commentary = `<button class="commentary-button" popovertarget="commentary-${atom.Index}">?</button>
 <div popover id="commentary-${atom.Index}" class="node-commentary-popover">
     ${atom?.Commentary}
-</div>
-`
+</div>`
+}
 ---
 <style>
-.display-node.basic {
+    .display-node.basic {
+        display: flex;
+    }
+.display-node.basic .content{
     display: flex;
     flex-direction: column;
-    margin: 6px 0;
-    max-width: 800px;
     --title-padding: 16px;
-    box-sizing: border-box;
     position: relative;
     isolation: isolate;
     padding: var(--title-padding);
@@ -24,79 +26,65 @@ let Commentary = `
     transition-property: border-color;
     transition-duration: 800ms; 
     color: var(--text-color);
-    .name-link {
-        display: flex;
-        align-items: center;
-    }
-    a {
-        color: var(--text-color-important)
-    }
-
-    .name-link {
-        a {
-            font-weight: bold;
-            font-size: 1.1em;
-            text-decoration: none;
-            color: var(--text-color);
+    margin-right: 16px;
+}
+.display-node.basic .name-link {
+    display: flex;
+    align-items: center;
+    p {
+        color: var(--text-color-important);
+        font-weight: bold;
+        font-size: 1.1em;
+        text-decoration: none;
+        color: var(--text-color);
         }
     }
     .content-embed {
         font-size: .8em;
     }
-}
+
 
 
 @media only screen and (min-width: 640px) {
     .display-node.basic {    
-        > * {
-            z-index: 2;
-        }
-        &::after {
-            content: '';
-            position: absolute;
-            inset: 0 0 0 0;
-            background: black;
-            border-radius: 6px;
-        }
-        &::before {
-            content: '';
-            position: absolute;
-            inset: 0 0 0 0;
-            transition-duration: 200ms;
-            border-radius: 8px;
-        }
-        &:hover::before {
-            background: white;
-            inset: 0 -8px 0 0;
-        }
+        margin: 32px 0 ;
+    }
+    .content {
+        max-width: 720px;
+        overflow-x: hidden;
     }
 }
 
 @media only screen and (max-width: 640px) {
-.display-node {    
-        &.basic  {
-            grid-column: 2 / 5; 
-            font-size: 1.15em;
-            border-width: 0px;
-            paddng: 4px;
-            max-width: 100%;   
-            width: 100%;
-            min-width: 10px;
-            .name-link {
-                margin-bottom: 8px;
-            }
-            .content-embed {
-                font-size: .9em;
-            }
+.display-node.basic {
+        margin: 6px 0;
+        grid-column: 2 / 5; 
+        font-size: 1.15em;
+        border-width: 0px;
+        paddng: 4px;
+        max-width: 100%;   
+        width: 100%;
+        min-width: 10px;
+        .name-link {
+            margin-bottom: 8px;
         }
-    }  
-}
+        .content-embed {
+            font-size: .9em;
+        }
+    }
+}  
+
 
 </style>
 <div class="display-node basic">
-
-    <div class="name-link">
-    <a href={atom.URL}>{atom.Name}</a> {atom?.Commentary ? <Fragment set:html={Commentary}/> : ''}
+    <div class="content">
+        <div class="name-link">
+            <p>{atom.Name}</p>
+        </div>
+        <div class="content-embed">{atom.PriorLine}</div>
     </div>
-    <div class="content-embed">{atom.PriorLine}</div>
+    <div class="popover-buttons">
+        <DynamicModalLink targetUrl={atom.SourceLink} paywalled={atom.Frontmatter?.Paywalled}/>
+        <Fragment set:html={Commentary}/>
+    </div>
 </div>

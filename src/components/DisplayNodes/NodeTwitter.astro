@@ -105,7 +105,7 @@ img.twitter.user-icon {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     place-items: center;
-    margin: 24px 0 24px 0;
+    margin: 24px 0 0px 0;
     width: auto;
     height: auto;
     box-sizing: border-box;
@@ -126,13 +126,29 @@ img.twitter.user-icon {
     border: 1px solid var(--twitter-border);
     border-radius: 8px;
 }
-
+.twitter.source-link {
+    display: block;
+    width: 100%;
+    height: 42px;
+    background: rgb(179, 179, 179);
+    border-radius: 64px;
+    text-align: center;
+    align-content: center;
+    a {
+        display: block;
+        align-content: center;
+        color: black;
+        width: 100%;
+        height: 100%;
+        margin: auto;
+    }
+}
 
 /* FOOTER */
 
 .twitter.footer {
     display: flex;
-    margin: 0px;
+    margin: 0px 0 12px 0;;
     p {
         margin: 0 1rem 0 0;
         color: grey;
@@ -142,30 +158,7 @@ img.twitter.user-icon {
     text-align: end;
 }
 @media only screen and (min-width: 640px) {
-    .twitter.embed {
-        > * {
-            z-index: 2;
-        }
 
-        &::after {
-            content: '';
-            position: absolute;
-            inset: 0 0 0 0;
-            background: black;
-            border-radius: 6px;
-        }
-        &::before {
-            content: '';
-            position: absolute;
-            inset: 0 0 0 0;
-            transition-duration: 200ms;
-            border-radius: 8px;
-        }
-        &:hover::before {
-            background: white;
-            inset: 0 -8px 0 0;
-        }
-    }
 }
 @media only screen and (max-width: 640px) {
 
@@ -205,7 +198,9 @@ img.twitter.user-icon {
         <div class="twitter footer">
             <p class="twitter date">{atom.Frontmatter.Date}</p>
             <p class="twitter views">{atom.Frontmatter.Views} views</p>
-            
+        </div>
+        <div class="twitter source-link">
+            <a href={atom.URL}>See original on x.com</a>
         </div>
     </div>
 </div>

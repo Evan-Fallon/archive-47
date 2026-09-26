@@ -1,15 +1,30 @@
 ---
+import { FileLock, SquareText } from '@lucide/astro'
+
 // DynamicTextLink.astro
 interface Props {
   targetUrl: string; // E.g. "https://example.com/page#:~:text=specific%20phrase"
   buttonText?: string;
+  paywalled?: boolean;
 }
 
-const { targetUrl, buttonText = "View Highlighted Text" } = Astro.props;
----
+const { targetUrl, buttonText = "View Highlighted Text", paywalled } = Astro.props;
 
+let Icon =  SquareText
+if (paywalled) {
+  Icon = FileLock
+}
+
+---
+<style>
+  .lucide {
+    color: var(--primary-bg);
+    stroke-width: 2px;
+  }
+
+</style>
 <button type="button" class="popup-trigger" data-url={targetUrl}>
-  {buttonText}
+ <Icon/>
 </button>
 
 <script>

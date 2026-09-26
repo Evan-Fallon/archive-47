@@ -2,7 +2,7 @@
 import { vaultQuery } from '../utils/vaultQuery';
 import Layout from '../layouts/Layout.astro';
 
-const pages = await vaultQuery()
+const pages = await vaultQuery("the cecot lie")
 const filteredPages = pages
     .filter(page => page.inlineProperties.some(property => property.Series === "the cecot lie"))
 const classes = [...new Set (filteredPages

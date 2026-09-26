@@ -1,16 +1,8 @@
 ---
-import path from 'node:path' 
+
 import DynamicModalLink from '../DynamicModalLink.astro'
 
 const { atom } = Astro.props
-
-let link = atom.URL
-if (atom.Frontmatter?.["Archive-47"] === true) {
-    const linkBase = encodeURIComponent(path.basename(atom.Path, path.extname(atom.Path)))
-    const searchTerms = encodeURIComponent(atom.StrippedLine)
-    link = `${linkBase}#:~:text=${searchTerms}`
-    console.log(linkBase)
-}
 
 let Commentary 
 if (atom.Commentary) {
@@ -26,40 +18,33 @@ let PriorLine = `
     ${atom?.StrippedLine}
 </div>
 `
-
 ---
 <style>
-.display-node {
+.display-node.minor {
     margin: 16px 0;
     --title-padding: 16px;
     box-sizing: border-box;
-    .name-link {
-        a {
-            font-weight: bold;
-            font-size: 1.1em;
-            text-decoration: none;
-            color: var(--text-color);
-        }
-    }
-    &.minor {
-        margin: 12px 0;
-        display: flex;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    .name-link {   
+        gap: .5em;
         align-items: center;
-        .name-link {   
-            gap: .5em;
-            align-items: center;
-            height: fit-content;
-            width: fit-content;
-            a { 
-                color: var(--text-color-important);
-                font-size: 1em;
-                text-box-trim: trim-both;
-                text-box-edge: ex alphabetic;
-            }
+        height: fit-content;
+        width: fit-content;
+        p { 
+        font-weight: bold;
+        font-size: 1.1em;
+        text-decoration: none;
+        color: var(--text-color);
+            color: var(--text-color-important);
+            font-size: 1em;
+            text-box-trim: trim-both;
+            text-box-edge: ex alphabetic;
         }
-
     }
 }
+
 @media only screen and (max-width: 640px) {
     &.basic  {
         grid-column: 2 / 5; 
@@ -75,11 +60,10 @@ let PriorLine = `
 </style>
 <div class="display-node minor">
     <div class="name-link">
-    <a href={link}>{atom.Name}</a> 
+        <p>{atom.Name}</p> 
     </div>
     <div class="popover-buttons">
-        <Fragment set:html={PriorLine} /> 
+        <DynamicModalLink targetUrl={atom.SourceLink} paywalled={atom.Frontmatter?.Paywalled}/>
         <Fragment set:html={Commentary}/>
     </div>
-    <DynamicModalLink targetUrl={link}/>
 </div>

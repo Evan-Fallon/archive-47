@@ -13,7 +13,7 @@ export function queryToTimelineLists(inlines: InlineProperty[]): timelineData {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     let currentNodes: any[] = []
     let currentYears = [{year: inlines[0].Date.year, yIndex: 1, yEnd: 2}]
-    let currentMonths = [{month: months[inlines[0].Date.month - 1], yIndex: 2}]
+    let currentMonths = [{month: months[inlines[0].Date.month - 1], yIndex: 2, yEnd: 2}]
     let currentSpans: any[] = []
     let yIndex = 3
     inlines.forEach(atom => {
@@ -23,12 +23,12 @@ export function queryToTimelineLists(inlines: InlineProperty[]): timelineData {
             currentYears[currentYears.length - 1].yEnd = yIndex
             currentYears.push({year: thisYear, yIndex: yIndex, yEnd: yIndex + 1})
             yIndex++
-            currentMonths.push({month: thisMonth, yIndex: yIndex})
+            currentMonths.push({month: thisMonth, yIndex: yIndex, yEnd: yIndex + 1})
             yIndex++
         } 
         else if (thisMonth !== currentMonths[currentMonths.length - 1].month) { 
             yIndex++
-            currentMonths.push({month: thisMonth, yIndex: yIndex})
+            currentMonths.push({month: thisMonth, yIndex: yIndex, yEnd: yIndex + 1})
             yIndex++
         }
         if (atom?.["Span Start"]) {
@@ -44,7 +44,7 @@ export function queryToTimelineLists(inlines: InlineProperty[]): timelineData {
         yIndex++
     })  
     currentYears[currentYears.length - 1].yEnd = yIndex 
-
+    currentMonths[currentMonths.length - 1].yEnd = yIndex 
     const spanTracks = []
     for (const span of currentSpans) {
         let assigned = false

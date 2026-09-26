@@ -3,6 +3,7 @@ import { Temporal } from '@js-temporal/polyfill'
 import { propertyParser } from './propertyParser';
 import { extractContentSection } from './extractContentSection';
 import { stripAtomFormatting } from './stripAtomFormatting';
+import path from 'node:path' 
 
 
 export interface frontmatter {
@@ -13,7 +14,8 @@ export interface frontmatter {
 export interface InlineProperty {
     Line: number;
     Series?: string;
-    Path: string;
+    FileName: string;
+    SourceLink: string
     raw: string;
     PriorLine: string;
     Date: Temporal.PlainDateTime;
@@ -26,15 +28,16 @@ export interface InlineProperty {
 
 export interface VaultNote {
   name: string;
+  path: string
   frontmatter: Record<string, any>;
   inlineProperties: InlineProperty[];
   content?: any;
 }
 
-export function atomizeMarkdownFile(content: string, fileName: string): VaultNote {
+export function atomizeMarkdownFile(content: string, filePath: string): VaultNote {
 
 /* CONTENT */
-    const contentSection = extractContentSection(content)
+    
 
 /* FRONTMATTER */
     let frontmatter: frontmatter = {}
@@ -42,9 +45,6 @@ export function atomizeMarkdownFile(content: string, fileName: string): VaultNot
                 const parsed = matter(content)
                 frontmatter = parsed.data
             } catch (error) {frontmatter = {parsed: false}}
-    if(frontmatter?.["Archive-47"]) {
-        console.log("atomize", frontmatter["Archive-47"])
-    }
 
 /* INLINE PROPERTIES */
     const inlineProperties: InlineProperty[] = []
@@ -57,8 +57,9 @@ export function atomizeMarkdownFile(content: string, fileName: string): VaultNot
         const userInput =  match[2].trim()
         const thisInline: InlineProperty = {
             Line: lineNumber,
-            Path: fileName,
+            FileName: path.basename(filePath, path.extname(filePath)),
             raw: userInput,
+            SourceLink: frontmatter.URL,
             PriorLine: priorLine,
             StrippedLine: strippedLine,
             Date: Temporal.Now.plainDateTimeISO(),
@@ -73,7 +74,17 @@ export function atomizeMarkdownFile(content: string, fileName: string): VaultNot
         }
         thisInline.URL = (frontmatter as Record<string, any>)?.URL;
         if (thisInline.Display === "Twitter" || thisInline.Display === "Truth") {
+            const contentSection = extractContentSection(content)
             thisInline.Content = contentSection
+        }
+        if (frontmatter?.["Archive-47"] === true) {
+            const linkBase = encodeURIComponent(thisInline.FileName)
+            const searchTerms = priorLine.split(/(?<!\b(?:Mr|Mrs|Dr|Sr|Jr|Inc|Co|Ltd|i\.e|e\.g))\.\s/).map((s: string) => encodeURIComponent(s)).join("&text=")
+            thisInline.SourceLink = `${linkBase}#:~:text=${searchTerms}`
+
+        } else if (frontmatter?.Paywalled !== false) {
+            const searchTerms = priorLine.split(/(?<!\b(?:Mr|Mrs|Dr|Sr|Jr|Inc|Co|Ltd|i\.e|e\.g))\.\s/).map((s: string) => encodeURIComponent(s)).join("&text=")
+            thisInline.SourceLink = `${thisInline.URL}#:~:text=${searchTerms}`
         }
         inlineProperties.push(thisInline)
     }
@@ -81,9 +92,9 @@ export function atomizeMarkdownFile(content: string, fileName: string): VaultNot
 
 
     return {
-        name: fileName,
+        name: filePath,
+        path: filePath,
         frontmatter: frontmatter,
         inlineProperties: inlineProperties,
-        content: contentSection
     }
 }

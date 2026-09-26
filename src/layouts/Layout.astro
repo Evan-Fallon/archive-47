@@ -19,12 +19,12 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
                 width: 100%;
             }
             body {
-                --color-accent: hsl(27, 86%, 60%);
-                --primary-bg: light-dark(hsl(0 0 95), hsl(0 0 3));
-                --secondary-bg: light-dark(hsl(0 0 90), hsl(0 0 6));
-                --text-color: light-dark(hsl(0 0 30), hsl(0 0 50));
-                --text-color-important: light-dark(hsl(0 0 10), hsl(0 0 70));
-                --border-basic: light-dark(hsl(0 0 70), hsl(0 0 20));
+                --color-accent: hsl(229, 86%, 60%);
+                --primary-bg: light-dark(hsl(231, 18%, 80%), hsl(0 0 3));
+                --secondary-bg: light-dark(hsl(222, 14%, 76%), hsl(0 0 6));
+                --text-color: light-dark(hsl(252, 20%, 35%), hsl(0 0 50));
+                --text-color-important: light-dark(hsl(230, 40%, 17%), hsl(0 0 70));
+                --border-basic: light-dark(hsl(234, 13%, 69%), hsl(0 0 20));
                 --border-hover: light-dark(hsl(0 0 50), hsl(0 0 30));
                 --mobile-width: 640px;
                 background: var(--primary-bg);
@@ -36,11 +36,8 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
                 overflow: hidden;     
         
             }
-            h1 {
-            font-weight: 1000;
-            font-size: calc(1rem + 2cqi);
-            text-align: center;
-            color: var(--text-color-important);
+            * {
+                box-sizing: border-box;
             }
             .pile {
                 display: grid;
@@ -51,7 +48,16 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
                 }
             }
             .topic-header {
-                height: min-content;
+                height: 86px;
+                margin: 0px;
+                align-content: center;
+                h1 {
+                    font-weight: 1000;
+                    font-size: min(calc(1rem + 2cqi), 3rem);
+                    text-align: center;
+                    color: var(--text-color-important);
+                    margin: auto;
+                }
             }
             .content-scroller {
                 overflow-y: scroll;
@@ -65,7 +71,7 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
             .content-sizer {
                 display: grid;
                 height: fit-content;
-                grid-template-columns: auto minmax(auto, 540px) minmax(auto, 540px) auto;
+                grid-template-columns: auto minmax(auto, 580px) minmax(auto, 580px) auto;
                 color: var(--text-color);
                 max-width: 100%;
                 min-width: 0%;
@@ -110,7 +116,7 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
             }
             @media only screen and (max-width: 640px) {
                 .web-header.web-header {
-                    height: 40px;
+                    height: 48px;
                     box-sizing: border-box;
                     animation-name: none;
                     top: 0px;
@@ -120,6 +126,7 @@ import ArchiveHeader from '../components/ArchiveHeader.astro';
         </style>
     </head>
     <body>
+        
         <div class="content-scroller">
             <ArchiveHeader/>
             <div class="content-sizer">

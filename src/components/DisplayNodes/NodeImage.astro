@@ -1,12 +1,15 @@
 ---
+import DynamicModalLink from '../DynamicModalLink.astro'
+
 const { atom } = Astro.props
 
-let Commentary = `
-<button class="commentary-button" popovertarget="commentary-${atom.Index}"> ? </button>
+let Commentary 
+if (atom.Commentary) {
+Commentary = `<button class="commentary-button" popovertarget="commentary-${atom.Index}">?</button>
 <div popover id="commentary-${atom.Index}" class="node-commentary-popover">
     ${atom?.Commentary}
-</div>
-`
+</div>`
+}
 
 ---
 <style>
@@ -33,7 +36,7 @@ let Commentary = `
             border-radius: 0 0 12px 0;
             z-index: 1;
             
-            a {
+            p {
                 text-box-trim: trim-both;
                 text-box-edge: cap alphabetic;
                 font-weight: bold;
@@ -92,6 +95,9 @@ let Commentary = `
 <div class="display-node image">
         <img src={`images/${atom["Display Image"]}`}/>
     <div class="name-link">
-       <a href=${atom.URL}><span class="image-node-day">{atom.OrdinalDay} {atom.DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""} - </span>{atom.Name}</a> {atom?.Commentary ? <Fragment set:html={Commentary}/> : ''}
+       <p><span class="image-node-day">{atom.OrdinalDay} {atom.DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""} - </span>{atom.Name}</p>     <div class="popover-buttons">
+        <DynamicModalLink targetUrl={atom.SourceLink} paywalled={atom.Frontmatter?.Paywalled}/>
+        <Fragment set:html={Commentary}/>
+    </div> 
     </div>  
 </div>

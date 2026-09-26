@@ -6,7 +6,7 @@ import  TimelineVertical from '../components/TimelineVertical.astro';
 import { Temporal } from '@js-temporal/polyfill';
 
 
-const queryPromise = await vaultQuery()
+const queryPromise = await vaultQuery("2026 usps election interference")
 const inlineEvents = queryPromise
   .flatMap(note => note.inlineProperties)
   .filter(inline => inline.Series?.toLowerCase().includes("2026 usps election interference".toLowerCase()))

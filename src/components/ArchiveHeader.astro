@@ -1,42 +1,22 @@
 <style>
-    .web-header {
-        --bg-opac: 0;
-        background-color: transparent;
-        display: flex;
-        width: 100%;
-        place-content: center;
-        padding: 8px;
-        position: sticky;
-        top: -100px;
-        height: 30px;
-        border-bottom: 1px solid var(--border-basic);
-        animation-name: rounding;
-        animation-timing-function: ease-in-out;
-        animation-fill-mode: forwards;
-        animation-timeline: scroll();
-        animation-range: 250px 800px;    
-        animation-duration: 100ms;
-        margin: auto; 
-        z-index: 10;
-        a { 
-            color: var(--text-color-important);
-            margin: auto;
-        }
-    }
-
-    @keyframes rounding {
-    from {
-        top: -100px;
-        background: transparent;
-        width: 100%;
-    }
-    to {
-        top: 10px;
-        border-radius: 50px;
-        background-color: var(--secondary-bg);
-        width: calc(100% - 100px);
+.web-header {
+    --bg-opac: 0;
+    background-color: transparent;
+    display: flex;
+    width: 100%;
+    place-content: center;
+    padding: 8px;
+    position: sticky;
+    height: 48px;
+    border-bottom: 1px solid var(--border-basic);
+    margin: auto; 
+    z-index: 10;
+    a { 
+        color: var(--text-color-important);
+        margin: auto;
     }
 }
+
 </style>
 <div class="web-header">
 <a href="./">Back to Index</a>

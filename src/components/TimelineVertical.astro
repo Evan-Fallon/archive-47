@@ -4,13 +4,15 @@ const { timeline } = Astro.props
 ---
 <style is:global>
 .timeline-base {
+    justify-self: center;
     display: grid;
     grid-template-columns: min-content min-content 40px auto;
     gap: 0px;
     background: var(--secondary-bg);
-    width: 100%;
+    width: calc(100% - 16px);
     max-width: 100%;
     min-width: 0% !important;
+    box-sizing: border-box;
     > * {
         min-width: 0%;
     }
@@ -20,11 +22,11 @@ const { timeline } = Astro.props
 .popover-buttons {
     display: flex;
     gap: 8px;
-    margin-left: 32px;
+    margin-left: auto;
     margin-right: 8px;
 }
-.commentary-button, .content-button {
-    opacity: 0;
+.commentary-button, .content-button, .popup-trigger {
+    opacity: .4;
     border: none;
     display: inline flex;
     font-weight: 1000;
@@ -34,13 +36,14 @@ const { timeline } = Astro.props
     transition-property: opacity;
     transition-duration: 250ms;
     flex-shrink: 0;
-    background: var(--border-basic);
+    background: var(--border-hover);
     color: var(--primary-bg);
     font-size: 1.3rem;
     overflow: hidden;
-    height: 28px;
-    width: 28px;
+    height: 32px;
+    width: 32px;
     border-radius: 4px;
+    margin-left: auto;
 
 }
 
@@ -56,6 +59,7 @@ const { timeline } = Astro.props
     position-area: top;
     position-try: flip-block;
     margin-bottom: 10px;
+    margin-left: auto;
     opacity: 0;
     transition: opacity 200ms;
     &:popover-open {
@@ -67,7 +71,8 @@ const { timeline } = Astro.props
 }
 
 .timeline-cell:hover .commentary-button,
-.timeline-cell:hover .content-button {
+.timeline-cell:hover .content-button,
+.timeline-cell:hover .popup-trigger {
     opacity: 1;
 }
 
@@ -76,10 +81,6 @@ const { timeline } = Astro.props
     align-items: center;
     grid-column: 2 / 3;
     width: 100%;
-    box-sizing: border-box;
-    &:has(.basic) {
-        padding-right: 16px;
-    }
     &:has(.display-node.image) {
         align-items: inherit;
         grid-column: 1 / 5 !important;
@@ -89,7 +90,9 @@ const { timeline } = Astro.props
     p {
         margin: 0;
     }
-    &.year {
+ 
+}
+.timeline-cell.year {
         color: var(--text-color-important);
         font-weight: 600;
         font-size: 3rem;
@@ -97,45 +100,84 @@ const { timeline } = Astro.props
         place-items: center;
         margin: 0;
         width: calc(100%);
-    } 
-    hr {
-        width: 100%;
-        border: none;
-        border-bottom: 1px solid hsl(0 0 30);
-        margin: 0px;
+
+} 
+.timeline-range.year {
+        display: flex;
+        align-items: start;
+        overflow-y: visible;
+        height: 100%;
+        position: relative;
+        pointer-events: none;
+        font-size: 3rem;
+        div {
+            box-sizing: border-box;
+            position: sticky;
+            text-align: center;
+            top: 0px;
+            width: 100%;
+            margin: 0px;
+
+            background: hsl(from var(--primary-bg) h s calc(l));
+            z-index: 8;
+            p {
+                margin: auto;
+                font-weight: 600;
+            }
+        }
     }
-    &.month {
+.timeline-cell.month, .timeline-range.month  {
         width: 100%;
-        text-align: right;
+        text-align: center;
         font-weight: 600;
         font-size: 1.1rem;
         color: var(--text-color);
-        z-index: 2;
         animation-name: opacity-reveal;
         animation-duration: 800ms;
         animation-timing-function: ease-in;
         animation-fill-mode: both;
         animation-delay: var(--anim-delay);
-        margin-top: 24px;
+
         p { 
             width: 100%;
         }
     }
+.timeline-range.month  {
+        display: flex;
+        align-items: start;
+        overflow-y: visible;
+        height: 100%;
+        width: 100%;
+        position: relative;
+        pointer-events: none;
+    div {
+        box-sizing: border-box;
+        position: sticky;
+        
+        top: 65px;
+        width: 100%;
+        margin: 0px;
+        background: var(--border-basic);
+        z-index: 7;
+        filter: drop-shadow(0px 8px 0px hsla(0, 0%, 0%, 0.2));
+        p {
+            margin: 0
+        }
+    }
+
 }
-.timeline-range {
-    display: none;
-}
+
+
 
 .timeline-line {
     background: var(--border-basic);
-    width: 4px;
-    height: calc(100% - 64px);
+    width: 1px;
+    height: calc(100%);
     justify-self: center;
     animation-name: line-go-down;
     animation-duration: 3000ms;
     animation-timing-function: ease-in;
     animation-fill-mode: both;
-    margin: 48px 0;
 }
 
 
@@ -225,11 +267,8 @@ const { timeline } = Astro.props
         font-size: 2em;
     }
 
-    .popover-buttons {
-        margin-left: auto;
-        padding-left: 8px;
-    }
-    .content-button, .commentary-button { 
+
+    .content-button, .commentary-button, .popup-trigger { 
         opacity: 1;
 
     }
@@ -259,19 +298,21 @@ const { timeline } = Astro.props
         position: relative;
         pointer-events: none;
         div {
+            display: flex;
+            align-items: center;
             box-sizing: border-box;
             position: sticky;
             text-align: center;
             height: 50px;
-            top: 40px;
+            top: 48px;
             width: 100%;
             margin: 0px;
-            
             background: var(--secondary-bg);
             z-index: 7;
             p {
                 margin: auto;
                 font-weight: 600;
+                font-size: 2rem;
             }
         }
     }
@@ -304,11 +345,11 @@ const { timeline } = Astro.props
         height: 100%;
         position: relative;
         pointer-events: none;
-        p {
+        div {
             height: min-content;
             background: var(--border-basic);    
             position: sticky;
-            top: 90px;
+            top: 98px;
             width: 100%;
             z-index: 6;
             margin: 0
@@ -390,7 +431,47 @@ const { timeline } = Astro.props
     }
 
 }
-
+@media only screen and (min-width: 640px) {
+    .timeline-base {
+        border-radius: 16px;
+        overflow-y: scroll;
+        height: calc(100svh - 134px - 32px);
+        border: 1px solid var(--border-basic);
+        scrollbar-width: none;
+    }
+    .timeline-range.month {
+        div {
+            text-align: left;
+            padding-left: 32px;
+        }
+    }
+    .node-day-time {
+        font-size: .8em;
+        display: flex; 
+        flex-direction: column;
+        padding: 0 4px;
+        border-radius: 16px;
+        border-color: var(--border-basic);
+        border-width: 0px;
+        border-style: solid;
+        margin: auto;
+        padding: 1px 6px;
+        border-radius: 0px;
+        z-index: 4;
+        p {
+            padding: 0;
+            height: auto;
+            margin: 0;
+        }
+        .node-day {
+            font-weight: bold;
+        }
+        .node-time {
+            font-size: .9em;
+        }
+        &.Minor {
+            background: var(--secondary-bg);
+        }
 </style>
   <div class="timeline-base">
     {timeline.Years.map((year: { yIndex: number; yEnd: any }) => {
@@ -416,34 +497,32 @@ const { timeline } = Astro.props
         gridRow: `${year.yIndex} / ${year.yIndex + 1}`,
       }}>
       <div><p>{year.year}</p></div>
-      <hr/>
       </div>
       <div class="timeline-range year" 
       style={{
         gridColumn: "1 / 5",
-        gridRow: `${year.yIndex} / ${timeline.Years[Math.min(yearsInd + 1, timeline.Years.length - 1)].yIndex + 1}`,
+        gridRow: `${year.yIndex} / ${timeline.Years[Math.min(yearsInd + 1, timeline.Years.length - 1)].yEnd + 1}`,
       }}>
         <div><p>{year.year}</p></div>
-        
       </div>
       ))}
   {timeline.Months.map((month: { yIndex: number; month: unknown }, monthInd: number) => (
     <div class="timeline-cell month spacer"
       style={{
-        gridColumn: "1 / 3",
+        gridColumn: "1 / 5",
         gridRow: `${month.yIndex} / ${month.yIndex + 1}`,
       }}>
-        <p>
+        <div><p>
       {month.month} 
-      </p>
+      </p></div>
       </div>
       <div class="timeline-range month" 
       style={`
         --anim-delay: ${month.yIndex * 75}ms;
-        grid-column: 2 / 3;
-        grid-row: ${month.yIndex} / ${timeline.Months[Math.min(monthInd + 1, timeline.Months.length - 1)].yIndex};
+        grid-column: 1 / 5;
+        grid-row: ${month.yIndex} / ${timeline.Months[Math.min(monthInd + 1, timeline.Months.length - 1)].yEnd + 1};
       `}>
-        <p>{month.month} </p>
+        <div><p>{month.month} </p></div>
       </div>  
       ))}
 

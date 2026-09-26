@@ -14,7 +14,9 @@
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.5.1",
+    "@lucide/astro": "^1.48.0",
     "astro": "^7.2.3",
+    "astro-icon": "^1.2.0",
     "fast-glob": "^3.3.3",
     "gray-matter": "^4.0.3",
     "marked": "^18.0.13",
