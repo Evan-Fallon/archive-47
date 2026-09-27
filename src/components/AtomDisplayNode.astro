@@ -5,13 +5,15 @@ import NodeMinor from "./DisplayNodes/NodeMinor.astro"
 import NodeImage from "./DisplayNodes/NodeImage.astro"
 import NodeTwitter from "./DisplayNodes/NodeTwitter.astro"
 import NodeTruth from "./DisplayNodes/NodeTruth.astro"
+import NodeYoutube from "./DisplayNodes/NodeYoutube.astro"
 
 const nodeMap = {
     Basic: NodeBasic,
     Minor: NodeMinor,
     Image: NodeImage,
     Twitter: NodeTwitter,
-    Truth: NodeTruth
+    Truth: NodeTruth,
+    Youtube: NodeYoutube
 }
 const NodeComponent = nodeMap[atom?.Display as keyof typeof nodeMap] ?? NodeBasic
 ---

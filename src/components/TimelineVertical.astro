@@ -95,11 +95,12 @@ const { timeline } = Astro.props
 .timeline-cell.year {
         color: var(--text-color-important);
         font-weight: 600;
-        font-size: 3rem;
+        font-size: 2.5rem;
         text-align: center;
         place-items: center;
         margin: 0;
         width: calc(100%);
+        height: 55px;
 
 } 
 .timeline-range.year {
@@ -109,15 +110,16 @@ const { timeline } = Astro.props
         height: 100%;
         position: relative;
         pointer-events: none;
-        font-size: 3rem;
+        font-size: 2.5rem;
         div {
             box-sizing: border-box;
             position: sticky;
             text-align: center;
+            align-content: center;
             top: 0px;
             width: 100%;
             margin: 0px;
-
+            height: 55px;
             background: hsl(from var(--primary-bg) h s calc(l));
             z-index: 8;
             p {
@@ -154,11 +156,11 @@ const { timeline } = Astro.props
         box-sizing: border-box;
         position: sticky;
         
-        top: 65px;
+        top: 55px;
         width: 100%;
         margin: 0px;
         background: var(--border-basic);
-        z-index: 7;
+        z-index: 7
         filter: drop-shadow(0px 8px 0px hsla(0, 0%, 0%, 0.2));
         p {
             margin: 0
