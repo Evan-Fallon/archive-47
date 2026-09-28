@@ -78,13 +78,16 @@ export function atomizeMarkdownFile(content: string, filePath: string): VaultNot
             thisInline.Content = contentSection
         }
         if (frontmatter?.["Archive-47"] === true) {
-            const linkBase = encodeURIComponent(thisInline.FileName)
-            const searchTerms = priorLine.split(/(?<!\b(?:Mr|Mrs|Dr|Sr|Jr|Inc|Co|Ltd|i\.e|e\.g))\.\s/).map((s: string) => encodeURIComponent(s)).join("&text=")
+            const linkBase = thisInline.FileName
+            const searchTerms = priorLine.split(/(?<!\b(?:Mr|Mrs|Dr|Sr|Jr|Inc|Co|Ltd|i\.e|e|\d\.g))\.\s/).map((s: string) => encodeURIComponent(s)).join("&text=")
             thisInline.SourceLink = `${linkBase}#:~:text=${searchTerms}`
 
         } else if (frontmatter?.Paywalled !== false) {
             const searchTerms = priorLine.split(/(?<!\b(?:Mr|Mrs|Dr|Sr|Jr|Inc|Co|Ltd|i\.e|e\.g))\.\s/).map((s: string) => encodeURIComponent(s)).join("&text=")
             thisInline.SourceLink = `${thisInline.URL}#:~:text=${searchTerms}`
+        }
+        if (thisInline.FileName === "Whistleblower Disclosure of Erez Reuveni") {
+            console.log(thisInline)
         }
         inlineProperties.push(thisInline)
     }

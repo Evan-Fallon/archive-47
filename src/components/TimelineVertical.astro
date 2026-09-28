@@ -436,10 +436,20 @@ const { timeline } = Astro.props
 @media only screen and (min-width: 640px) {
     .timeline-base {
         border-radius: 16px;
-        overflow-y: scroll;
-        height: calc(100svh - 134px - 32px);
-        border: 1px solid var(--border-basic);
+        overflow-y: clip;
+        position: relative;
         scrollbar-width: none;
+        &::before {
+            position: absolute;
+            content: '';
+            inset: 0 0 0 0;
+            border: 1px solid var(--border-basic);
+            border-radius: 16px;
+            z-index: 9;
+            pointer-events: none;
+        }
+    }
+    .timeline-cell.year {
     }
     .timeline-range.month {
         div {
@@ -474,6 +484,7 @@ const { timeline } = Astro.props
         &.Minor {
             background: var(--secondary-bg);
         }
+    }
 </style>
   <div class="timeline-base">
     {timeline.Years.map((year: { yIndex: number; yEnd: any }) => {

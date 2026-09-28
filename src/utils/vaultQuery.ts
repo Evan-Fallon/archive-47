@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import pLimit from 'p-limit';
 import { atomizeMarkdownFile, type VaultNote } from './atomizeMarkdown';
 
-const vaultpath = import.meta.env.PUBLIC_PATH;
+const vaultpath = import.meta.env.VAULT_PATH;
 const limit = pLimit(500);
 
 export async function vaultQuery(filter: string): Promise<VaultNote[]> {

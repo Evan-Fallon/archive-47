@@ -9,6 +9,7 @@ interface Frontmatter {
   caseNumber?: string;
   documentTitle?: string;
   judge?: string;
+  URL: string;
 }
 
 type Props = MarkdownLayoutProps<Frontmatter>;
@@ -26,6 +27,11 @@ const defendant = frontmatter.defendant ?? "BETA INDUSTRIES, INC., a California 
 const caseNumber = frontmatter.caseNumber ?? "Civil Action No. 1:26-cv-00123-LPS";
 const documentTitle = frontmatter.documentTitle ?? frontmatter.title ?? "MEMORANDUM OF LAW";
 const judge = frontmatter.judge ?? "Hon. Leonard P. Stark";
+
+// Render the slot content to a string and strip out %%[content]%% blocks
+const rawContent = await Astro.slots.render('default');
+const cleanContent = rawContent.replace(/<p>\s*%%[\s\S]*?%%\s*<\/p>|%%[\s\S]*?%%/g, '').replace(/\^[a-zA-Z0-9-]+/g, '')
+
 ---
 
 <!DOCTYPE html>
@@ -41,6 +47,7 @@ const judge = frontmatter.judge ?? "Hon. Leonard P. Stark";
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Tinos:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   </head>
   <body>
+    <div class="md-archive-header">The following is a tool assisted archive of the publically available source in order to make navigation easier. Minor mistakes are likely. View the original PDF <a href={frontmatter.URL}>here.</a></div>
     <div class="legal-viewport">
       <main class="legal-page">
         
@@ -81,7 +88,7 @@ const judge = frontmatter.judge ?? "Hon. Leonard P. Stark";
               {documentTitle.toUpperCase()}
             </div>
             <article class="legal-body">
-              <Fragment set:html={cleanedHtml} />
+              <article class="pdf-body" set:html={cleanContent} />
             </article>
           </div>
 
@@ -130,7 +137,17 @@ const judge = frontmatter.judge ?? "Hon. Leonard P. Stark";
     --bg-paper: #ffffff;
     --text-color: #000000;
   }
-
+  .md-archive-header {
+    position: sticky;
+    top: 0px;
+    background: white;
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid grey;
+    width: 100%;
+    font-size: .8rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
   * {
     box-sizing: border-box;
     margin: 0;
