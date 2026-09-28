@@ -313,7 +313,7 @@ const { timeline } = Astro.props
             top: 48px;
             width: 100%;
             margin: 0px;
-            background: var(--color-accent);
+            background: light-dark(var(--color-accent), var(--secondary-bg));
             z-index: 7;
             p {
                 margin: auto;
@@ -358,7 +358,8 @@ const { timeline } = Astro.props
             top: 98px;
             width: 100%;
             z-index: 6;
-            margin: 0
+            margin: 0;
+            
         }
     }
     .node-circles {

@@ -12,12 +12,13 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${atom
 ---
 <style>
     .display-node.basic {
+        --title-padding: 16px;
         display: flex;
     }
 .display-node.basic .content{
     display: flex;
     flex-direction: column;
-    --title-padding: 16px;
+    
     position: relative;
     isolation: isolate;
     padding: var(--title-padding);
@@ -42,7 +43,9 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${atom
         font-size: .8em;
     }
 
-
+.popover-buttons {
+    padding-top: var(--title-padding);
+}
 
 @media only screen and (min-width: 640px) {
     .display-node.basic {    
