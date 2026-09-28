@@ -23,21 +23,17 @@ let PriorLine = `
 .display-node.minor {
     margin: 16px 0;
     --title-padding: 16px;
-    box-sizing: border-box;
-    margin: 12px 0;
+    margin: 10px 0;
     display: flex;
     align-items: center;
     .name-link {   
-        gap: .5em;
-        align-items: center;
         height: fit-content;
         width: fit-content;
         p { 
         font-weight: bold;
-        font-size: 1.1em;
+        font-size: .85em;
         text-decoration: none;
         color: var(--text-color);
-        font-size: 1em;
         text-box-trim: trim-both;
         text-box-edge: ex alphabetic;
         }
@@ -45,14 +41,10 @@ let PriorLine = `
 }
 
 @media only screen and (max-width: 640px) {
-    &.basic  {
-        grid-column: 2 / 5; 
-        font-size: 1.15em;
+    .display-node.minor  {
+        width: 100%;
+        font-size: 1em;
         border-width: 0px;
-        paddng: 4px; 
-        &.minor {
-                margin-left: 12px;
-            }
     }
 }
 
@@ -62,7 +54,8 @@ let PriorLine = `
         <p>{atom.Name}</p> 
     </div>
     <div class="popover-buttons">
-        <DynamicModalLink targetUrl={atom.SourceLink} paywalled={atom.Frontmatter?.Paywalled}/>
         <Fragment set:html={Commentary}/>
+        <DynamicModalLink targetUrl={atom.SourceLink} paywalled={atom.Frontmatter?.Paywalled}/>
+        
     </div>
 </div>

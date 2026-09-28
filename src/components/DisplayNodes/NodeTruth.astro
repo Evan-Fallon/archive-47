@@ -1,5 +1,6 @@
 ---
 import { Marked } from "marked";
+import { Temporal } from "@js-temporal/polyfill";
 const { atom } = Astro.props
 
 const output = await new Marked().parse(atom.Content)
@@ -25,13 +26,12 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${atom
     color: black;
 }
 .truth.embed {
-    zoom: .85;
-    max-width: 600px;
+    zoom: .8;
+    max-width: 720px;
     margin-top: 10px;
     display: flex;
     flex-direction: column;
     background: rgb(230, 230, 230);
-    outline: 8px solid light-dark(#5549ee, transparent);
     border-radius: 6px;
     --title-padding: 24px;
     box-sizing: border-box;
@@ -39,8 +39,10 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${atom
     position: relative;
 
 }
-.truth.embed :global(p) {
-    font-family: Mozilla, sans-serif;
+.truth.embed .truth.content :global(p) {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    font-size: 18px;
+    line-height: 28px;
     margin: 16px 0px;
 }
 
@@ -67,7 +69,7 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${atom
 }
 .truth.logo {
     justify-self: right;
-    height: 24px;
+    max-height: 32px;
     width: auto;
     justify-self: right;
     padding: 4px;
@@ -129,27 +131,34 @@ img.truth.user-icon {
 
 .truth.footer {
     display: flex;
-    margin: 0px 0 12px 0;C
+    margin: 0px 0 12px 0;
+    color: dimgrey;
     p {
         margin: 0 1rem 0 0;
-        color: grey;
+        b {
+            color: black;
+        }
     }
 }
-.truth.date {
-    text-align: end;
+.truth.footer .truth.date {
+    margin-left: auto;
+    margin-right: 0;
+    color: dimgrey;
 }
 .truth.source-link {
     display: block;
     width: 100%;
     height: 42px;
-    border: 1px solid rgb(179, 179, 179);
+    border: 1px solid silver;
     border-radius: 64px;
     text-align: center;
     align-content: center;
     a {
         display: block;
+        text-decoration: none;
+        font-weight: bold;
         align-content: center;
-        color: rgb(179, 179, 179);
+        color: grey;
         width: 100%;
         height: 100%;
         margin: auto;
@@ -203,9 +212,9 @@ img.truth.user-icon {
         </div>
         <span class="truth content" set:html={output2}/>
         <div class="truth footer">
-            <p class="truth truths">{atom.Frontmatter.ReTruths} ReTruths</p>
-            <p class="truth views">{atom.Frontmatter.Likes} Likes</p>
-            <p class="truth date">{atom.Frontmatter.Date}</p>
+            <p class="truth truths"><b>{atom.Frontmatter.ReTruths}</b> ReTruths </p>
+            <p class="truth views"><b>{atom.Frontmatter.Likes}</b> Likes</p>
+            <p class="truth date">{atom.Date.toLocaleString()}</p>
         </div>
         <div class="truth source-link">
             <a href={atom.URL}>See original on truthsocial.com</a>
