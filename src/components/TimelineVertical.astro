@@ -1,5 +1,5 @@
 ---
-import type { TimelineData } from "../utils/inlineToTimeline";
+import type { TimelineData, TimelineEntry } from "../utils/inlineToTimeline";
 import AtomDisplayNode from "./AtomDisplayNode.astro"
 
 interface Props {
@@ -550,7 +550,7 @@ const { timelineData } = Astro.props
       </div>  
       ))}
 
-    {timelineData.Entries.map((atom: { Display: any; Index: number }) => (
+    {timelineData.Entries.map((atom: TimelineEntry) => (
       <div class={`node-circles ${atom.Display}`}
       style={`
         grid-column: 3 / 4;
@@ -558,7 +558,7 @@ const { timelineData } = Astro.props
         --anim-delay: ${atom.Index * 125}ms`
       }/>
     ))}
-    {timelineData.Entries.map(entry => (
+    {timelineData.Entries.map((entry: TimelineEntry) => (
       <div class={`node-day-time ${entry.Display}`} 
       style={`
         grid-column: 2 / 3;
@@ -569,7 +569,7 @@ const { timelineData } = Astro.props
         {entry.InlineProperties?.[0]?.DateString?.split("T")?.[1] ? <p class="node-time"> {entry.InlineProperties[0].DateString.split("T")[1]}</p> : ""}
       </div>
     ))}
-    {timelineData.Entries.map((atom: any) => (
+    {timelineData.Entries.map((atom: TimelineEntry) => (
       <div class="timeline-cell node" 
       style={`
         grid-column: 4 / 5;

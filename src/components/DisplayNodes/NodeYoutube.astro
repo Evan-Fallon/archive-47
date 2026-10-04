@@ -90,7 +90,7 @@ seconds = Number(atom.Timestamp.split(":")[0]) * 60 + Number(atom.Timestamp.spli
             <p>{atom.Name}</p>
         </div>
         <div class="youtube-video">
-        <iframe src={`${atom.Frontmatter.EmbedURL}?start=${seconds}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe src={`${atom.InlineProperies?.Frontmatter.EmbedURL}?start=${seconds}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
     </div>
     <div class="popover-buttons">

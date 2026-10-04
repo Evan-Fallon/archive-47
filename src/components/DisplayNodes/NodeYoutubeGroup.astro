@@ -1,18 +1,24 @@
 ---
-const { atom } = Astro.props
-const atomGroup = atom
+import type { TimelineEntry } from "../../utils/inlineToTimeline"
+
+interface Prop {
+    entry: TimelineEntry;
+}
+
+const { entry } = Astro.props
+
 
 let Commentary 
-if (atomGroup?.Commentary) {
-Commentary = `<button class="commentary-button" popovertarget="commentary-${atomGroup.Index}">?</button>
-<div popover id="commentary-${atomGroup.Index}" class="node-commentary-popover">
-    ${atomGroup?.Commentary}
+if (entry?.Commentary) {
+Commentary = `<button class="commentary-button" popovertarget="commentary-${entry.Index}">?</button>
+<div popover id="commentary-${entry.Index}" class="node-commentary-popover">
+    ${entry?.Commentary}
 </div>`
 }
 let seconds = 0
 
-if (atomGroup?.Timestamp) {
-seconds = Number(atomGroup.Timestamp.split(":")[0]) * 60 + Number(atomGroup.Timestamp.split(":")[1])
+if (entry?.Timestamp) {
+seconds = Number(entry.Timestamp.split(":")[0]) * 60 + Number(entry.Timestamp.split(":")[1])
 }
 
 
@@ -102,16 +108,16 @@ seconds = Number(atomGroup.Timestamp.split(":")[0]) * 60 + Number(atomGroup.Time
 
 </style>
 <div class="display-node youtube">
-    <p class="group-name">{atomGroup.GroupName}</p> 
+    <p class="group-name">{entry.EntryName}</p> 
     <div class="content">
         <div class="youtube-video">
-            <iframe src={`${atomGroup.atoms[0].Frontmatter.EmbedURL}?start=${seconds}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <iframe src={`${entry.Property.Frontmatter.EmbedURL}?start=${seconds}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
         <div class="timestamp-list" tabindex="0">
-            {atomGroup.atoms.map((atom: { Name: unknown }) => {
+            {entry.Grouped.map((atom: { Name: unknown }) => {
                 return (
                     <p>
-                        {atom.Timestamp} - {atom.Name}
+                        {atom?.Timestamp} - {atom.Name}
                     </p>
                 )
             })}

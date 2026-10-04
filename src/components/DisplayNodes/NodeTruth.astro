@@ -3,14 +3,14 @@ import { Marked } from "marked";
 import { Temporal } from "@js-temporal/polyfill";
 const { atom } = Astro.props
 
-const output = await new Marked().parse(atom.Content)
+const output = await new Marked().parse(atom.InlineProperties?.[0].Content)
 const output2 = output.replace(/!\[\[(.*?)\]\]/g, '<img src="images/$1"/>');
 
 let Commentary 
-if (atom.Commentary) {
+if (atom.InlineProperties?.Commentary) {
 Commentary = `<button class="commentary-button" popovertarget="commentary-${atom.Index}">?</button>
 <div popover id="commentary-${atom.Index}" class="node-commentary-popover">
-    ${atom?.Commentary}
+    ${atom?.InlineProperties?.Commentary}
 </div>`
 }
 ---
@@ -205,20 +205,20 @@ img.truth.user-icon {
     <div class="truth embed">
         <div class="truth header">
             <div class="truth user-info">
-                <img src={`images/${atom.Frontmatter.Icon.slice(2, -2)}`} class="truth user-icon"/>
-                <p class="truth fullname">{atom.Frontmatter["User Fullname"]}</p>
-                <p class="truth handle">{atom.Frontmatter["Handle"]}</p>
+                <img src={`images/${atom.InlineProperties?.[0].Frontmatter.Icon.slice(2, -2)}`} class="truth user-icon"/>
+                <p class="truth fullname">{atom.InlineProperties?.[0].Frontmatter["User Fullname"]}</p>
+                <p class="truth handle">{atom.InlineProperties?.[0].Frontmatter["Handle"]}</p>
             </div>
             <img src="images/Truth_Social_logo_2022-light.png" class="truth logo"/>  
         </div>
         <span class="truth content" set:html={output2}/>
         <div class="truth footer">
-            <p class="truth truths"><b>{atom.Frontmatter.ReTruths}</b> ReTruths </p>
-            <p class="truth views"><b>{atom.Frontmatter.Likes}</b> Likes</p>
-            <p class="truth date">{atom.Date.toLocaleString()}</p>
+            <p class="truth truths"><b>{atom.InlineProperties?.[0].Frontmatter.ReTruths}</b> ReTruths </p>
+            <p class="truth views"><b>{atom.InlineProperties?.[0].Frontmatter.Likes}</b> Likes</p>
+            <p class="truth date">{atom.InlineProperties?.[0].Date.toLocaleString()}</p>
         </div>
         <div class="truth source-link">
-            <a href={atom.URL}>See original on truthsocial.com</a>
+            <a href={atom.InlineProperties?.[0].URL}>See original on truthsocial.com</a>
         </div>
     </div>
 </div>

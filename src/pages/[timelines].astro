@@ -32,10 +32,11 @@ const inlines = pages
   .map(page => loadInlineProperties(page))
   .flatMap(page => page.inlineProperties)
   .sort((a, b) => Temporal.PlainDateTime.compare(a.Date, b.Date))
-const entries = inlineToTimeline(inlines)
-groupEntries(entries)
+const timelineData = inlineToTimeline(inlines)
+groupEntries(timelineData)
+const debug = timelineData
 ---
 <Layout>
 <div>Page for, {timelines}!</div>
-<TimelineVertical timelineData={entries}/>
+<Debug {debug}/>
 </Layout>

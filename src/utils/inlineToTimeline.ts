@@ -3,8 +3,9 @@ import { type InlineProperty } from "./vaultQuery"
 export interface TimelineEntry {
     EntryName: string | boolean;
     Index: number;
-    InlineProperties: InlineProperty[]
-    Display: string;   
+    Properties: InlineProperty
+    Display: string;
+    Children?: any[];
 }
 
 export interface TimelineData {
@@ -20,7 +21,7 @@ export function inlineToTimeline(inlines: InlineProperty[]): TimelineData {
 
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
    
-    let currentNodes: TimelineEntry[] = []
+    let currentEntries: TimelineEntry[] = []
     let currentYears = [{year: inlines[0].Date.year, yIndex: 1, yEnd: 2}]
     let currentMonths = [{month: months[inlines[0].Date.month - 1], yIndex: 2, yEnd: 2}]
     let currentSpans: any[] = []
@@ -49,7 +50,7 @@ export function inlineToTimeline(inlines: InlineProperty[]): TimelineData {
                 endSpan.yEnd = yIndex
             }
         }
-        currentNodes.push({InlineProperties: [atom], Index: yIndex, Display: atom.Display, EntryName: atom.Name})
+        currentEntries.push({Properties: atom, Index: yIndex, Display: atom.Display, EntryName: atom.Name})
         yIndex++
     })  
     currentYears[currentYears.length - 1].yEnd = yIndex 
@@ -77,7 +78,7 @@ export function inlineToTimeline(inlines: InlineProperty[]): TimelineData {
     return {
         Years: currentYears, 
         Months: currentMonths, 
-        Entries: currentNodes, 
+        Entries: currentEntries, 
         SpanTracks: currentSpans, 
         Spans: numberedSpans,
         Length: yIndex

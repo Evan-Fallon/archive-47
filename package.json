@@ -19,7 +19,7 @@
     "astro-icon": "^1.2.0",
     "fast-glob": "^3.3.3",
     "gray-matter": "^4.0.3",
-    "marked": "^18.0.13",
+    "marked": "^18.0.14",
     "p-limit": "^7.3.3"
   },
   "devDependencies": {

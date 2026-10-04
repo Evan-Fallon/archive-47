@@ -2,7 +2,7 @@
 import { Marked } from "marked";
 const { atom } = Astro.props
 
-const output = await new Marked().parse(atom.Content)
+const output = await new Marked().parse(atom.InlineProperties[0].Content)
 const output2 = output.replace(/!\[\[(.*?)\]\]/g, '<img src="images/$1"/>');
 let Commentary = `
 <button class="commentary-button" popovertarget="commentary-${atom.Index}"> ? </button>
@@ -196,19 +196,19 @@ img.twitter.user-icon {
     <div class="twitter embed">
         <div class="twitter header">
             <div class="twitter user-info">
-                <img src={`images/${atom.Frontmatter.Icon.slice(2, -2)}`} class="twitter user-icon"/>
-                <p class="twitter fullname">{atom.Frontmatter["User Fullname"]}</p>
-                <p class="twitter handle">{atom.Frontmatter["Handle"]}</p>
+                <img src={`images/${atom.InlineProperies?.[0].Frontmatter.Icon.slice(2, -2)}`} class="twitter user-icon"/>
+                <p class="twitter fullname">{atom.InlineProperies?.[0].Frontmatter["User Fullname"]}</p>
+                <p class="twitter handle">{atom.InlineProperies?.[0].Frontmatter["Handle"]}</p>
             </div>
             <img src="images/twitter-logo.png" class="twitter logo"/>  
         </div>
         <span class="twitter content" set:html={output2}/>
         <div class="twitter footer">
-            <p class="twitter date">{atom.Frontmatter.Date}</p>
-            <p class="twitter views"><b>{atom.Frontmatter.Views}</b> views</p>
+            <p class="twitter date">{atom.InlineProperies?.[0].Frontmatter.Date}</p>
+            <p class="twitter views"><b>{atom.InlineProperies?.[0].Frontmatter.Views}</b> views</p>
         </div>
         <div class="twitter source-link">
-            <a href={atom.URL}>See original on x.com</a>
+            <a href={atom.InlineProperies?.[0].Frontmatter.URL}>See original on x.com</a>
         </div>
     </div>
 </div>

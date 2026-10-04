@@ -1,5 +1,8 @@
 ---
-const { atom } = Astro.props
+interface Props {
+    entry: TimelineEntry;
+}
+const { entry } = Astro.props
 import NodeBasic from "./DisplayNodes/NodeBasic.astro"
 import NodeMinor from "./DisplayNodes/NodeMinor.astro"
 import NodeImage from "./DisplayNodes/NodeImage.astro"
@@ -7,6 +10,7 @@ import NodeTwitter from "./DisplayNodes/NodeTwitter.astro"
 import NodeTruth from "./DisplayNodes/NodeTruth.astro"
 import NodeYoutube from "./DisplayNodes/NodeYoutube.astro"
 import NodeYoutubeGroup from "./DisplayNodes/NodeYoutubeGroup.astro"
+import type { TimelineEntry } from "../utils/inlineToTimeline"
 
 const nodeMap = {
     Basic: NodeBasic,
@@ -17,6 +21,6 @@ const nodeMap = {
     Youtube: NodeYoutube,
     YoutubeGroup: NodeYoutubeGroup
 }
-const NodeComponent = nodeMap[atom?.Display as keyof typeof nodeMap] ?? NodeBasic
+const NodeComponent = nodeMap[entry?.Display as keyof typeof nodeMap] ?? NodeBasic
 ---
-<NodeComponent atom={atom}/>
+<NodeComponent entry={entry}/>

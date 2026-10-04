@@ -3,35 +3,45 @@ import type { TimelineData, TimelineEntry } from './inlineToTimeline'
 import type { InlineProperty } from './vaultQuery'
 
 
-export function groupEntries( atoms: TimelineData) {
+export function groupEntries( data: TimelineData ) {
 
-let currentGroup = { InlineProperties: [] as InlineProperty[], EntryName: false as string | boolean, Display: "Basic", Index: 0 } 
-const emptyGroup = { InlineProperties: [] as InlineProperty[], EntryName: false as string | boolean, Display: "Basic", Index: 0 } 
+const createEmptyGroup = (): TimelineEntry => ({ 
+    Properties: data.Entries[0].Properties as InlineProperty, 
+    Children: [], 
+    EntryName: false as string | boolean, 
+    Display: "Basic", 
+    Index: 0 
+} as TimelineEntry )
+let currentGroup = createEmptyGroup()
 
-const groupedAtoms = [] as TimelineEntry[]
-atoms.Entries.forEach((atom, index) => {
-    const thisAtom = atom.InlineProperties[0]
-    if (!atom.Display.includes("Group")) {
+const groupedEntries = [] as TimelineEntry[]
+data.Entries.forEach((entry, index) => {
+    if (!entry.Display.includes("Group")) {
         if (currentGroup.EntryName) {
-            groupedAtoms.push(currentGroup)
-            currentGroup = emptyGroup
+            groupedEntries.push(currentGroup)
+            currentGroup = createEmptyGroup()
         }
-        groupedAtoms.push(atom)
+        groupedEntries.push(entry)
     } else {
         if (!currentGroup.EntryName) {
-            currentGroup = atom
-        } else if (currentGroup.EntryName && currentGroup.EntryName !== atom.EntryName) {
-            groupedAtoms.push(currentGroup)
-            currentGroup.InlineProperties.push(atom.InlineProperties[0])
+            currentGroup = entry
+            currentGroup.EntryName = entry.Properties.FileName
+            currentGroup.Children = [entry.Properties]
+        } else if (currentGroup.EntryName && currentGroup.EntryName !== entry.Properties.FileName) {
+            groupedEntries.push(currentGroup)
+            currentGroup = entry
+            currentGroup.EntryName = entry.Properties.FileName
+            currentGroup.Children = [entry.Properties]
         }
         else {
-            currentGroup.InlineProperties.push(atom.InlineProperties[0])
+            currentGroup?.Children?.push(entry.Properties)
         }
-        if (index === atoms.Entries.length - 1) {
-            groupedAtoms.push(currentGroup)
+        if (index === data.Entries.length - 1) {
+            groupedEntries.push(currentGroup)
         }
     }
 })
 
-atoms.Entries = groupedAtoms
+
+data.Entries = groupedEntries
 }
