@@ -8,6 +8,7 @@ import { loadInlineProperties } from '../utils/loadInlineProperties';
 import { Temporal } from '@js-temporal/polyfill';
 import { inlineToTimeline } from '../utils/inlineToTimeline'
 import { groupEntries } from '../utils/groupEntries'
+import { Timeline } from '@lucide/astro';
 
 export async function getStaticPaths() {
   const query = await vaultQuery()
@@ -38,5 +39,5 @@ const debug = timelineData
 ---
 <Layout>
 <div>Page for, {timelines}!</div>
-<Debug {debug}/>
+<TimelineVertical timelineData={timelineData}/>
 </Layout>

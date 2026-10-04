@@ -1,21 +1,25 @@
 ---
 
+import type { TimelineEntry } from '../../utils/inlineToTimeline'
 import DynamicModalLink from '../DynamicModalLink.astro'
 
-const { atom } = Astro.props
+interface Props {
+    entry: TimelineEntry;
+}
+const { entry } = Astro.props
 
 let Commentary 
-if (atom.Commentary) {
-Commentary = `<button class="commentary-button" popovertarget="commentary-${atom.Index}">?</button>
-<div popover id="commentary-${atom.Index}" class="node-commentary-popover">
-    ${atom?.Commentary}
+if (entry.Properties?.Commentary) {
+Commentary = `<button class="commentary-button" popovertarget="commentary-${entry.Index}">?</button>
+<div popover id="commentary-${entry.Index}" class="node-commentary-popover">
+    ${entry.Properties.Commentary}
 </div>`
 }
 
 let PriorLine = `
-<button class="content-button" popovertarget="content-${atom.Index}">"</button>
-<div popover id="content-${atom.Index}" class="node-content-popover">
-    ${atom?.StrippedLine}
+<button class="content-button" popovertarget="content-${entry.Index}">"</button>
+<div popover id="content-${entry.Index}" class="node-content-popover">
+    ${entry.Properties.StrippedLine}
 </div>
 `
 ---
@@ -51,11 +55,11 @@ let PriorLine = `
 </style>
 <div class="display-node minor">
     <div class="name-link">
-        <p>{atom.Name}</p> 
+        <p>{entry.EntryName}</p> 
     </div>
     <div class="popover-buttons">
         <Fragment set:html={Commentary}/>
-        <DynamicModalLink targetUrl={atom.SourceLink} paywalled={atom.Frontmatter?.Paywalled}/>
+        <DynamicModalLink targetUrl={entry.Properties.SourceLink} paywalled={entry.Properties?.Paywalled}/>
         
     </div>
 </div>

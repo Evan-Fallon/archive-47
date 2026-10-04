@@ -6,20 +6,20 @@ import matter from 'gray-matter'
 import { Temporal } from '@js-temporal/polyfill'
 
 export interface InlineProperty {
-    Line: number;
-    Name: string;
-    Series?: string;
-    FileName: string;
-    SourceLink: string
-    raw: string;
-    PriorLine: string;
-    Date: Temporal.PlainDateTime;
-    DateString: string;
-    OrdinalDay: string;
-    Display: string;
-    DisplayImage?: string;
-    Frontmatter: any;
-    [key: string]: any;
+  Line: number;
+  Name: string;
+  Series?: string;
+  FileName: string;
+  SourceLink: string
+  raw: string;
+  PriorLine: string;
+  Date: Temporal.PlainDateTime;
+  DateString: string;
+  OrdinalDay: string;
+  Display: string;
+  DisplayImage?: string;
+  Frontmatter: any;
+  [key: string]: any;
 }
 
 export interface VaultNote {

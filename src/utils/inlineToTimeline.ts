@@ -5,7 +5,7 @@ export interface TimelineEntry {
     Index: number;
     Properties: InlineProperty
     Display: string;
-    Children?: any[];
+    Children?: InlineProperty[];
 }
 
 export interface TimelineData {

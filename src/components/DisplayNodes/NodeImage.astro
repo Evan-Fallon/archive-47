@@ -1,13 +1,18 @@
 ---
+import type { TimelineEntry } from '../../utils/inlineToTimeline'
 import DynamicModalLink from '../DynamicModalLink.astro'
 
-const { atom } = Astro.props
+interface Props {
+    entry: TimelineEntry
+}
+
+const { entry } = Astro.props
 
 let Commentary 
-if (atom.Commentary) {
-Commentary = `<button class="commentary-button" popovertarget="commentary-${atom.Index}">?</button>
-<div popover id="commentary-${atom.Index}" class="node-commentary-popover">
-    ${atom?.Commentary}
+if (entry.Properties?.Commentary) {
+Commentary = `<button class="commentary-button" popovertarget="commentary-${entry.Index}">?</button>
+<div popover id="commentary-${entry.Index}" class="node-commentary-popover">
+    ${entry.Properties.Commentary}
 </div>`
 }
 
@@ -106,13 +111,13 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${atom
 
 </style>
 <div class="display-node image">
-        <img src={`images/${atom["Display Image"]}`}/>
+        <img src={`images/${entry.Properties["Display Image"]}`}/>
     <div class="name-link">
-       <p><span class="image-node-day">{atom.InlineProperies?.[0].OrdinalDay} {atom.InlineProperies?.[0].DateString.split("T")[1] ? " - " + atom.DateString.split("T")[1] : ""} - </span>{atom.Name}</p>   
+       <p><span class="image-node-day">{entry.Properties.OrdinalDay} {entry.Properties.DateString.split("T")[1] ? " - " + entry.Properties.DateString.split("T")[1] : ""} - </span>{entry.EntryName}</p>   
      </div>
        <div class="popover-buttons"> 
         <Fragment set:html={Commentary}/>
-            <DynamicModalLink targetUrl={atom.SourceLink} paywalled={atom.Frontmatter?.Paywalled}/>
+            <DynamicModalLink targetUrl={entry.Properties.SourceLink} paywalled={entry.Properties?.Paywalled}/>
             
    
     </div>  

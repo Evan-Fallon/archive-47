@@ -2,15 +2,15 @@
 import type { TimelineEntry } from '../../utils/inlineToTimeline'
 import DynamicModalLink from '../DynamicModalLink.astro'
 interface Props {
-    entry: TimelineEntry
+    entry: TimelineEntry;
 }
 const { entry } = Astro.props
 
 let Commentary 
-if (entry.InlineProperties?.[0]?.Commentary) {
+if (entry.Properties?.Commentary) {
 Commentary = `<button class="commentary-button" popovertarget="commentary-${entry.Index}">?</button>
 <div popover id="commentary-${entry.Index}" class="node-commentary-popover">
-    ${entry.InlineProperties?.[0]?.Commentary}
+    ${entry.Properties.Commentary}
 </div>`
 }
 
@@ -90,10 +90,10 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${entr
         <div class="name-link">
             <p>{entry.EntryName}</p>
         </div>
-        <div class="content-embed">{entry.InlineProperties?.[0].PriorLine}</div>
+        <div class="content-embed">{entry.Properties.PriorLine}</div>
     </div>
     <div class="popover-buttons">
-        <DynamicModalLink targetUrl={entry.InlineProperties?.[0].SourceLink} paywalled={entry.InlineProperties?.[0].Frontmatter?.Paywalled}/>
+        <DynamicModalLink targetUrl={entry.Properties.SourceLink} paywalled={entry.Properties.Frontmatter?.Paywalled}/>
         <Fragment set:html={Commentary}/>
     </div>
 </div>

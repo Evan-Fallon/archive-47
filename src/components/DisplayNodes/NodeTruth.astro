@@ -1,16 +1,22 @@
 ---
 import { Marked } from "marked";
 import { Temporal } from "@js-temporal/polyfill";
-const { atom } = Astro.props
+import type { TimelineEntry } from "../../utils/inlineToTimeline";
 
-const output = await new Marked().parse(atom.InlineProperties?.[0].Content)
+
+interface Props {
+    entry: TimelineEntry;
+}
+const { entry } = Astro.props
+
+const output = await new Marked().parse(entry.Properties.Content)
 const output2 = output.replace(/!\[\[(.*?)\]\]/g, '<img src="images/$1"/>');
 
 let Commentary 
-if (atom.InlineProperties?.Commentary) {
-Commentary = `<button class="commentary-button" popovertarget="commentary-${atom.Index}">?</button>
-<div popover id="commentary-${atom.Index}" class="node-commentary-popover">
-    ${atom?.InlineProperties?.Commentary}
+if (entry.Properties?.Commentary) {
+Commentary = `<button class="commentary-button" popovertarget="commentary-${entry.Index}">?</button>
+<div popover id="commentary-${entry.Index}" class="node-commentary-popover">
+    ${entry.Properties?.Commentary}
 </div>`
 }
 ---
@@ -197,7 +203,7 @@ img.truth.user-icon {
 </style>
 <div class="display-node truth">
     <div class="name-link">
-        <p>{atom.Name}</p> 
+        <p>{entry.EntryName}</p> 
         <div class="popover-buttons">
             <Fragment set:html={Commentary}/>
         </div>
@@ -205,20 +211,20 @@ img.truth.user-icon {
     <div class="truth embed">
         <div class="truth header">
             <div class="truth user-info">
-                <img src={`images/${atom.InlineProperties?.[0].Frontmatter.Icon.slice(2, -2)}`} class="truth user-icon"/>
-                <p class="truth fullname">{atom.InlineProperties?.[0].Frontmatter["User Fullname"]}</p>
-                <p class="truth handle">{atom.InlineProperties?.[0].Frontmatter["Handle"]}</p>
+                <img src={`images/${entry.Properties.Frontmatter.Icon.slice(2, -2)}`} class="truth user-icon"/>
+                <p class="truth fullname">{entry.Properties.Frontmatter["User Fullname"]}</p>
+                <p class="truth handle">{entry.Properties.Frontmatter["Handle"]}</p>
             </div>
             <img src="images/Truth_Social_logo_2022-light.png" class="truth logo"/>  
         </div>
         <span class="truth content" set:html={output2}/>
         <div class="truth footer">
-            <p class="truth truths"><b>{atom.InlineProperties?.[0].Frontmatter.ReTruths}</b> ReTruths </p>
-            <p class="truth views"><b>{atom.InlineProperties?.[0].Frontmatter.Likes}</b> Likes</p>
-            <p class="truth date">{atom.InlineProperties?.[0].Date.toLocaleString()}</p>
+            <p class="truth truths"><b>{entry.Properties.Frontmatter.ReTruths}</b> ReTruths </p>
+            <p class="truth views"><b>{entry.Properties.Frontmatter.Likes}</b> Likes</p>
+            <p class="truth date">{entry.Properties.toLocaleString()}</p>
         </div>
         <div class="truth source-link">
-            <a href={atom.InlineProperties?.[0].URL}>See original on truthsocial.com</a>
+            <a href={entry.Properties.Frontmatter.URL}>See original on truthsocial.com</a>
         </div>
     </div>
 </div>

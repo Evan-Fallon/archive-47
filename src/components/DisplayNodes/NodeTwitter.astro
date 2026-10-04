@@ -1,13 +1,18 @@
 ---
 import { Marked } from "marked";
-const { atom } = Astro.props
+import type { TimelineEntry } from "../../utils/inlineToTimeline";
 
-const output = await new Marked().parse(atom.InlineProperties[0].Content)
+interface Props {
+    entry: TimelineEntry;
+}
+const { entry } = Astro.props
+
+const output = await new Marked().parse(entry.Properties?.Content)
 const output2 = output.replace(/!\[\[(.*?)\]\]/g, '<img src="images/$1"/>');
 let Commentary = `
-<button class="commentary-button" popovertarget="commentary-${atom.Index}"> ? </button>
-<div popover id="commentary-${atom.Index}" class="node-commentary-popover">
-    ${atom?.Commentary}
+<button class="commentary-button" popovertarget="commentary-${entry.Index}"> ? </button>
+<div popover id="commentary-${entry.Index}" class="node-commentary-popover">
+    ${entry.Properties?.Commentary}
 </div>
 `
 ---
@@ -191,24 +196,24 @@ img.twitter.user-icon {
 </style>
 <div class="display-node twitter">
     <div class="name-link">
-        <a href={atom.URL}>{atom.Name}</a> {atom?.Commentary ? <Fragment set:html={Commentary}/> : ''}
+        <a href={entry.Properties.URL}>{entry.EntryName}</a> {entry.Properties?.Commentary ? <Fragment set:html={Commentary}/> : ''}
     </div>
     <div class="twitter embed">
         <div class="twitter header">
             <div class="twitter user-info">
-                <img src={`images/${atom.InlineProperies?.[0].Frontmatter.Icon.slice(2, -2)}`} class="twitter user-icon"/>
-                <p class="twitter fullname">{atom.InlineProperies?.[0].Frontmatter["User Fullname"]}</p>
-                <p class="twitter handle">{atom.InlineProperies?.[0].Frontmatter["Handle"]}</p>
+                <img src={`images/${entry.Properties.Frontmatter.Icon.slice(2, -2)}`} class="twitter user-icon"/>
+                <p class="twitter fullname">{entry.Properties.Frontmatter["User Fullname"]}</p>
+                <p class="twitter handle">{entry.Properties.Frontmatter["Handle"]}</p>
             </div>
             <img src="images/twitter-logo.png" class="twitter logo"/>  
         </div>
         <span class="twitter content" set:html={output2}/>
         <div class="twitter footer">
-            <p class="twitter date">{atom.InlineProperies?.[0].Frontmatter.Date}</p>
-            <p class="twitter views"><b>{atom.InlineProperies?.[0].Frontmatter.Views}</b> views</p>
+            <p class="twitter date">{entry.Properties.Frontmatter.Date}</p>
+            <p class="twitter views"><b>{entry.Properties.Frontmatter.Views}</b> views</p>
         </div>
         <div class="twitter source-link">
-            <a href={atom.InlineProperies?.[0].Frontmatter.URL}>See original on x.com</a>
+            <a href={entry.Properties.Frontmatter.URL}>See original on x.com</a>
         </div>
     </div>
 </div>

@@ -1,17 +1,24 @@
 ---
-const { atom } = Astro.props
+import type { TimelineEntry } from '../../utils/inlineToTimeline'
+
+
+interface Props {
+    entry: TimelineEntry;
+}
+
+const { entry } = Astro.props
 
 let Commentary 
-if (atom.Commentary) {
-Commentary = `<button class="commentary-button" popovertarget="commentary-${atom.Index}">?</button>
-<div popover id="commentary-${atom.Index}" class="node-commentary-popover">
-    ${atom?.Commentary}
+if (entry.Properties.Commentary) {
+Commentary = `<button class="commentary-button" popovertarget="commentary-${entry.Index}">?</button>
+<div popover id="commentary-${entry.Index}" class="node-commentary-popover">
+    ${entry.Properties?.Commentary}
 </div>`
 }
 let seconds = 0
 
-if (atom?.Timestamp) {
-seconds = Number(atom.Timestamp.split(":")[0]) * 60 + Number(atom.Timestamp.split(":")[1])
+if (entry.Properties?.Timestamp) {
+seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.Properties.Timestamp.split(":")[1])
 }
 ---
 <style>
@@ -87,10 +94,10 @@ seconds = Number(atom.Timestamp.split(":")[0]) * 60 + Number(atom.Timestamp.spli
 <div class="display-node basic">
     <div class="content">
         <div class="name-link">
-            <p>{atom.Name}</p>
+            <p>{entry.EntryName}</p>
         </div>
         <div class="youtube-video">
-        <iframe src={`${atom.InlineProperies?.Frontmatter.EmbedURL}?start=${seconds}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe src={`${entry.Properties.Frontmatter.EmbedURL}?start=${seconds}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
     </div>
     <div class="popover-buttons">

@@ -1,6 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Debug from 'astro/components/Debug.astro';
+import { vaultQuery, type VaultNote }  from '../utils/vaultQuery';
+
+const query = await vaultQuery()
+  const seriesPages = query
+  .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Components"]?.includes("Timeline"))
+
 ---
 <html lang="en">
   <head>
@@ -13,9 +19,10 @@ import Debug from 'astro/components/Debug.astro';
         <h1> Archive 47  </h1>
       </div>
       <div class="link-holder">
-        <a class="view-link" href="./cecot-home"> The CECOT Lie</a>
-        <a class="view-link" href="./sandbox"> Sandbox</a>
-        <a class="view-link" href="./usps-interference-timeline"> USPS Interference</a>
+        {seriesPages.map(series => {
+          return (
+          <a class="view-link" href={`./${series.BaseName}`}>{series.BaseName} </a>
+        )})}
       </div>  
 </Layout>
 </body>
