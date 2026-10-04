@@ -1,17 +1,26 @@
-import { type InlineProperty } from "./atomizeMarkdown"
+import { type InlineProperty } from "./vaultQuery"
 
-export interface timelineData {
+export interface TimelineEntry {
+    EntryName: string | boolean;
+    Index: number;
+    InlineProperties: InlineProperty[]
+    Display: string;   
+}
+
+export interface TimelineData {
     Months: any[];
     Years: any[];
     SpanTracks: any[];
     Spans: any[];
-    Nodes: any[];
+    Entries: TimelineEntry[];
     Length: number;
 }
 
-export function queryToTimelineLists(inlines: InlineProperty[]): timelineData {
+export function inlineToTimeline(inlines: InlineProperty[]): TimelineData {
+
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    let currentNodes: any[] = []
+   
+    let currentNodes: TimelineEntry[] = []
     let currentYears = [{year: inlines[0].Date.year, yIndex: 1, yEnd: 2}]
     let currentMonths = [{month: months[inlines[0].Date.month - 1], yIndex: 2, yEnd: 2}]
     let currentSpans: any[] = []
@@ -40,7 +49,7 @@ export function queryToTimelineLists(inlines: InlineProperty[]): timelineData {
                 endSpan.yEnd = yIndex
             }
         }
-        currentNodes.push({...atom, Index: yIndex})
+        currentNodes.push({InlineProperties: [atom], Index: yIndex, Display: atom.Display, EntryName: atom.Name})
         yIndex++
     })  
     currentYears[currentYears.length - 1].yEnd = yIndex 
@@ -68,7 +77,7 @@ export function queryToTimelineLists(inlines: InlineProperty[]): timelineData {
     return {
         Years: currentYears, 
         Months: currentMonths, 
-        Nodes: currentNodes, 
+        Entries: currentNodes, 
         SpanTracks: currentSpans, 
         Spans: numberedSpans,
         Length: yIndex

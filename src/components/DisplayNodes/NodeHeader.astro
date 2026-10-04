@@ -85,7 +85,7 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${atom
         <div class="name-link">
             <p>{atom.Name}</p>
         </div>
-        <div class="content-embed">{atom.InlineProperies[0].PriorLine}</div>
+        <div class="content-embed">{atom.PriorLine}</div>
     </div>
     <div class="popover-buttons">
         <DynamicModalLink targetUrl={atom.SourceLink} paywalled={atom.Frontmatter?.Paywalled}/>

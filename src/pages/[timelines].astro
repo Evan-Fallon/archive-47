@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Debug from 'astro/components/Debug.astro';
+import path from 'node:path' 
+import TimelineVertical from '../components/TimelineVertical.astro';
+import { vaultQuery, type VaultNote }  from '../utils/vaultQuery';
+import { loadInlineProperties } from '../utils/loadInlineProperties';
+import { Temporal } from '@js-temporal/polyfill';
+import { inlineToTimeline } from '../utils/inlineToTimeline'
+import { groupEntries } from '../utils/groupEntries'
+
+export async function getStaticPaths() {
+  const query = await vaultQuery()
+  const seriesPages = query
+  .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Components"]?.includes("Timeline"))
+
+  const para = seriesPages.map(series => {
+    const basename = path.basename(series.BaseName, path.extname(series.BaseName))
+    return ( {params: { timelines: basename }, props: { frontmatter: series.Frontmatter }} )
+  })
+
+  return para
+}
+
+
+const { timelines } = Astro.params
+const { frontmatter } = Astro.props
+
+const pages = await vaultQuery()
+const inlines = pages
+  .filter(page => page.FileContent.toLowerCase().includes(timelines.toLowerCase()))
+  .map(page => loadInlineProperties(page))
+  .flatMap(page => page.inlineProperties)
+  .sort((a, b) => Temporal.PlainDateTime.compare(a.Date, b.Date))
+const entries = inlineToTimeline(inlines)
+groupEntries(entries)
+---
+<Layout>
+<div>Page for, {timelines}!</div>
+<TimelineVertical timelineData={entries}/>
+</Layout>

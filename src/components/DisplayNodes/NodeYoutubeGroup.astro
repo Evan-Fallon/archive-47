@@ -1,0 +1,123 @@
+---
+const { atom } = Astro.props
+const atomGroup = atom
+
+let Commentary 
+if (atomGroup?.Commentary) {
+Commentary = `<button class="commentary-button" popovertarget="commentary-${atomGroup.Index}">?</button>
+<div popover id="commentary-${atomGroup.Index}" class="node-commentary-popover">
+    ${atomGroup?.Commentary}
+</div>`
+}
+let seconds = 0
+
+if (atomGroup?.Timestamp) {
+seconds = Number(atomGroup.Timestamp.split(":")[0]) * 60 + Number(atomGroup.Timestamp.split(":")[1])
+}
+
+
+
+---
+<style>
+    .display-node.youtube {
+        display: flex;
+        flex-direction: column;
+    }
+.display-node.youtube .content{
+    display: flex;
+    flex-direction: column;
+    --title-padding: 16px;
+    position: relative;
+    isolation: isolate;
+    padding: var(--title-padding);
+    border-radius: 6px;
+    transition-property: border-color;
+    transition-duration: 800ms; 
+    color: var(--text-color);
+    margin-right: 16px;
+}
+.display-node.youtube .timestamp-list {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    overflow: hidden;
+    max-height: 35px;
+    transition: max-height 1000ms ease;
+    background: var(--secondary-bg);
+    &:hover {
+        max-height: 40px;
+    }
+    &:focus {
+        max-height: 500px;
+        overflow: auto;
+    }
+}
+.display-node.youtube .timestamp-list p {
+        color: var(--text-color-important);
+        font-weight: bold;
+        font-size: 1.1em;
+        text-decoration: none;
+        color: var(--text-color);
+        }
+    .content-embed {
+        font-size: .8em;
+    }
+
+
+
+@media only screen and (min-width: 640px) {
+    .display-node.basic {    
+        margin: 32px 0 ;
+    }
+    .content {
+        max-width: 720px;
+        overflow-x: hidden;
+    }
+}
+
+@media only screen and (max-width: 640px) {
+.display-node.youtube {
+        margin: 6px 0;
+        grid-column: 2 / 5; 
+        font-size: 1.15em;
+        border-width: 0px;
+        paddng: 4px;
+        max-width: 100%;   
+        width: 100%;
+        min-width: 10px;
+        .name-link {
+            margin-bottom: 8px;
+        }
+        .content-embed {
+            font-size: .9em;
+        }
+    }
+}  
+.youtube-video iframe {
+    max-width: 540px;
+    width: 70vw;
+    max-height: 380px;
+    aspect-ratio: 16 / 9;
+}
+
+</style>
+<div class="display-node youtube">
+    <p class="group-name">{atomGroup.GroupName}</p> 
+    <div class="content">
+        <div class="youtube-video">
+            <iframe src={`${atomGroup.atoms[0].Frontmatter.EmbedURL}?start=${seconds}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="timestamp-list" tabindex="0">
+            {atomGroup.atoms.map((atom: { Name: unknown }) => {
+                return (
+                    <p>
+                        {atom.Timestamp} - {atom.Name}
+                    </p>
+                )
+            })}
+        </div>
+    </div>
+    <div class="popover-buttons">
+        <Fragment set:html={Commentary}/>
+    </div>
+</div>

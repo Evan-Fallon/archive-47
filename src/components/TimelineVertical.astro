@@ -1,6 +1,12 @@
 ---
+import type { TimelineData } from "../utils/inlineToTimeline";
 import AtomDisplayNode from "./AtomDisplayNode.astro"
-const { timeline } = Astro.props
+
+interface Props {
+    timelineData: TimelineData
+}
+
+const { timelineData } = Astro.props
 ---
 <style is:global>
 .timeline-base {
@@ -492,14 +498,14 @@ const { timeline } = Astro.props
 }
 </style>
   <div class="timeline-base">
-    {timeline.Years.map((year: { yIndex: number; yEnd: any }) => {
+    {timelineData.Years.map((year: { yIndex: number; yEnd: any }) => {
     
     return (
         <div class="timeline-line" style={`grid-column: 3 / 4; grid-row: ${year.yIndex + 1} / ${year.yEnd};`}> 
         </div>
     )})}
-    <div id="span-column" style={`grid-column: 1 / 2; grid-row: 1 / ${timeline.Length};`}>
-        {timeline.Spans.map((span: { yIndex: number; yEnd: number; trackInd: number; name: unknown }) => {
+    <div id="span-column" style={`grid-column: 1 / 2; grid-row: 1 / ${timelineData.Length};`}>
+        {timelineData.Spans.map((span: { yIndex: number; yEnd: number; trackInd: number; name: unknown }) => {
         return (       <div class="timeline-span" style={`grid-row: ${span.yIndex + 1} / ${span.yEnd +1}; grid-column: ${span.trackInd + 1}`}>
             <div class="span-name" style={`grid-row: ${span.yIndex} / ${span.yEnd +1}; grid-column: ${span.trackInd + 1}`}>
                 {span.name}
@@ -508,7 +514,7 @@ const { timeline } = Astro.props
         </div>
         )})}
     </div>
-    {timeline.Years.map((year: { yIndex: number; year: unknown }, yearsInd: number) => (
+    {timelineData.Years.map((year: { yIndex: number; year: unknown }, yearsInd: number) => (
       <div class="timeline-cell year spacer"
       style={{
         gridColumn: "1 / 5",
@@ -519,12 +525,12 @@ const { timeline } = Astro.props
       <div class="timeline-range year" 
       style={{
         gridColumn: "1 / 5",
-        gridRow: `${year.yIndex} / ${timeline.Years[Math.min(yearsInd + 1, timeline.Years.length - 1)].yEnd + 1}`,
+        gridRow: `${year.yIndex} / ${timelineData.Years[Math.min(yearsInd + 1, timelineData.Years.length - 1)].yEnd + 1}`,
       }}>
         <div><p>{year.year}</p></div>
       </div>
       ))}
-  {timeline.Months.map((month: { yIndex: number; month: unknown }, monthInd: number) => (
+  {timelineData.Months.map((month: { yIndex: number; month: unknown }, monthInd: number) => (
     <div class="timeline-cell month spacer"
       style={{
         gridColumn: "1 / 5",
@@ -538,13 +544,13 @@ const { timeline } = Astro.props
       style={`
         --anim-delay: ${month.yIndex * 75}ms;
         grid-column: 1 / 5;
-        grid-row: ${month.yIndex} / ${timeline.Months[Math.min(monthInd + 1, timeline.Months.length - 1)].yEnd + 1};
+        grid-row: ${month.yIndex} / ${timelineData.Months[Math.min(monthInd + 1, timelineData.Months.length - 1)].yEnd + 1};
       `}>
         <div><p>{month.month} </p></div>
       </div>  
       ))}
 
-    {timeline.Nodes.map((atom: { Display: any; Index: number }) => (
+    {timelineData.Entries.map((atom: { Display: any; Index: number }) => (
       <div class={`node-circles ${atom.Display}`}
       style={`
         grid-column: 3 / 4;
@@ -552,17 +558,18 @@ const { timeline } = Astro.props
         --anim-delay: ${atom.Index * 125}ms`
       }/>
     ))}
-    {timeline.Nodes.map((atom: { Display: any; Index: number; OrdinalDay: unknown; DateString: string }) => (
-      <div class={`node-day-time ${atom.Display}`} 
+    {timelineData.Entries.map(entry => (
+      <div class={`node-day-time ${entry.Display}`} 
       style={`
         grid-column: 2 / 3;
-        grid-row: ${atom.Index} / ${atom.Index + 1};
-        --anim-delay: ${atom.Index * 125}ms`
+        grid-row: ${entry.Index} / ${entry.Index + 1};
+        --anim-delay: ${entry.Index * 125}ms`
       }>
-        <p class="node-day">{atom.OrdinalDay}</p> {atom.DateString.split("T")[1] ? <p class="node-time"> {atom.DateString.split("T")[1]}</p> : ""}
+        <p class="node-day">{entry.InlineProperties?.[0]?.OrdinalDay}</p> 
+        {entry.InlineProperties?.[0]?.DateString?.split("T")?.[1] ? <p class="node-time"> {entry.InlineProperties[0].DateString.split("T")[1]}</p> : ""}
       </div>
     ))}
-    {timeline.Nodes.map((atom: any) => (
+    {timelineData.Entries.map((atom: any) => (
       <div class="timeline-cell node" 
       style={`
         grid-column: 4 / 5;
