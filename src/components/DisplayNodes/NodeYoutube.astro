@@ -8,13 +8,6 @@ interface Props {
 
 const { entry } = Astro.props
 
-let Commentary 
-if (entry.Properties.Commentary) {
-Commentary = `<button class="commentary-button" popovertarget="commentary-${entry.Index}">?</button>
-<div popover id="commentary-${entry.Index}" class="node-commentary-popover">
-    ${entry.Properties?.Commentary}
-</div>`
-}
 let seconds = 0
 
 if (entry.Properties?.Timestamp) {
@@ -22,41 +15,35 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
 }
 ---
 <style>
-    .display-node.basic {
-        display: flex;
-    }
-.display-node.basic .content{
+.display-node.youtube {
     display: flex;
     flex-direction: column;
-    --title-padding: 16px;
-    position: relative;
-    isolation: isolate;
+    width: 100%;
+    max-width: 720px;
     padding: var(--title-padding);
-    border-radius: 6px;
-    transition-property: border-color;
-    transition-duration: 800ms; 
-    color: var(--text-color);
-    margin-right: 16px;
+    background: var(--primary-bg);
+    gap: 8px;
+    border-radius: 8px;
 }
-.display-node.basic .name-link {
-    display: flex;
-    align-items: center;
-    p {
-        color: var(--text-color-important);
-        font-weight: bold;
-        font-size: 1.1em;
-        text-decoration: none;
-        color: var(--text-color);
-        }
-    }
-    .content-embed {
-        font-size: .8em;
-    }
 
-
+.display-node.youtube .name-link  p {
+    text-wrap: balance;
+    color: var(--text-color-important);
+    font-weight: bold;
+    font-size: 1em;
+    text-decoration: none;
+    }
+.display-node.youtube .youtube-video {
+    width: 100%;
+}
+.display-node.youtube .youtube-video iframe {
+    min-width: 320px;
+    max-width: unset;
+    width: 100%;
+}
 
 @media only screen and (min-width: 640px) {
-    .display-node.basic {    
+    .display-node.youtube {    
         margin: 32px 0 ;
     }
     .content {
@@ -66,9 +53,9 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
 }
 
 @media only screen and (max-width: 640px) {
-.display-node.basic {
+.display-node.youtube {
         margin: 6px 0;
-        grid-column: 2 / 5; 
+        grid-column: 2 / 3; 
         font-size: 1.15em;
         border-width: 0px;
         paddng: 4px;
@@ -91,16 +78,11 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
 }
 
 </style>
-<div class="display-node basic">
-    <div class="content">
-        <div class="name-link">
-            <p>{entry.EntryName}</p>
-        </div>
-        <div class="youtube-video">
-        <iframe src={`${entry.Properties.Frontmatter.EmbedURL}?start=${seconds}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
+<div class="display-node youtube">
+    <div class="name-link">
+        <p>{entry.EntryName}</p>
     </div>
-    <div class="popover-buttons">
-        <Fragment set:html={Commentary}/>
+    <div class="youtube-video">
+        <iframe src={`${entry.Properties.Frontmatter.EmbedURL}?start=${seconds}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
 </div>

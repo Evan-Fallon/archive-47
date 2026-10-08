@@ -6,67 +6,35 @@ interface Props {
 }
 const { entry } = Astro.props
 
-let Commentary 
-if (entry.Properties?.Commentary) {
-Commentary = `<button class="commentary-button" popovertarget="commentary-${entry.Index}">?</button>
-<div popover id="commentary-${entry.Index}" class="node-commentary-popover">
-    ${entry.Properties.Commentary}
-</div>`
-}
+
 
 ---
 <style>
-    .display-node.basic {
-        --title-padding: 16px;
-        display: flex;
-    }
-.display-node.basic .content{
+.display-node.basic {
     display: flex;
     flex-direction: column;
-    
-    position: relative;
-    isolation: isolate;
-    padding: var(--title-padding);
-    border-radius: 6px;
     background: var(--primary-bg);
-    transition-property: border-color;
-    transition-duration: 800ms; 
+    padding: var(--title-padding);
+    max-width: 720px;
+}
+.display-node.basic .content {
     color: var(--text-color);
-    margin-right: 16px;
+    
+    font-size: .8rem;
 }
-.display-node.basic .name-link {
-    display: flex;
-    align-items: center;
-    p {
-        color: var(--text-color-important);
-        font-weight: bold;
-        font-size: 1.1em;
-        text-decoration: none;
-        }
-    }
-    .content-embed {
-        font-size: .8em;
-    }
-
-.popover-buttons {
-    padding-top: var(--title-padding);
-}
-
-@media only screen and (min-width: 640px) {
-    .display-node.basic {    
-        margin: 32px 0 ;
-    }
-    .content {
-        max-width: 720px;
-        overflow-x: hidden;
-    }
+.display-node.basic .name-link p {
+    color: var(--text-color-important);
+    font-weight: bold;
+    font-size: 1.1em;
+    text-decoration: none;
+    text-wrap: balance;
+    margin-bottom: 8px;
 }
 
 @media only screen and (max-width: 640px) {
 .display-node.basic {
         margin: 6px 0;
-        grid-column: 2 / 5; 
-        font-size: 1.15em;
+        grid-column: 2 / 3; 
         border-width: 0px;
         paddng: 4px;
         max-width: 100%;   
@@ -74,9 +42,10 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${entr
         min-width: 10px;
         .name-link {
             margin-bottom: 8px;
+            font-size: .9rem;
         }
         .content-embed {
-            font-size: .9em;
+            font-size: .8rem;
         }
     }
 }  
@@ -86,14 +55,10 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${entr
 
 </style>
 <div class="display-node basic">
-    <div class="content">
-        <div class="name-link">
+    <div class="name-link">
             <p>{entry.EntryName}</p>
-        </div>
-        <div class="content-embed">{entry.Properties.PriorLine}</div>
     </div>
-    <div class="popover-buttons">
-        <DynamicModalLink targetUrl={entry.Properties.SourceLink} paywalled={entry.Properties.Frontmatter?.Paywalled}/>
-        <Fragment set:html={Commentary}/>
+    <div class="content">
+        <div class="content-embed">{entry.Properties.PriorLine}</div>
     </div>
 </div>

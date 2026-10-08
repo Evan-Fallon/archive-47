@@ -8,7 +8,6 @@ import { loadInlineProperties } from '../utils/loadInlineProperties';
 import { Temporal } from '@js-temporal/polyfill';
 import { inlineToTimeline } from '../utils/inlineToTimeline'
 import { groupEntries } from '../utils/groupEntries'
-import { Timeline } from '@lucide/astro';
 
 export async function getStaticPaths() {
   const query = await vaultQuery()
@@ -32,12 +31,14 @@ const inlines = pages
   .filter(page => page.FileContent.toLowerCase().includes(timelines.toLowerCase()))
   .map(page => loadInlineProperties(page))
   .flatMap(page => page.inlineProperties)
+  .filter(inline => inline.Series?.includes(timelines))
   .sort((a, b) => Temporal.PlainDateTime.compare(a.Date, b.Date))
 const timelineData = inlineToTimeline(inlines)
 groupEntries(timelineData)
-const debug = timelineData
+
+
 ---
 <Layout>
-<div>Page for, {timelines}!</div>
+<h1>{timelines}</h1>
 <TimelineVertical timelineData={timelineData}/>
 </Layout>

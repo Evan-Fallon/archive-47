@@ -8,14 +8,6 @@ interface Props {
 }
 const { entry } = Astro.props
 
-let Commentary 
-if (entry.Properties?.Commentary) {
-Commentary = `<button class="commentary-button" popovertarget="commentary-${entry.Index}">?</button>
-<div popover id="commentary-${entry.Index}" class="node-commentary-popover">
-    ${entry.Properties.Commentary}
-</div>`
-}
-
 let PriorLine = `
 <button class="content-button" popovertarget="content-${entry.Index}">"</button>
 <div popover id="content-${entry.Index}" class="node-content-popover">
@@ -25,9 +17,7 @@ let PriorLine = `
 ---
 <style>
 .display-node.minor {
-    margin: 16px 0;
-    --title-padding: 16px;
-    margin: 10px 0;
+    margin: 8px 0 8px var(--title-padding);
     display: flex;
     align-items: center;
     .name-link {   
@@ -40,6 +30,7 @@ let PriorLine = `
         color: var(--text-color);
         text-box-trim: trim-both;
         text-box-edge: ex alphabetic;
+        text-wrap: balance;
         }
     }
 }
@@ -56,10 +47,5 @@ let PriorLine = `
 <div class="display-node minor">
     <div class="name-link">
         <p>{entry.EntryName}</p> 
-    </div>
-    <div class="popover-buttons">
-        <Fragment set:html={Commentary}/>
-        <DynamicModalLink targetUrl={entry.Properties.SourceLink} paywalled={entry.Properties?.Paywalled}/>
-        
     </div>
 </div>

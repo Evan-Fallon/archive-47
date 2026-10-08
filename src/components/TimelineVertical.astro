@@ -1,7 +1,8 @@
 ---
 import type { TimelineData, TimelineEntry } from "../utils/inlineToTimeline";
 import AtomDisplayNode from "./AtomDisplayNode.astro"
-
+import DynamicModalLink from "./DynamicModalLink.astro";
+import TimelineButtons from "./TimelineButtons.astro";
 interface Props {
     timelineData: TimelineData
 }
@@ -9,148 +10,90 @@ interface Props {
 const { timelineData } = Astro.props
 ---
 <style is:global>
+h1 {
+    text-align: center;
+}
 .timeline-base {
     justify-self: center;
     display: grid;
-    grid-template-columns: min-content min-content 40px auto;
+    grid-template-columns: min-content min-content 40px auto min-content;
     gap: 0px;
     background: var(--secondary-bg);
-    width: calc(100% - 16px);
+    width: 100%;
     max-width: 100%;
     min-width: 0% !important;
-    box-sizing: border-box;
     > * {
         min-width: 0%;
     }
 }
-
-
-.popover-buttons {
-    display: flex;
-    gap: 8px;
-    margin-left: auto;
-    margin-right: 16px;
+.timeline-sizer {
+    max-width: 100%;
+    width: 100%;
 }
-.commentary-button, .content-button, .popup-trigger {
-    opacity: .4;
-    border: none;
-    display: inline flex;
-    font-weight: 1000;
-    text-align: center;
-    place-content: center;
-    place-items: center;
-    transition-property: opacity;
-    transition-duration: 250ms;
-    flex-shrink: 0;
-    background: var(--border-hover);
-    color: var(--primary-bg);
-    font-size: 1.3rem;
-    overflow: hidden;
-    height: 32px;
-    width: 32px;
-    border-radius: 4px;
-    margin-left: auto;
-    margin-right: 2px;
-}
-
-.node-commentary-popover, .node-content-popover {
-    max-width: 480px;
-    border: 1px solid var(--border-basic);
-    background: var(--primary-bg);
-    color: var(--text-color);
-    font-family: Noto Sans;
-    font-size: .75em;
-    padding: 1em;
-    border-radius: 6px;
-    position-area: top;
-    position-try: flip-block;
-    margin-bottom: 10px;
-    margin-left: auto;
-    opacity: 0;
-    transition: opacity 200ms;
-    &:popover-open {
-        opacity: 1;
-        @starting-style {
-            opacity: 0;
-        }
-    }
-}
-
-.timeline-cell:hover .commentary-button,
-.timeline-cell:hover .content-button,
-.timeline-cell:hover .popup-trigger {
-    opacity: 1;
-}
-
 .timeline-cell {
     display: grid;
     align-items: center;
     grid-column: 2 / 3;
     width: 100%;
-    &:has(.display-node.image) {
-        align-items: inherit;
-        grid-column: 1 / 5 !important;
-        margin: 24px 0 24px 0;
-        width: calc(100% + 0rem);
-    }
     p {
         margin: 0;
     }
- 
+}
+.timeline-cell.entry.image {
+    margin: 24px 0 24px 0;
+    grid-column: 1 / -1 !important;
 }
 .timeline-cell.year {
-        color: var(--text-color-important);
-        font-weight: 600;
-        font-size: 2.5rem;
-        text-align: center;
-        place-items: center;
-        margin: 0;
-        width: calc(100%);
-        height: 55px;
-
+    color: var(--text-color-important);
+    font-weight: 600;
+    font-size: 2.5rem;
+    text-align: center;
+    place-items: center;
+    margin: 0;
+    width: calc(100%);
+    height: 55px;
 } 
 .timeline-range.year {
-        display: flex;
-        align-items: start;
-        overflow-y: visible;
-        height: 100%;
-        position: relative;
-        pointer-events: none;
-        font-size: 2.5rem;
-        div {
-            box-sizing: border-box;
-            position: sticky;
-            text-align: center;
-            align-content: center;
-            top: 0px;
-            width: 100%;
-            margin: 0px;
-            height: 55px;
-            background: light-dark(var(--color-accent), var(--primary-bg));
-            z-index: 8;
-            p {
-                color: light-dark(white, var(--text-color-important));
-                margin: auto;
-                font-weight: 600;
-            }
-        }
-    }
-.timeline-cell.month, .timeline-range.month  {
-        width: 100%;
+    display: flex;
+    align-items: start;
+    overflow-y: visible;
+    height: 100%;
+    position: relative;
+    pointer-events: none;
+    font-size: 2.5rem;
+    div {
+        box-sizing: border-box;
+        position: sticky;
         text-align: center;
-        font-weight: 600;
-        font-size: 1.1rem;
-        color: var(--text-color);
-        animation-name: opacity-reveal;
-        animation-duration: 800ms;
-        animation-timing-function: ease-in;
-        animation-fill-mode: both;
-        animation-delay: var(--anim-delay);
-
-        p { 
-            width: 100%;
+        align-content: center;
+        top: 0px;
+        width: 100%;
+        margin: 0px;
+        height: 55px;
+        background: light-dark(var(--color-accent), var(--primary-bg));
+        z-index: 8;
+        p {
+            color: light-dark(white, var(--text-color-important));
+            margin: auto;
+            font-weight: 600;
         }
     }
+}
+.timeline-cell.month, .timeline-range.month  {
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    animation-name: opacity-reveal;
+    animation-duration: 800ms;
+    animation-timing-function: ease-in;
+    animation-fill-mode: both;
+    animation-delay: var(--anim-delay);
+    p { 
+        width: 100%;
+    }
+}
 .timeline-range.month  {
         display: flex;
         align-items: start;
@@ -162,7 +105,6 @@ const { timelineData } = Astro.props
     div {
         box-sizing: border-box;
         position: sticky;
-        
         top: 55px;
         width: 100%;
         margin: 0px;
@@ -175,9 +117,10 @@ const { timelineData } = Astro.props
     }
 
 }
-
-
-
+.timeline-cell.buttons {
+    margin: 8px;
+    align-content: center;
+}
 .timeline-line {
     background: light-dark(var(--text-color), var(--border-basic));
     width: 1px;
@@ -188,8 +131,6 @@ const { timelineData } = Astro.props
     animation-timing-function: ease-in;
     animation-fill-mode: both;
 }
-
-
 .node-circles {
     width: 15px;
     height: 15px;
@@ -214,6 +155,7 @@ const { timelineData } = Astro.props
     font-size: 0.8rem;
     color: var(--text-color);
     place-self: center right;
+    pointer-events: none;
 }
 #span-column {
     padding-left: 8px;
@@ -225,7 +167,6 @@ const { timelineData } = Astro.props
     position: relative;
     gap: 0 4px;
 }
-
 .timeline-span {
     width: 20px;
     height: calc(100% - 8px);
@@ -253,7 +194,6 @@ const { timelineData } = Astro.props
         }
     }
 } 
-
 .span-name {
     opacity: 0;
     pointer-events: none;
@@ -268,41 +208,24 @@ const { timelineData } = Astro.props
     border: 1px solid var(--border-basic);
     color: var(--text-color);
     z-index: 10;
+    font-size: .8rem;
 }
 
 
 
 
-@media only screen and (max-width: 640px) {
-    
-    h1 {
-        font-size: 2em;
-    }
 
-
-    .content-button, .commentary-button, .popup-trigger { 
-        opacity: 1;
-
-    }
+@media only screen and (max-width: 640px) { 
     .timeline-base {
-        grid-template-columns: min-content auto auto;
-        gap: 0 4px;
-        padding: 0px;
-        max-width: 100%;
-        width: 100%;
-
+        grid-template-columns: min-content auto min-content;
     }
-    .timeline-cell:has(.display-node.image) {
-        margin: 0px;
-        width: 100%;
-    }
-
     .year {
         font-size: 2.3rem;
         margin: 0;
         padding: 0;        
-        }
+    }
     .timeline-range.year {
+        grid-column: 1 / -1;
         display: flex;
         align-items: start;
         overflow-y: visible;
@@ -336,7 +259,7 @@ const { timelineData } = Astro.props
         opacity: 0;
     }
     .timeline-cell.month, .timeline-range.month {
-        grid-column: 1 / 5 !important;
+        grid-column: 1 / -1 !important;
         align-items: start;
         margin: 0;
         border-color: var(--primary-bg);
@@ -348,7 +271,6 @@ const { timelineData } = Astro.props
         overflow-y: visible;
         height: 100%;
         pointer-events: none;
-
     }
     .timeline-range.month {
         display: flex;
@@ -365,7 +287,6 @@ const { timelineData } = Astro.props
             width: 100%;
             z-index: 6;
             margin: 0;
-            
         }
     }
     .node-circles {
@@ -390,27 +311,47 @@ const { timelineData } = Astro.props
         grid-column: 2 / 3 !important;
         display: none;
     }
-    .timeline-cell.node {
-        grid-column: 2 / 5 !important;
-        margin: 0;
-        width: 100%;
-
-    }
-    .timeline-cell.node:has(.basic), 
-    .timeline-cell.node:has(.image), 
-    .timeline-cell.node:has(.twitter),
-    .timeline-cell.node:has(.truth){
-        grid-column: 1 / 5 !important;
-        background: var(--primary-bg);
+    .timeline-cell.entry {
+        grid-column: 1 / 4 !important;
         display: grid;
         grid-template-columns: subgrid;
-        
+        width: 100%;
+        .display-node:not(.image) {
+            grid-column: 2 / 3;
+        }
     }
-    .timeline-cell.node:has(.twitter) {
+
+    .timeline-cell.entry.image {
+        grid-column: 1 / 4 !important;
+        margin: 0;
+        .display-node.image {
+            grid-column: 1 / 4;
+            grid-template-columns: subgrid;
+            .name-link {
+                grid-column: 2 / 4;
+            }
+            img {
+                grid-column: 1 / 4;
+            }
+        }
+    }
+    .timeline-cell.buttons {
+        grid-column: 3 / 4 !important;
+        padding: 0px;
+        margin: 0px;
+        height: 100%;
+        .button-container {
+            flex-direction: column;
+        }
+    }
+    .timeline-cell.entry.basic {
+        background: var(--primary-bg);
+    }
+    .timeline-cell.entry.twitter {
         background: black;
         padding-right: 16px;
     }
-    .timeline-cell.node:has(.truth) {
+    .timeline-cell.entry.truth {
         background: white;
         padding-right: 16px;
     }
@@ -442,62 +383,10 @@ const { timelineData } = Astro.props
 
 }
 @media only screen and (min-width: 640px) {
-    .timeline-base {
-        border-radius: 16px;
-        overflow-y: clip;
-        position: relative;
-        scrollbar-width: none;
-        &::before {
-            position: absolute;
-            content: '';
-            inset: 0 0 0 0;
-            border-width: 1px;
-            border-style: solid;
-            border-color: light-dark(var(--color-accent), var(--border-basic));
-            border-radius: 16px;
-            z-index: 9;
-            pointer-events: none;
-        }
-    }
-    .timeline-cell.year {
-    }
-    .timeline-range.month {
-        div {
-            text-align: left;
-            padding-left: 32px;
-        }
-    }
-    .node-day-time {
-        font-size: .8em;
-        display: flex; 
-        flex-direction: column;
-        padding: 0 4px;
-        border-radius: 16px;
-        border-color: var(--border-basic);
-        border-width: 0px;
-        border-style: solid;
-        margin: auto;
-        padding: 1px 6px;
-        border-radius: 0px;
-        z-index: 4;
-        p {
-            padding: 0;
-            height: auto;
-            margin: 0;
-        }
-        .node-day {
-            font-weight: bold;
-        }
-        .node-time {
-            font-size: .9em;
-        }
-        &.Minor {
-            background: var(--secondary-bg);
-        }
-    }
 }
 </style>
-  <div class="timeline-base">
+  <div class="timeline-sizer">
+    <div class="timeline-base">
     {timelineData.Years.map((year: { yIndex: number; yEnd: any }) => {
     
     return (
@@ -517,14 +406,14 @@ const { timelineData } = Astro.props
     {timelineData.Years.map((year: { yIndex: number; year: unknown }, yearsInd: number) => (
       <div class="timeline-cell year spacer"
       style={{
-        gridColumn: "1 / 5",
+        gridColumn: "1 / 6",
         gridRow: `${year.yIndex} / ${year.yIndex + 1}`,
       }}>
       <div><p>{year.year}</p></div>
       </div>
       <div class="timeline-range year" 
       style={{
-        gridColumn: "1 / 5",
+        gridColumn: "1 / 6",
         gridRow: `${year.yIndex} / ${timelineData.Years[Math.min(yearsInd + 1, timelineData.Years.length - 1)].yEnd + 1}`,
       }}>
         <div><p>{year.year}</p></div>
@@ -533,7 +422,7 @@ const { timelineData } = Astro.props
   {timelineData.Months.map((month: { yIndex: number; month: unknown }, monthInd: number) => (
     <div class="timeline-cell month spacer"
       style={{
-        gridColumn: "1 / 5",
+        gridColumn: "1 / 6",
         gridRow: `${month.yIndex} / ${month.yIndex + 1}`,
       }}>
         <div><p>
@@ -543,7 +432,7 @@ const { timelineData } = Astro.props
       <div class="timeline-range month" 
       style={`
         --anim-delay: ${month.yIndex * 75}ms;
-        grid-column: 1 / 5;
+        grid-column: 1 / 6;
         grid-row: ${month.yIndex} / ${timelineData.Months[Math.min(monthInd + 1, timelineData.Months.length - 1)].yEnd + 1};
       `}>
         <div><p>{month.month} </p></div>
@@ -570,7 +459,7 @@ const { timelineData } = Astro.props
       </div>
     ))}
     {timelineData.Entries.map((entry: TimelineEntry) => (
-      <div class="timeline-cell node" 
+      <div class={`timeline-cell entry ${entry.Display.toLowerCase()}`}
       style={`
         grid-column: 4 / 5;
         grid-row: ${entry.Index} / ${entry.Index + 1};
@@ -579,5 +468,15 @@ const { timelineData } = Astro.props
         <AtomDisplayNode entry={entry}/> 
       </div>  
       ))}
-
+      {timelineData.Entries.map((entry: TimelineEntry) => (
+      <div class={`timeline-cell buttons ${entry.Display.toLowerCase()}`} 
+      style={`
+        grid-column: 5 / 6;
+        grid-row: ${entry.Index} / ${entry.Index + 1};
+        --anim-delay: ${entry.Index * 90}ms`
+      }>
+        <TimelineButtons commentary={entry.Properties?.Commentary} targetUrl={entry.Properties.SourceLink} paywalled={entry.Properties?.Paywalled} index={entry.Index}/> 
+      </div>  
+      ))}
+    </div>
   </div>

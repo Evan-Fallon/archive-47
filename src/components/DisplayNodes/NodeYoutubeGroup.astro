@@ -8,13 +8,6 @@ interface Props {
 const { entry } = Astro.props
 
 
-let Commentary 
-if (entry.Properties?.Commentary) {
-Commentary = `<button class="commentary-button" popovertarget="commentary-${entry.Index}">?</button>
-<div popover id="commentary-${entry.Index}" class="node-commentary-popover">
-    ${entry.Properties.Commentary}
-</div>`
-}
 let seconds = 0
 
 if (entry.Properties?.Timestamp) {
@@ -25,24 +18,35 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
 
 ---
 <style>
-    .display-node.youtube {
-        display: flex;
-        flex-direction: column;
-    }
-.display-node.youtube .content{
+.display-node.youtube-group {
+    display: flex;        
+    border-radius: 8px;
+    width: 100%;
+    padding-top: 16px;
+}
+.display-node.youtube-group .entry-name {
     display: flex;
+    font-weight: bold;
+    color: var(--text-color-important);
+    margin-left: 0px;
+}
+.display-node.youtube-group .content{
+    display: flex;
+    max-width: 720px;
+    width: 100%;
     flex-direction: column;
+    gap: 8px;
     --title-padding: 16px;
     position: relative;
     isolation: isolate;
-    padding: var(--title-padding);
+    padding:  var(--title-padding);
     border-radius: 6px;
     transition-property: border-color;
     transition-duration: 800ms; 
     color: var(--text-color);
-    margin-right: 16px;
+    background: var(--primary-bg);
 }
-.display-node.youtube .timestamp-list {
+.display-node.youtube-group .timestamp-list {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -50,6 +54,11 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
     max-height: 35px;
     transition: max-height 1000ms ease;
     background: var(--secondary-bg);
+    border-color: var(--border-basic);
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 8px;
+    padding: 4px 8px;
     &:hover {
         max-height: 40px;
     }
@@ -58,17 +67,15 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
         overflow: auto;
     }
 }
-.display-node.youtube .timestamp-list p {
+.display-node.youtube-group .timestamp-list p {
         color: var(--text-color-important);
-        font-weight: bold;
-        font-size: 1.1em;
+        font-size: .9em;
         text-decoration: none;
         color: var(--text-color);
         }
     .content-embed {
         font-size: .8em;
     }
-
 
 
 @media only screen and (min-width: 640px) {
@@ -82,9 +89,9 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
 }
 
 @media only screen and (max-width: 640px) {
-.display-node.youtube {
+.display-node.youtube-group {
         margin: 6px 0;
-        grid-column: 2 / 5; 
+        grid-column: 2 / 3; 
         font-size: 1.15em;
         border-width: 0px;
         paddng: 4px;
@@ -99,18 +106,23 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
         }
     }
 }  
-.youtube-video iframe {
-    max-width: 540px;
-    width: 70vw;
-    max-height: 380px;
+.youtube-group .youtube-video iframe {
+    max-width: 720px;
+    width: 100%;
+    max-height: unset;
     aspect-ratio: 16 / 9;
 }
 
 </style>
-<div class="display-node youtube">
-    <p class="group-name">{entry.EntryName}</p> 
+<div class="display-node youtube-group">
+    
+    
     <div class="content">
-        <div class="youtube-video">
+        <p class="entry-name">
+        {entry.EntryName}
+        
+    </p> 
+        <div class="youtube-group youtube-video">
             <iframe src={`${entry.Properties.Frontmatter.EmbedURL}?start=${seconds}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
         <div class="timestamp-list" tabindex="0">
@@ -122,8 +134,5 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
                 )
             })}
         </div>
-    </div>
-    <div class="popover-buttons">
-        <Fragment set:html={Commentary}/>
     </div>
 </div>

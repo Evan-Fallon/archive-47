@@ -8,7 +8,7 @@ import { Temporal } from '@js-temporal/polyfill'
 export interface InlineProperty {
   Line: number;
   Name: string;
-  Series?: string;
+  Series?: string[];
   FileName: string;
   SourceLink: string
   raw: string;

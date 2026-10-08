@@ -1,0 +1,122 @@
+---
+import DynamicModalLink from "./DynamicModalLink.astro";
+import { MessageCircleQuestionMark, FileLock, SquareText } from '@lucide/astro'
+
+interface Props {
+  targetUrl: string;
+  index: number;
+  buttonText?: string;
+  paywalled?: boolean;
+  commentary?: string;
+}
+const { targetUrl, index, buttonText = "View Highlighted Text", paywalled, commentary } = Astro.props;
+
+let commentaryComponent 
+if (commentary) {
+commentaryComponent = `<button class="commentary-button" popovertarget="commentary-${index}">?</button>
+<div popover id="commentary-${index}" class="node-commentary-popover">
+    ${commentary}
+</div>`
+}
+
+let Icon =  SquareText
+if (paywalled) {
+  Icon = FileLock
+}
+
+---
+
+<style>
+
+/*
+.commentary-button, .content-button, .popup-trigger {
+    opacity: .4;
+    border: none;
+    display: inline flex;
+    font-weight: 1000;
+    text-align: center;
+    place-content: center;
+    place-items: center;
+    transition-property: opacity;
+    transition-duration: 250ms;
+    flex-shrink: 0;
+    background: var(--border-hover);
+    color: var(--primary-bg);
+    font-size: 1.3rem;
+    overflow: hidden;
+    height: 32px;
+    width: 32px;
+    border-radius: 4px;
+    margin-left: auto;
+    margin-right: 2px;
+}
+
+.node-commentary-popover, .node-content-popover {
+    max-width: 480px;
+    border: 1px solid var(--border-basic);
+    background: var(--primary-bg);
+    color: var(--text-color);
+    font-family: Noto Sans;
+    font-size: .75em;
+    padding: 1em;
+    border-radius: 6px;
+    position-area: top;
+    position-try: flip-block;
+    margin-bottom: 10px;
+    margin-left: auto;
+    opacity: 0;
+    transition: opacity 200ms;
+    &:popover-open {
+        opacity: 1;
+        @starting-style {
+            opacity: 0;
+        }
+    }
+}  */
+.timeline-button {
+    height: 32px;
+    border: 1px solid var(--border-basic);
+}
+.button-container {
+    justify-content: right;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 0 8px;
+    margin-right: 8px;
+    height: 100%;
+}
+.lucide {
+    color: var(--border-hover);
+    stroke-width: 2px;
+}
+@media only screen and (max-width: 640px) {
+    .button-container {
+        gap: 0px;
+        padding: 0px;
+        height: 100%;
+    }
+    .timeline-button {
+        max-width: 100%;
+        min-height: 32px;
+        max-height: 100%;
+        height: 100%;
+        flex-grow: 1;
+        border: none;
+        background: hsl(from var(--border-basic) h s calc(l *.5));
+    }
+}
+</style>
+<div class="button-container">
+{commentary ? 
+    <button class="commentary-button timeline-button" popovertarget="commentary-${index}"><MessageCircleQuestionMark/></button>
+    <div popover id="commentary-${index}" class="node-commentary-popover">
+        {commentary}
+    </div> 
+: ""}
+<button type="button" class="timeline-button popup-trigger" data-url={targetUrl}>
+    <Icon/>
+    <DynamicModalLink targetUrl={targetUrl}/>
+</button>
+</div>
