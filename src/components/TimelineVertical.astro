@@ -386,6 +386,20 @@ h1 {
 
 }
 @media only screen and (min-width: 640px) {
+    .timeline-sizer {
+        position: relative;
+        overflow: clip;
+    }
+    .timeline-sizer::after {
+        border: 1px solid var(--border-basic);
+        border-radius: 16px;
+        content: "";
+        z-index: 10;
+        position: absolute;
+        display: block;
+        inset: 0 0 0 0;
+        pointer-events: none;
+    }
 }
 </style>
   <div class="timeline-sizer">

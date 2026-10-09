@@ -17,9 +17,26 @@ const { fileContent, url } = Astro.props;
 let stringOutput = fileContent
   .split("---")
   .slice(2)
-  .join("\n")
-stringOutput = stripAtomFormatting(stringOutput)
-const htmlContent = await new Marked().parse(stringOutput)
+  .join("")
+stringOutput = stringOutput
+  .replace(/<p>\s*%%[\s\S]*?%%\s*<\/p>|%%[\s\S]*?%%/g, '')
+  
+  
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+
+// replace: const htmlContent = await new Marked().parse(stringOutput)
+const htmlContent = String(
+  await unified()
+    .use(remarkParse)
+    .use(remarkGfm)        // <- this is what enables footnotes
+    .use(remarkRehype)
+    .use(rehypeStringify)
+    .process(stringOutput)
+).replace(/\^(?!\[\d+\])[a-zA-Z0-9-]+/g, '');
 ---
 <style>
   .pdf-disclaimer {
