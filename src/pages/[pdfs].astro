@@ -1,0 +1,65 @@
+---
+import { vaultQuery } from '../utils/vaultQuery';
+import { Marked } from 'marked';
+import Layout from '../layouts/Layout.astro';
+import { stripAtomFormatting } from '../utils/stripAtomFormatting';
+
+export async function getStaticPaths() {
+const query = await vaultQuery()
+const pages = query
+  .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"] === "pdf")
+  .map(pdf => ({params: { pdfs: pdf.BaseName }, props: { fileContent: pdf.FileContent, url: pdf.Frontmatter.URL }}))
+
+    return pages;
+}
+const { pdfs } = Astro.params;
+const { fileContent, url } = Astro.props;
+let stringOutput = fileContent
+  .split("---")
+  .slice(2)
+  .join("\n")
+stringOutput = stripAtomFormatting(stringOutput)
+const htmlContent = await new Marked().parse(stringOutput)
+---
+<style>
+  .pdf-disclaimer {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    left: 0;
+    background: #fff;
+    padding: 1rem;
+    z-index: 1000;
+    filter: drop-shadow(0px 4px 0px rgba(0, 0, 0, 0.2));
+    text-align: center;
+  }
+  .pdf-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 96px;
+    background: #f9f9f9;
+    color: #333;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-indent: 2em;
+  }
+  .pdf-content :global(h1){
+    font-size: 1.2em;
+  }
+  .pdf-content :global(h2){
+    font-size: 1.1em;
+  }
+  .pdf-content :global(h2),
+  .pdf-content :global(h3),
+  .pdf-content :global(h4),
+  .pdf-content :global(h5),
+  .pdf-content :global(h6){
+    font-size: 1em;
+  }
+  
+</style>
+<div class="pdf-disclaimer">The following is a tool assisted archive of the original source for easier navigation. Mistakes are likely. View the original PDF <a href={url} target="_blank" rel="noopener noreferrer">here</a>.</div>
+<Layout>
+  <div class="pdf-content">
+    <span set:html={htmlContent}></span>
+  </div>
+</Layout>

@@ -45,9 +45,9 @@ export function loadInlineProperties(file: VaultNote): VaultNote {
             const searchTerms = priorLine.split(/(?<!\b(?:Mr|Mrs|Dr|Sr|Jr|Inc|Co|Ltd|i\.e|e|\d\.g))\.\s/).map((s: string) => encodeURIComponent(s)).join("&text=")
             thisInline.SourceLink = `${linkBase}#:~:text=${searchTerms}`
 
-        } else if (file.Frontmatter?.Paywalled !== false) {
+        } else if (!file.Frontmatter?.Paywalled) {
             const searchTerms = priorLine.split(/(?<!\b(?:Mr|Mrs|Dr|Sr|Jr|Inc|Co|Ltd|i\.e|e\.g))\.\s/).map((s: string) => encodeURIComponent(s)).join("&text=")
-            thisInline.SourceLink = `${thisInline.URL}#:~:text=${searchTerms}`
+            thisInline.SourceLink = `${file.Frontmatter?.URL}#:~:text=${searchTerms}`
         }
         inlineProperties.push(thisInline)
     }

@@ -13,6 +13,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.10",
     "@js-temporal/polyfill": "^0.5.1",
     "@lucide/astro": "^1.48.0",
     "astro": "^6.4.8",
@@ -20,7 +21,8 @@
     "fast-glob": "^3.3.3",
     "gray-matter": "^4.0.3",
     "marked": "^18.0.14",
-    "p-limit": "^7.3.3"
+    "p-limit": "^7.3.3",
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
     "@types/node": "^26.2.0",

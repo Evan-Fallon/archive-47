@@ -1,0 +1,8 @@
+{
+	"mcpServers": {
+		"my-mcp-server-3ebeff3e": {
+			"url": "https://mcp.docs.astro.build/mcp",
+			"type": "http"
+		}
+	}
+}

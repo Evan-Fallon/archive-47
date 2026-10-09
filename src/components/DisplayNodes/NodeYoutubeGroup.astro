@@ -7,18 +7,23 @@ interface Props {
 
 const { entry } = Astro.props
 
-
-let seconds = 0
-
-if (entry.Properties?.Timestamp) {
-seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.Properties.Timestamp.split(":")[1])
+// Helper: Convert timestamp strings (HH:MM:SS or MM:SS) to total seconds server-side
+function parseToSeconds(ts?: string): number {
+    if (!ts) return 0;
+    const parts = ts.split(":").map(Number);
+    if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+    if (parts.length === 2) return parts[0] * 60 + parts[1];
+    return Number(ts) || 0;
 }
 
-
-
+const seconds = parseToSeconds(entry.Properties?.Timestamp)
+const iframeId = `yt-group-${entry.Index}`
+const sep = entry.Properties.Frontmatter.EmbedURL.includes("?") ? "&" : "?"
+const embedUrl = `${entry.Properties.Frontmatter.EmbedURL}${sep}start=${seconds}&enablejsapi=1`
 ---
+
 <style>
-.display-node.youtube-group {
+    .display-node.youtube-group {
     display: flex;        
     border-radius: 8px;
     width: 100%;
@@ -42,34 +47,27 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
     padding:  var(--title-padding);
     border-radius: 6px;
     transition-property: border-color;
-    transition-duration: 800ms; 
+    transition-duration: 2000ms; 
     color: var(--text-color);
     background: var(--primary-bg);
 }
 .display-node.youtube-group .timestamp-list {
     display: flex;
+    gap: .5rem;
     flex-direction: column;
     align-items: start;
-    overflow: hidden;
-    max-height: 35px;
-    transition: max-height 1000ms ease;
+    overflow: auto;
+    max-height: 120px;
     background: var(--secondary-bg);
     border-color: var(--border-basic);
     border-width: 1px;
     border-style: solid;
     border-radius: 8px;
     padding: 4px 8px;
-    &:hover {
-        max-height: 40px;
-    }
-    &:focus {
-        max-height: 500px;
-        overflow: auto;
-    }
 }
+
 .display-node.youtube-group .timestamp-list p {
-        color: var(--text-color-important);
-        font-size: .9em;
+        font-size: .75em;
         text-decoration: none;
         color: var(--text-color);
         }
@@ -86,7 +84,9 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
         max-width: 720px;
         overflow-x: hidden;
     }
+
 }
+
 
 @media only screen and (max-width: 640px) {
 .display-node.youtube-group {
@@ -105,6 +105,19 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
             font-size: .9em;
         }
     }
+    .display-node.youtube-group .timestamp-list {
+        max-height: 150px;
+        overflow: auto;
+        border-radius: 0px;
+        border: none;
+        padding: 0px;
+        background: none;
+    }
+    .display-node.youtube-group .timestamp-list p {
+        background: var(--border-basic);
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
 }  
 .youtube-group .youtube-video iframe {
     max-width: 720px;
@@ -112,27 +125,59 @@ seconds = Number(entry.Properties.Timestamp.split(":")[0]) * 60 + Number(entry.P
     max-height: unset;
     aspect-ratio: 16 / 9;
 }
+    .timestamp-list p {
+        cursor: pointer;
+    }
 
 </style>
-<div class="display-node youtube-group">
-    
-    
+
+<div class="display-node youtube-group" tabindex="0">
     <div class="content">
-        <p class="entry-name">
-        {entry.EntryName}
-        
-    </p> 
+        <p class="entry-name">{entry.EntryName}</p>
         <div class="youtube-group youtube-video">
-            <iframe src={`${entry.Properties.Frontmatter.EmbedURL}?start=${seconds}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <iframe
+                id={iframeId}
+                src={embedUrl}
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+            />
         </div>
-        <div class="timestamp-list" tabindex="0">
-            {entry?.Children?.map(x => {
-                return (
-                    <p>
-                        { x?.Timestamp } - {x.Name}
-                    </p>
-                )
-            })}
+        <div class="timestamp-list" data-target-iframe={iframeId} tabindex="0">
+            {entry?.Children?.map(x => (
+                <p class="timestamp-link" data-seconds={parseToSeconds(x.Timestamp)}>
+                    {x.Timestamp} - {x.Name}
+                </p>
+            ))}
         </div>
     </div>
 </div>
+
+<script>
+    // Single event listener handles all timestamp clicks on the entire page
+    document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement | null;
+        const link = target?.closest<HTMLElement>('[data-seconds]');
+        if (!link) return;
+
+        const list = link.closest<HTMLElement>('[data-target-iframe]');
+        const iframeId = list?.dataset.targetIframe;
+        if (!iframeId) return;
+
+        const iframe = document.getElementById(iframeId) as HTMLIFrameElement | null;
+        const seconds = Number(link.dataset.seconds);
+
+        if (iframe?.contentWindow) {
+            iframe.contentWindow.postMessage(
+                JSON.stringify({
+                    event: 'command',
+                    func: 'seekTo',
+                    args: [seconds, true]
+                }),
+                '*'
+            );
+        }
+    });
+</script>
