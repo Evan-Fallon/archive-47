@@ -27,8 +27,8 @@ export function inlineToTimeline(inlines: InlineProperty[]): TimelineData {
     let currentSpans: any[] = []
     let yIndex = 3
     inlines.forEach(atom => {
-    const thisYear = atom.Date.year
-    const thisMonth = months[atom.Date.month - 1]
+        const thisYear = atom.Date.year
+        const thisMonth = months[atom.Date.month - 1]
         if (thisYear !== currentYears[currentYears.length - 1].year) {
             currentYears[currentYears.length - 1].yEnd = yIndex
             currentYears.push({year: thisYear, yIndex: yIndex, yEnd: yIndex + 1})
@@ -52,7 +52,7 @@ export function inlineToTimeline(inlines: InlineProperty[]): TimelineData {
         }
         currentEntries.push({Properties: atom, Index: yIndex, Display: atom.Display, EntryName: atom.Name})
         yIndex++
-    })  
+    }) 
     currentYears[currentYears.length - 1].yEnd = yIndex 
     currentMonths[currentMonths.length - 1].yEnd = yIndex 
     const spanTracks = []

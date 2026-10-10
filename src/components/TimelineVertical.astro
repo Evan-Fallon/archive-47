@@ -3,6 +3,11 @@ import type { TimelineData, TimelineEntry } from "../utils/inlineToTimeline";
 import AtomDisplayNode from "./AtomDisplayNode.astro"
 import DynamicModalLink from "./DynamicModalLink.astro";
 import TimelineButtons from "./TimelineButtons.astro";
+import YearSpan from "./TimelineComponents/YearSpan.astro";
+import MonthSpan from "./TimelineComponents/MonthSpan.astro";
+import TimelineSpans from "./TimelineComponents/TimelineSpans.astro";
+import NodeTimeDay from "./TimelineComponents/NodeTimeDay.astro";
+
 interface Props {
     timelineData: TimelineData
 }
@@ -47,80 +52,8 @@ h1 {
     grid-column: 1 / -1 !important;
     grid-template-columns: subgrid;
 }
-.timeline-cell.year {
-    color: var(--text-color-important);
-    font-weight: 600;
-    font-size: 2.5rem;
-    text-align: center;
-    place-items: center;
-    margin: 0;
-    width: calc(100%);
-    height: 55px;
-} 
-.timeline-range.year {
-    display: flex;
-    align-items: start;
-    overflow-y: visible;
-    height: 100%;
-    position: relative;
-    pointer-events: none;
-    font-size: 2.5rem;
-    div {
-        box-sizing: border-box;
-        position: sticky;
-        text-align: center;
-        align-content: center;
-        top: 0px;
-        width: 100%;
-        margin: 0px;
-        height: 55px;
-        background: light-dark(var(--color-accent), var(--primary-bg));
-        z-index: 8;
-        p {
-            color: light-dark(white, var(--text-color-important));
-            margin: auto;
-            font-weight: 600;
-        }
-    }
-}
-.timeline-cell.month, .timeline-range.month  {
-    width: 100%;
-    text-align: center;
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: var(--text-color);
-    animation-name: opacity-reveal;
-    animation-duration: 800ms;
-    animation-timing-function: ease-in;
-    animation-fill-mode: both;
-    animation-delay: var(--anim-delay);
-    p { 
-        width: 100%;
-    }
-}
-.timeline-range.month  {
-        display: flex;
-        align-items: start;
-        overflow-y: visible;
-        height: 100%;
-        width: 100%;
-        position: relative;
-        pointer-events: none;
-    div {
-        box-sizing: border-box;
-        position: sticky;
-        top: 55px;
-        width: 100%;
-        margin: 0px;
-        background: var(--border-basic);
-        z-index: 7;
-        filter: drop-shadow(0px 6px 0px hsla(0, 0%, 0%, 0.2));
-        p {
-            margin: 0
-        }
-    }
 
-}
+
 .timeline-cell.buttons {
     margin: 8px;
     align-content: center;
@@ -155,12 +88,6 @@ h1 {
         background: light-dark(var(--color-accent), var(--color-accent));
     }
 }
-.node-day-time {
-    font-size: 0.8rem;
-    color: var(--text-color);
-    place-self: center right;
-    pointer-events: none;
-}
 #span-column {
     padding-left: 8px;
     display: grid;
@@ -170,49 +97,6 @@ h1 {
     margin-right: 8px;
     position: relative;
     gap: 0 4px;
-}
-.timeline-span {
-    width: 20px;
-    height: calc(100% - 8px);
-    margin: -48px auto auto 0;
-    background: light-dark(
-        hsl(from var(--color-accent) h s l / .3),
-        hsl(from var(--border-basic) h s l / .3)
-    );
-    border-color:  light-dark(
-        hsl(from var(--border-basic) h s l / 1),
-        hsl(from var(--border-basic) h s l / .5)
-    );
-    border-width: 0 0px 0 0px;
-    border-style: solid;
-    transition: border 250ms ease, background 400ms ease;
-    &:hover {
-        border-color: hsl(from var(--color-accent) h s l / .7);
-        background: light-dark(
-            hsl(from var(--color-accent) h s l / .5),
-            hsl(from var(--border-basic) h s l / .5)
-        );
-        .span-name {
-            opacity: 1;
-            transform: translateX(25px);
-        }
-    }
-} 
-.span-name {
-    opacity: 0;
-    pointer-events: none;
-    place-self: right;
-    position: sticky;
-    width: 125px;
-    top: 50%;
-    padding: .5em;
-    border-radius: 8px;
-    transition: opacity 100ms ease, transform 300ms ease;
-    background: var(--primary-bg);
-    border: 1px solid var(--border-basic);
-    color: var(--text-color);
-    z-index: 10;
-    font-size: .8rem;
 }
 
 
@@ -228,71 +112,8 @@ h1 {
         margin: 0;
         padding: 0;        
     }
-    .timeline-range.year {
-        grid-column: 1 / -1;
-        display: flex;
-        align-items: start;
-        overflow-y: visible;
-        height: 100%;
-        position: relative;
-        pointer-events: none;
-        div {
-            display: flex;
-            align-items: center;
-            box-sizing: border-box;
-            position: sticky;
-            text-align: center;
-            height: 50px;
-            top: 48px;
-            width: 100%;
-            margin: 0px;
-            background: light-dark(var(--color-accent), var(--secondary-bg));
-            z-index: 7;
-            p {
-                margin: auto;
-                font-weight: 600;
-                font-size: 2rem;
-            }
-        }
-    }
-    .timeline-cell.year {
-        height: 50px;
-        opacity: 0;
-    }
-    .timeline-cell.month {
-        opacity: 0;
-    }
-    .timeline-cell.month, .timeline-range.month {
-        grid-column: 1 / -1 !important;
-        align-items: start;
-        margin: 0;
-        border-color: var(--primary-bg);
-        border-style: solid;
-        border-width: 0px 0 0px 0;
-        width: 100%;
-        text-align: center;
-        position: relative;
-        overflow-y: visible;
-        height: 100%;
-        pointer-events: none;
-    }
-    .timeline-range.month {
-        display: flex;
-        align-items: start;
-        overflow-y: visible;
-        height: 100%;
-        position: relative;
-        pointer-events: none;
-        div {
-            height: min-content;
-            background: var(--border-basic);    
-            position: sticky;
-            top: 98px;
-            width: 100%;
-            z-index: 6;
-            margin: 0;
-        }
-    }
+
+
     .node-circles {
         grid-column: 2 / 3 !important;
         display: none; 
@@ -349,6 +170,8 @@ h1 {
         }
     }
     .timeline-cell.entry.basic {
+        margin: 0px 0px;
+        padding: 8px 0px;
         background: var(--primary-bg);
     }
     .timeline-cell.entry.twitter {
@@ -358,31 +181,6 @@ h1 {
     .timeline-cell.entry.truth {
         background: white;
         padding-right: 16px;
-    }
-    .node-day-time {
-        grid-column: 1 / 2 !important;
-        font-size: 1em;
-        display: flex; 
-        flex-direction: column;
-        background: hsl(from var(--primary-bg) h s l / .75);
-        padding: 0 4px;
-        margin: auto;
-        padding: 1px 6px;
-        z-index: 4;
-        p {
-            padding: 0;
-            height: auto;
-            margin: 0;
-        }
-        .node-day {
-            font-weight: bold;
-        }
-        .node-time {
-            font-size: .9em;
-        }
-        &.Minor {
-            background: var(--secondary-bg);
-        }
     }
 
 }
@@ -411,51 +209,26 @@ h1 {
         <div class="timeline-line" style={`grid-column: 3 / 4; grid-row: ${year.yIndex + 1} / ${year.yEnd};`}> 
         </div>
     )})}
-    <div id="span-column" style={`grid-column: 1 / 2; grid-row: 1 / ${timelineData.Length};`}>
-        {timelineData.Spans.map((span: { yIndex: number; yEnd: number; trackInd: number; name: unknown }) => {
-        return (       <div class="timeline-span" style={`grid-row: ${span.yIndex + 1} / ${span.yEnd +1}; grid-column: ${span.trackInd + 1}`}>
-            <div class="span-name" style={`grid-row: ${span.yIndex} / ${span.yEnd +1}; grid-column: ${span.trackInd + 1}`}>
-                {span.name}
-            </div>
-            
-        </div>
-        )})}
-    </div>
-    {timelineData.Years.map((year: { yIndex: number; year: unknown }, yearsInd: number) => (
-      <div class="timeline-cell year spacer"
-      style={{
-        gridColumn: "1 / 6",
-        gridRow: `${year.yIndex} / ${year.yIndex + 1}`,
-      }}>
-      <div><p>{year.year}</p></div>
-      </div>
-      <div class="timeline-range year" 
-      style={{
-        gridColumn: "1 / 6",
-        gridRow: `${year.yIndex} / ${timelineData.Years[Math.min(yearsInd + 1, timelineData.Years.length - 1)].yEnd + 1}`,
-      }}>
-        <div><p>{year.year}</p></div>
-      </div>
-      ))}
-  {timelineData.Months.map((month: { yIndex: number; month: unknown }, monthInd: number) => (
-    <div class="timeline-cell month spacer"
-      style={{
-        gridColumn: "1 / 6",
-        gridRow: `${month.yIndex} / ${month.yIndex + 1}`,
-      }}>
-        <div><p>
-      {month.month} 
-      </p></div>
-      </div>
-      <div class="timeline-range month" 
-      style={`
-        --anim-delay: ${month.yIndex * 75}ms;
-        grid-column: 1 / 6;
-        grid-row: ${month.yIndex} / ${timelineData.Months[Math.min(monthInd + 1, timelineData.Months.length - 1)].yEnd + 1};
-      `}>
-        <div><p>{month.month} </p></div>
-      </div>  
-      ))}
+    <TimelineSpans timelineData={timelineData} />
+    {timelineData.Years.map((year: { yIndex: number; year: unknown }, yearsInd: number) => {
+        let end = year.yIndex + 1
+        if (yearsInd !== timelineData.Years.length - 1) {
+            end = timelineData.Years[yearsInd + 1].yIndex + 1
+        } else {
+            end = timelineData.Length
+        }
+        return (<YearSpan year={year.year} start={year.yIndex} end={end}/>
+      )})}
+  {timelineData.Months.map((month: { yIndex: number; month: unknown }, monthInd: number) => {
+    let end = month.yIndex + 1
+    if (monthInd !== timelineData.Months.length - 1) {
+        end = timelineData.Months[monthInd + 1].yIndex + 1
+    } else {
+        end = timelineData.Length
+    }
+    return (
+        <MonthSpan month={month.month} start={month.yIndex} end={end}/>
+      )})}
 
     {timelineData.Entries.map((atom: TimelineEntry) => (
       <div class={`node-circles ${atom.Display}`}
@@ -466,15 +239,12 @@ h1 {
       }/>
     ))}
     {timelineData.Entries.map((entry: TimelineEntry) => (
-      <div class={`node-day-time ${entry.Display}`} 
-      style={`
-        grid-column: 2 / 3;
-        grid-row: ${entry.Index} / ${entry.Index + 1};
-        --anim-delay: ${entry.Index * 125}ms`
-      }>
-        <p class="node-day">{entry.Properties.OrdinalDay}</p> 
-        {entry.Properties?.DateString?.split("T")?.[1] ? <p class="node-time"> {entry.Properties.DateString.split("T")[1]}</p> : ""}
-      </div>
+      <NodeTimeDay 
+        ordinalDay={entry.Properties.OrdinalDay} 
+        dateString={entry.Properties.DateString} 
+        displayClass={entry.Display} 
+        index={entry.Index} 
+      />
     ))}
     {timelineData.Entries.map((entry: TimelineEntry) => (
       <div class={`timeline-cell entry ${entry.Display.toLowerCase()}`}

@@ -1,0 +1,76 @@
+---
+import type { TimelineData } from "../../utils/inlineToTimeline";
+
+interface Props {
+    timelineData: TimelineData
+}
+
+const { timelineData } = Astro.props
+---
+
+<style is:global>
+#span-column {
+    padding-left: 8px;
+    display: grid;
+    width: auto;
+    height: 100%;
+    grid-template-rows: subgrid;
+    margin-right: 8px;
+    position: relative;
+    gap: 0 4px;
+}
+.timeline-span {
+    width: 20px;
+    height: calc(100% - 8px);
+    margin: -48px auto auto 0;
+    background: light-dark(
+        hsl(from var(--color-accent) h s l / .3),
+        hsl(from var(--border-basic) h s l / .3)
+    );
+    border-color:  light-dark(
+        hsl(from var(--border-basic) h s l / 1),
+        hsl(from var(--border-basic) h s l / .5)
+    );
+    border-width: 0 0px 0 0px;
+    border-style: solid;
+    transition: border 250ms ease, background 400ms ease;
+    &:hover {
+        border-color: hsl(from var(--color-accent) h s l / .7);
+        background: light-dark(
+            hsl(from var(--color-accent) h s l / .5),
+            hsl(from var(--border-basic) h s l / .5)
+        );
+        .span-name {
+            opacity: 1;
+            transform: translateX(25px);
+        }
+    }
+} 
+.span-name {
+    opacity: 0;
+    pointer-events: none;
+    place-self: right;
+    position: sticky;
+    width: 125px;
+    top: 50%;
+    padding: .5em;
+    border-radius: 8px;
+    transition: opacity 100ms ease, transform 300ms ease;
+    background: var(--primary-bg);
+    border: 1px solid var(--border-basic);
+    color: var(--text-color);
+    z-index: 10;
+    font-size: .8rem;
+}
+</style>
+
+<div id="span-column" style={`grid-column: 1 / 2; grid-row: 1 / ${timelineData.Length};`}>
+    {timelineData.Spans.map((span: { yIndex: number; yEnd: number; trackInd: number; name: unknown }) => {
+    return (       <div class="timeline-span" style={`grid-row: ${span.yIndex + 1} / ${span.yEnd +1}; grid-column: ${span.trackInd + 1}`}>
+        <div class="span-name" style={`grid-row: ${span.yIndex} / ${span.yEnd +1}; grid-column: ${span.trackInd + 1}`}>
+            {span.name}
+        </div>
+        
+    </div>
+    )})}
+</div>

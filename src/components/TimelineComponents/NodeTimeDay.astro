@@ -1,0 +1,57 @@
+---
+interface Props {
+    ordinalDay: string;
+    dateString: string;
+    displayClass: string;
+    index: number;
+}
+
+const { ordinalDay, dateString, displayClass, index } = Astro.props;
+---
+
+<style is:global>
+.node-day-time {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    place-self: center right;
+    pointer-events: none;
+}
+
+@media only screen and (max-width: 640px) { 
+    .node-day-time {
+        grid-column: 1 / 2 !important;
+        font-size: 1em;
+        display: flex; 
+        flex-direction: column;
+        background: hsl(from var(--primary-bg) h s l / .75);
+        padding: 0 4px;
+        margin: auto;
+        padding: 1px 6px;
+        z-index: 4;
+        p {
+            padding: 0;
+            height: auto;
+            margin: 0;
+        }
+        .node-day {
+            font-weight: bold;
+        }
+        .node-time {
+            font-size: .9em;
+        }
+        &.Minor {
+            background: var(--secondary-bg);
+        }
+    }
+}
+</style>
+
+<div class={`node-day-time ${displayClass}`} 
+style={`
+    grid-column: 2 / 3;
+    grid-row: ${index} / ${index + 1};
+    --anim-delay: ${index * 125}ms`
+}>
+    <p class="node-day">{ordinalDay}</p> 
+    {dateString?.split("T")?.[1] ? <p class="node-time"> {dateString.split("T")[1]}</p> : ""}
+</div>

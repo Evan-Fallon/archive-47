@@ -1,0 +1,40 @@
+---
+const { month, start, end } = Astro.props;
+---
+<style>
+.timeline-cell.month.spacer {
+    display:                block;
+    height:                 min-content;
+    opacity:                1;
+    grid-column:            1 / -1;
+    font-size:              1.1rem;
+}
+.timeline-range.month {
+    grid-column:            1 / -1;
+    height:                 100%;
+    width:                  100%;
+    text-align:             center;
+}
+.timeline-range.month .slider.month {
+    display:                block;
+    height:                 min-content;
+    width:                  100%;
+    font-size:              1.1rem;
+    font-weight:            600;
+    position:               sticky;
+    top:                    55px;
+    background-color:       var(--border-basic);
+    z-index:                6;
+}
+@media only screen and (max-width: 640px) { 
+    .timeline-range.month .slider.month {
+        top: 105px;
+    }
+}
+</style>
+<div class="timeline-cell month spacer" style={`grid-row: ${start} / ${start + 1}`}>
+    {month}
+</div>
+<div class="timeline-range month" style={`grid-row: ${start} / ${end + 1}`}>
+    <span class="month slider">{month}</span>
+</div>

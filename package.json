@@ -30,6 +30,7 @@
     "unified": "^11.0.5"
   },
   "devDependencies": {
+    "@astrojs/preact": "^6.0.6",
     "@types/node": "^26.2.0",
     "gh-pages": "^6.3.0"
   },
