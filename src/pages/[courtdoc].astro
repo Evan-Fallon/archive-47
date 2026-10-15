@@ -1,0 +1,86 @@
+---
+import { vaultQuery } from '../utils/vaultQuery';
+import { Marked } from 'marked';
+import Layout from '../layouts/Layout.astro';
+import { stripAtomFormatting } from '../utils/stripAtomFormatting';
+
+export async function getStaticPaths() {
+const query = await vaultQuery()
+const pages = query
+  .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"] === "courtdoc")
+  .map(courtdoc => ({params: { courtdoc: courtdoc.BaseName }, props: { fileContent: courtdoc.FileContent, url: courtdoc.Frontmatter.URL }}))
+
+    return pages;
+}
+const { courtdoc } = Astro.params;
+const { fileContent, url } = Astro.props;
+let stringOutput = fileContent
+  .split("---")
+  .slice(2)
+  .join("")
+stringOutput = stringOutput
+  .replace(/<p>\s*%%[\s\S]*?%%\s*<\/p>|%%[\s\S]*?%%/g, '')
+  
+  
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+
+// replace: const htmlContent = await new Marked().parse(stringOutput)
+const htmlContent = String(
+  await unified()
+    .use(remarkParse)
+    .use(remarkGfm)        // <- this is what enables footnotes
+    .use(remarkRehype)
+    .use(rehypeStringify)
+    .process(stringOutput)
+).replace(/\^(?!\[\d+\])[a-zA-Z0-9-]+/g, '');
+---
+<style>
+  .pdf-disclaimer {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    left: 0;
+    background: #fff;
+    padding: 1rem;
+    z-index: 1000;
+    filter: drop-shadow(0px 4px 0px rgba(0, 0, 0, 0.2));
+    text-align: center;
+  }
+  .pdf-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 96px;
+    background: #f9f9f9;
+    color: #333;
+    font-family: "Times New Roman", Tinos, Charis SIL, Courier Prime, Georgia, serif;
+    text-indent: 2em;
+  }
+  .pdf-content :global(h1){
+    font-size: 1.2em;
+  }
+  .pdf-content :global(h2){
+    font-size: 1.1em;
+  }
+  .pdf-content :global(h2),
+  .pdf-content :global(h3),
+  .pdf-content :global(h4),
+  .pdf-content :global(h5),
+  .pdf-content :global(h6){
+    font-size: 1em;
+  }
+  @media only screen and (max-width: 640px) { 
+    .pdf-content {
+      padding: 16px;
+    }
+  }
+</style>
+<div class="pdf-disclaimer">The following is a tool assisted archive of the original source for easier navigation. Mistakes are likely. View the original PDF <a href={url} target="_blank" rel="noopener noreferrer">here</a>.</div>
+<Layout>
+  <div class="pdf-content">
+    <span set:html={htmlContent}></span>
+  </div>
+</Layout>

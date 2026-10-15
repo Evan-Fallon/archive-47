@@ -35,14 +35,30 @@ const limit = pLimit(500);
 
 let cachedQuery: Promise<VaultNote[]> | null = null
 
+// In vaultQuery.ts, modify the vaultQuery function:
 export async function vaultQuery(): Promise<VaultNote[]> {
-
-  if (cachedQuery) {
-    console.log("cached already")
-    return cachedQuery
+  // Remove caching in development mode
+  if (import.meta.env.DEV) {
+    console.log("Development mode - bypassing cache");
+    return await queryVault();
   }
+  
+  // Keep existing caching for production
+  if (cachedQuery) {
+    console.log("cached already");
+    return cachedQuery;
+  }
+  
+  cachedQuery = queryVault();
+  const results = await cachedQuery;
+  console.log("initial cache");
+  return results;
+}
 
+// Create a separate function for querying
+async function queryVault(): Promise<VaultNote[]> {
   const files = await glob('**/*.md', { cwd: vaultpath, absolute: true });
+  // ... rest of your existing logic
 
   const tasks = files.map((filePath) =>
     limit(async () => {
@@ -64,5 +80,7 @@ export async function vaultQuery(): Promise<VaultNote[]> {
   cachedQuery = Promise.all(tasks)
   const results = await cachedQuery
   console.log("initial cache")
+  
   return results;
 }
+

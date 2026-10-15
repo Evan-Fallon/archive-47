@@ -3,15 +3,21 @@ import { vaultQuery } from '../utils/vaultQuery';
 import { Marked } from 'marked';
 import Layout from '../layouts/Layout.astro';
 import { stripAtomFormatting } from '../utils/stripAtomFormatting';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
 
 export async function getStaticPaths() {
-const query = await vaultQuery()
-const pages = query
-  .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"] === "pdf")
-  .map(pdf => ({params: { pdfs: pdf.BaseName }, props: { fileContent: pdf.FileContent, url: pdf.Frontmatter.URL }}))
+  const query = await vaultQuery()
+  const pages = query
+    .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"] === "pdf")
+    .map(pdf => ({params: { pdfs: pdf.BaseName }, props: { fileContent: pdf.FileContent, url: pdf.Frontmatter.URL }}))
 
-    return pages;
+      return pages;
 }
+
 const { pdfs } = Astro.params;
 const { fileContent, url } = Astro.props;
 let stringOutput = fileContent
@@ -21,34 +27,37 @@ let stringOutput = fileContent
 stringOutput = stringOutput
   .replace(/<p>\s*%%[\s\S]*?%%\s*<\/p>|%%[\s\S]*?%%/g, '')
   
-  
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
 
-// replace: const htmlContent = await new Marked().parse(stringOutput)
+
 const htmlContent = String(
   await unified()
     .use(remarkParse)
-    .use(remarkGfm)        // <- this is what enables footnotes
+    .use(remarkGfm)      
     .use(remarkRehype)
     .use(rehypeStringify)
     .process(stringOutput)
 ).replace(/\^(?!\[\d+\])[a-zA-Z0-9-]+/g, '');
+
+
+
 ---
 <style>
   .pdf-disclaimer {
+    display: flex;
     width: 100%;
-    position: sticky;
+    height: 50px;
+    position: fixed;
     top: 0;
     left: 0;
     background: #fff;
-    padding: 1rem;
     z-index: 1000;
     filter: drop-shadow(0px 4px 0px rgba(0, 0, 0, 0.2));
+    place-items: center;
     text-align: center;
+  }
+  .pdf-disclaimer span {
+    font-size: clamp(.65rem, calc(.3rem + 2vw), 1rem);
+    margin: 0 auto;
   }
   .pdf-content {
     max-width: 1000px;
@@ -72,9 +81,16 @@ const htmlContent = String(
   .pdf-content :global(h6){
     font-size: 1em;
   }
-  
+  @media only screen and (max-width: 640px) { 
+    .pdf-content {
+      padding: 16px;
+    }
+  }
 </style>
-<div class="pdf-disclaimer">The following is a tool assisted archive of the original source for easier navigation. Mistakes are likely. View the original PDF <a href={url} target="_blank" rel="noopener noreferrer">here</a>.</div>
+<div style="height: 50px"/>
+<div class="pdf-disclaimer">
+<span>The following is a tool assisted archive of the original source for easier navigation. Mistakes are likely. View the original PDF <a href={url} target="_blank" rel="noopener noreferrer"> here</a>.</span>
+</div>
 <Layout>
   <div class="pdf-content">
     <span set:html={htmlContent}></span>

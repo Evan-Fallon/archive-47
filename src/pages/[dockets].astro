@@ -1,0 +1,23 @@
+---
+import { vaultQuery } from '../utils/vaultQuery';
+import { Marked } from 'marked';
+import Layout from '../layouts/Layout.astro';
+import { stripAtomFormatting } from '../utils/stripAtomFormatting';
+
+export async function getStaticPaths() {
+    const query = await vaultQuery()
+    const pages = query
+    .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"] === "docket")
+    .map(docket => ({params: { docket: docket.BaseName }, props: { fileContent: docket.FileContent, url: docket.Frontmatter.URL }}))
+
+        return pages;
+    }
+const { docket } = Astro.params;
+
+  
+---
+
+<div class="docket-disclaimer">The following is a tool assisted archive of the docket for easier navigation. It is likely sourced from Courtlistener. view the original <a href={url} target="_blank" rel="noopener noreferrer">here</a>.</div>
+<Layout>
+
+</Layout>

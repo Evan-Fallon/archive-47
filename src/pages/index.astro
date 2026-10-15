@@ -4,10 +4,48 @@ import Debug from 'astro/components/Debug.astro';
 import { vaultQuery, type VaultNote }  from '../utils/vaultQuery';
 
 const query = await vaultQuery()
-  const seriesPages = query
-  .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Components"]?.includes("Timeline"))
+const seriesPages = query
+.filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Components"]?.includes("Timeline"))
+const notePages = query
+.filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"])
 
 ---
+<style>
+              .link-holder, .file-links {
+                display: grid;
+                gap: 2rem;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+                padding: 64px;
+                }
+            .view-link {
+                height: auto;
+                width: 100%;
+                aspect-ratio: 3 / 2;
+                box-sizing: border-box;
+                display: flex;
+                overflow: hidden;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                border: 1px solid var(--border-basic);
+                
+                border-radius: 12px;
+                text-decoration: none;
+                color: var(--text-normal);
+                padding: 2rem;
+                font-weight: 600;
+                font-size: 1.2rem;
+                vertical-align: text-top;
+                transition-property: border, background-color;
+                transition-duration: 0.8s, 2s, 2s;
+                background: var(--secondary-bg);
+                transition-timing-function: ease-in-out, ease-in-out, ease-out;
+                &:hover {
+                    border: 1px solid hsl(0 0 25);
+                    transition-duration: 0.2s, .5s;
+                }
+            }
+</style>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -24,6 +62,13 @@ const query = await vaultQuery()
           <a class="view-link" href={`./${series.BaseName}`}>{series.BaseName} </a>
         )})}
       </div>  
+      <div class="file-links">
+        {notePages.map(note => {
+          return (
+            <a class="view-link" href={`./${note.BaseName}`}>{note.BaseName}</a>
+          )
+        })}
+      </div>
 </Layout>
 </body>
 </html>

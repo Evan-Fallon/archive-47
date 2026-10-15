@@ -76,6 +76,10 @@ if (paywalled) {
 .timeline-button {
     height: 32px;
     border: 1px solid var(--border-basic);
+    border-radius: 4px;
+    display: flex;
+    place-content: center;
+    place-items: center;
 }
 .button-container {
     justify-content: right;
@@ -91,6 +95,7 @@ if (paywalled) {
     color: var(--border-hover);
     stroke-width: 2px;
 }
+
 @media only screen and (max-width: 640px) {
     .button-container {
         gap: 0px;

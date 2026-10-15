@@ -15,6 +15,10 @@ const { ordinalDay, dateString, displayClass, index } = Astro.props;
     color: var(--text-color);
     place-self: center right;
     pointer-events: none;
+    
+    p {
+        margin: 0px;
+    }
 }
 
 @media only screen and (max-width: 640px) { 
@@ -25,7 +29,7 @@ const { ordinalDay, dateString, displayClass, index } = Astro.props;
         flex-direction: column;
         background: hsl(from var(--primary-bg) h s l / .75);
         padding: 0 4px;
-        margin: auto;
+        margin-right: 4px;
         padding: 1px 6px;
         z-index: 4;
         p {
