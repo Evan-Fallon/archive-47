@@ -1,16 +1,15 @@
 ---
 import type { TimelineEntry } from '../../utils/inlineToTimeline'
-import DynamicModalLink from '../DynamicModalLink.astro'
-import { stripAtomFormatting } from '../../utils/stripAtomFormatting'
-import { Marked } from 'marked'
+import { markdownToHtmlPlus } from '../../utils/markdownToHtmlPlus'
+
 
 interface Props {
     entry: TimelineEntry;
 }
 const { entry } = Astro.props
 
-const priorLine = stripAtomFormatting(entry.Properties.PriorLine)
-const priorLineHtml = await new Marked().parse(priorLine)
+const priorLineHtml = await markdownToHtmlPlus(entry.Properties.PriorLine)
+
 ---
 <style>
 .display-node.basic {

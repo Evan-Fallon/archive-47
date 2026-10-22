@@ -241,6 +241,7 @@ h1 {
     {timelineData.Entries.map((entry: TimelineEntry) => (
       <NodeTimeDay 
         ordinalDay={entry.Properties.OrdinalDay} 
+        date={entry.Properties.Date}
         dateString={entry.Properties.DateString} 
         displayClass={entry.Display} 
         index={entry.Index} 

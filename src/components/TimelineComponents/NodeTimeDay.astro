@@ -1,12 +1,16 @@
 ---
+import { Temporal } from "@js-temporal/polyfill";
+
 interface Props {
     ordinalDay: string;
     dateString: string;
+    date: Temporal.PlainDateTime;
     displayClass: string;
     index: number;
 }
 
-const { ordinalDay, dateString, displayClass, index } = Astro.props;
+const { ordinalDay, dateString, date, displayClass, index } = Astro.props;
+const time = dateString?.includes("T") ? Temporal.PlainTime.from(dateString) : null;
 ---
 
 <style is:global>
@@ -15,9 +19,15 @@ const { ordinalDay, dateString, displayClass, index } = Astro.props;
     color: var(--text-color);
     place-self: center right;
     pointer-events: none;
-    
+    text-align: center;
     p {
         margin: 0px;
+    }
+    .node-day {
+        font-weight: bold;
+    }
+    .node-time {
+        font-size: .7rem;
     }
 }
 
@@ -41,7 +51,7 @@ const { ordinalDay, dateString, displayClass, index } = Astro.props;
             font-weight: bold;
         }
         .node-time {
-            font-size: .9em;
+            font-size: .7rem;
         }
         &.Minor {
             background: var(--secondary-bg);
@@ -57,5 +67,9 @@ style={`
     --anim-delay: ${index * 125}ms`
 }>
     <p class="node-day">{ordinalDay}</p> 
-    {dateString?.split("T")?.[1] ? <p class="node-time"> {dateString.split("T")[1]}</p> : ""}
+    {dateString?.includes("T") && (
+        <p class="node-time">
+            {time?.toLocaleString().slice(0, -6)}{time?.toLocaleString()?.includes("AM") ? "am" : "pm"}
+        </p>
+    )}
 </div>

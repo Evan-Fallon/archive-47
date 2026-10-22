@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { vaultQuery } from "../utils/vaultQuery";
+
+export async function getStaticPaths() {
+    const query = await vaultQuery()
+    const pages = query
+        .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"] === "series")
+        .map(thisSeries => ({
+            params: { 
+                series: `${thisSeries.BaseName.toLowerCase().replace(/\s+/g, '-')}-series`
+            }, 
+            props: { 
+                fileName: thisSeries.BaseName,
+                fileContent: thisSeries.FileContent, 
+                frontmatter: thisSeries.Frontmatter,
+                url: thisSeries.Frontmatter.URL 
+            }
+        }))
+    return pages;
+}
+const { fileName, frontmatter } = Astro.props
+const components = [frontmatter?.["A47-Components"]].flat() || []
+
+---
+<Layout>
+{components.map(component => {
+  return (
+    <a href={`./${fileName.toLowerCase().replace(/\s+/g, '-')}-${component}`}>{component}</a>
+  )
+})}
+</Layout>

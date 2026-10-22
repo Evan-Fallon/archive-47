@@ -1,7 +1,6 @@
 import { Temporal } from '@js-temporal/polyfill'
 import { propertyParser } from './propertyParser';
 import { extractContentSection } from './extractContentSection';
-import { stripAtomFormatting } from './stripAtomFormatting';
 import type { InlineProperty, VaultNote } from './vaultQuery';
 
 
@@ -14,7 +13,6 @@ export function loadInlineProperties(file: VaultNote): VaultNote {
         const matchIndex = match.index ?? 0
         const lineNumber = file.FileContent.substring(0, matchIndex).split('\n').length - 1;
         const priorLine = file.FileContent.split('\n')[lineNumber - 1]
-        const strippedLine = stripAtomFormatting(file.FileContent.split('\n')[lineNumber - 1])
         const userInput =  match[2].trim()
         const thisInline: InlineProperty = {
             Line: lineNumber,
@@ -22,7 +20,6 @@ export function loadInlineProperties(file: VaultNote): VaultNote {
             raw: userInput,
             SourceLink: file.Frontmatter?.URL,
             PriorLine: priorLine,
-            StrippedLine: strippedLine,
             Date: Temporal.Now.plainDateTimeISO(),
             DateString: "01-01-2026",
             Display: "Basic",
@@ -56,6 +53,6 @@ export function loadInlineProperties(file: VaultNote): VaultNote {
 
     return {
         ...file,
-        inlineProperties: inlineProperties,
+        InlineProperties: inlineProperties,
     }
 }

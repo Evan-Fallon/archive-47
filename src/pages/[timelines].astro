@@ -12,11 +12,22 @@ import { groupEntries } from '../utils/groupEntries'
 export async function getStaticPaths() {
   const query = await vaultQuery()
   const seriesPages = query
-  .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Components"]?.includes("Timeline"))
+  .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Components"]?.includes("timeline"))
 
   const para = seriesPages.map(series => {
     const basename = path.basename(series.BaseName, path.extname(series.BaseName))
-    return ( {params: { timelines: basename }, props: { frontmatter: series.Frontmatter }} )
+    return ( 
+      {
+        params: { 
+          timelines: `${basename.toLowerCase().replace(/\s+/g, '-')}-timeline`
+        }, 
+        props: { 
+          fileName: basename,
+          frontmatter: series.Frontmatter
+
+        }
+      } 
+    )
   })
 
   return para
@@ -24,14 +35,14 @@ export async function getStaticPaths() {
 
 
 const { timelines } = Astro.params
-const { frontmatter } = Astro.props
+const { frontmatter, fileName } = Astro.props
 
 const pages = await vaultQuery()
 const inlines = pages
-  .filter(page => page.FileContent.toLowerCase().includes(timelines.toLowerCase()))
+  .filter(page => page.FileContent.toLowerCase().includes(fileName.toLowerCase()))
   .map(page => loadInlineProperties(page))
-  .flatMap(page => page.inlineProperties)
-  .filter(inline => inline.Series?.includes(timelines))
+  .flatMap(page => page.InlineProperties)
+  .filter(inline => inline.Series?.includes(fileName))
   .sort((a, b) => Temporal.PlainDateTime.compare(a.Date, b.Date))
 const timelineData = inlineToTimeline(inlines)
 groupEntries(timelineData)
@@ -39,6 +50,6 @@ groupEntries(timelineData)
 
 ---
 <Layout>
-<h1>{timelines}</h1>
+<h1>{fileName}</h1>
 <TimelineVertical timelineData={timelineData}/>
 </Layout>

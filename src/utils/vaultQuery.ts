@@ -13,6 +13,7 @@ export interface InlineProperty {
   SourceLink: string
   raw: string;
   PriorLine: string;
+  HtmlOutput?: string;
   Date: Temporal.PlainDateTime;
   DateString: string;
   OrdinalDay: string;
@@ -27,7 +28,7 @@ export interface VaultNote {
   Frontmatter: any;
   FileContent: string;
   BaseName: string;
-  inlineProperties: InlineProperty[];
+  InlineProperties: InlineProperty[];
 }
 
 const vaultpath = import.meta.env.VAULT_PATH;
@@ -73,7 +74,7 @@ async function queryVault(): Promise<VaultNote[]> {
         Frontmatter: frontmatter,
         FileContent: rawfile, 
         BaseName: path.basename(filePath, path.extname(filePath)), 
-        inlineProperties: []
+        InlineProperties: []
       } as VaultNote
     })
   );

@@ -1,11 +1,5 @@
 ---
-import { Marked } from "marked";
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
-
+import { markdownToHtmlPlus } from "../../utils/markdownToHtmlPlus";
 import type { TimelineEntry } from "../../utils/inlineToTimeline";
 
 interface Props {
@@ -13,7 +7,7 @@ interface Props {
 }
 const { entry } = Astro.props
 
-const output = await new Marked().parse(entry.Properties?.Content)
+const output = await markdownToHtmlPlus(entry.Properties.PriorLine)
 const output2 = output.replace(/!\[\[(.*?)\]\]/g, '<img src="images/$1"/>');
 let Commentary = `
 <button class="commentary-button" popovertarget="commentary-${entry.Index}"> ? </button>

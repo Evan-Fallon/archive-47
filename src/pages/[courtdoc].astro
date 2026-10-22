@@ -1,8 +1,7 @@
 ---
 import { vaultQuery } from '../utils/vaultQuery';
-import { Marked } from 'marked';
 import Layout from '../layouts/Layout.astro';
-import { stripAtomFormatting } from '../utils/stripAtomFormatting';
+
 
 export async function getStaticPaths() {
 const query = await vaultQuery()
