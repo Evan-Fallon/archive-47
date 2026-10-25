@@ -8,11 +8,11 @@ export async function getStaticPaths() {
     const query = await vaultQuery()
     const pages = query
     .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"] === "docket")
-    .map(docket => ({params: { docket: docket.BaseName }, props: { fileContent: docket.FileContent, url: docket.Frontmatter.URL }}))
+    .map(docket => ({params: { dockets: docket.BaseName }, props: { fileContent: docket.FileContent, url: docket.Frontmatter.URL }}))
 
         return pages;
     }
-const { docket } = Astro.params;
+const { dockets } = Astro.params;
 
   
 ---

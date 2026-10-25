@@ -2,6 +2,7 @@ import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
+import rehypeRaw from 'rehype-raw';
 import rehypeStringify from 'rehype-stringify';
 
 function processWikiLinks(content: string): string {
@@ -38,26 +39,19 @@ function convertCallouts(htmlString: string): string {
 
 export async function markdownToHtmlPlus(string: string): Promise<string> {
   const strippedString = string.split('\n').filter(line => !line.trim().startsWith('%%(inline')).join('\n');
+  console.log('strippedString', strippedString)
     const htmlContent = String(
         await unified()
           .use(remarkParse)
           .use(remarkGfm)      
-          .use(remarkRehype)
+          .use(remarkRehype, {allowDangerousHtml: true})
+          .use(rehypeRaw)
           .use(rehypeStringify)
           .process(strippedString)
       )
-        /* FOOTNOTES */
-        /* OBSIDIAN COMMENTS   */
-        .replace(/<p>\s*%%[\s\S]*?%%\s*<\/p>|%%[\s\S]*?%%/g, '')
+
 
     return processWikiLinks(convertCallouts(htmlContent))
+  
     
 }
-/* OBSIDIAN COMMENTS   
-.replace(/<p>\s*%%[\s\S]*?%%\s*<\/p>|%%[\s\S]*?%%/g, '')
-/* FOOTNOTES 
-.replace(/\[\^\d+\]/g, '')
-/* BLOCK ID 
-.replace(/\^[a-zA-Z0-9-]+/g, '')
-/* HTML TAGS 
-.replace(/<[a-z]>/, "") */
