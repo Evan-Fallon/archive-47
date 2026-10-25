@@ -2,6 +2,7 @@
 import { Marked } from "marked";
 import { Temporal } from "@js-temporal/polyfill";
 import type { TimelineEntry } from "../../utils/inlineToTimeline";
+import { markdownToHtmlPlus } from "../../utils/markdownToHtmlPlus";
 
 
 interface Props {
@@ -9,8 +10,7 @@ interface Props {
 }
 const { entry } = Astro.props
 
-const output = await new Marked().parse(entry.Properties.Content)
-const output2 = output.replace(/!\[\[(.*?)\]\]/g, '<img src="images/$1"/>');
+const output = await markdownToHtmlPlus(entry.Properties?.Content || "");
 
 let Commentary 
 if (entry.Properties?.Commentary) {
@@ -217,7 +217,7 @@ img.truth.user-icon {
             </div>
             <img src="images/Truth_Social_logo_2022-light.png" class="truth logo"/>  
         </div>
-        <span class="truth content" set:html={output2}/>
+        <span class="truth content" set:html={output}/>
         <div class="truth footer">
             <p class="truth truths"><b>{entry.Properties.Frontmatter.ReTruths}</b> ReTruths </p>
             <p class="truth views"><b>{entry.Properties.Frontmatter.Likes}</b> Likes</p>

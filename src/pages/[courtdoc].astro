@@ -1,6 +1,7 @@
 ---
 import { vaultQuery } from '../utils/vaultQuery';
 import Layout from '../layouts/Layout.astro';
+import { markdownToHtmlPlus } from '../utils/markdownToHtmlPlus';
 
 
 export async function getStaticPaths() {
@@ -10,32 +11,14 @@ const pages = query
   .map(courtdoc => ({params: { courtdoc: courtdoc.BaseName }, props: { fileContent: courtdoc.FileContent, url: courtdoc.Frontmatter.URL }}))
 
     return pages;
-}
+} 
 const { courtdoc } = Astro.params;
 const { fileContent, url } = Astro.props;
 let stringOutput = fileContent
   .split("---")
   .slice(2)
   .join("")
-stringOutput = stringOutput
-  .replace(/<p>\s*%%[\s\S]*?%%\s*<\/p>|%%[\s\S]*?%%/g, '')
-  
-  
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
-
-// replace: const htmlContent = await new Marked().parse(stringOutput)
-const htmlContent = String(
-  await unified()
-    .use(remarkParse)
-    .use(remarkGfm)        // <- this is what enables footnotes
-    .use(remarkRehype)
-    .use(rehypeStringify)
-    .process(stringOutput)
-).replace(/\^(?!\[\d+\])[a-zA-Z0-9-]+/g, '');
+stringOutput = await markdownToHtmlPlus(stringOutput)
 ---
 <style>
   .pdf-disclaimer {
@@ -80,6 +63,6 @@ const htmlContent = String(
 <div class="pdf-disclaimer">The following is a tool assisted archive of the original source for easier navigation. Mistakes are likely. View the original PDF <a href={url} target="_blank" rel="noopener noreferrer">here</a>.</div>
 <Layout>
   <div class="pdf-content">
-    <span set:html={htmlContent}></span>
+    <span set:html={stringOutput}></span>
   </div>
 </Layout>

@@ -37,16 +37,16 @@ function convertCallouts(htmlString: string): string {
 
 
 export async function markdownToHtmlPlus(string: string): Promise<string> {
+  const strippedString = string.split('\n').filter(line => !line.trim().startsWith('%%(inline')).join('\n');
     const htmlContent = String(
         await unified()
           .use(remarkParse)
           .use(remarkGfm)      
           .use(remarkRehype)
           .use(rehypeStringify)
-          .process(string)
+          .process(strippedString)
       )
         /* FOOTNOTES */
-        .replace(/\^(?!\[\d+\])[a-zA-Z0-9-]+/g, '')
         /* OBSIDIAN COMMENTS   */
         .replace(/<p>\s*%%[\s\S]*?%%\s*<\/p>|%%[\s\S]*?%%/g, '')
 

@@ -26,7 +26,7 @@ const components = [frontmatter?.["A47-Components"]].flat() || []
 <Layout>
 {components.map(component => {
   return (
-    <a href={`./${fileName.toLowerCase().replace(/\s+/g, '-')}-${component}`}>{component}</a>
+    <a href={`./${fileName.toLowerCase().replace(/\s+/g, '-')}-${component.toLowerCase()}`}>{component}</a>
   )
 })}
-</Layout>
+</Layout

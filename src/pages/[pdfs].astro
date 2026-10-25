@@ -2,18 +2,13 @@
 import { vaultQuery } from '../utils/vaultQuery';
 import { Marked } from 'marked';
 import Layout from '../layouts/Layout.astro';
-import { stripAtomFormatting } from '../utils/stripAtomFormatting';
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
+import { markdownToHtmlPlus } from '../utils/markdownToHtmlPlus';
 
 export async function getStaticPaths() {
   const query = await vaultQuery()
   const pages = query
     .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"] === "pdf")
-    .map(pdf => ({params: { pdfs: pdf.BaseName }, props: { fileContent: pdf.FileContent, url: pdf.Frontmatter.URL }}))
+    .map(pdf => ({params: { pdfs: pdf.BaseName.toLowerCase().replace(/\s+/g, '-') }, props: { fileContent: pdf.FileContent, url: pdf.Frontmatter.URL, fileName: pdf.BaseName }}))
 
       return pages;
 }
@@ -29,14 +24,7 @@ stringOutput = stringOutput
   
 
 
-const htmlContent = String(
-  await unified()
-    .use(remarkParse)
-    .use(remarkGfm)      
-    .use(remarkRehype)
-    .use(rehypeStringify)
-    .process(stringOutput)
-).replace(/\^(?!\[\d+\])[a-zA-Z0-9-]+/g, '');
+const htmlContent = await markdownToHtmlPlus(stringOutput)
 
 
 
