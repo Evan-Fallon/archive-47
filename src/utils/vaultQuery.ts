@@ -12,7 +12,7 @@ export interface InlineProperty {
   FileName: string;
   SourceLink: string
   raw: string;
-  PriorLine: string;
+  Content: string;
   HtmlOutput?: string;
   Date: Temporal.PlainDateTime;
   DateString: string;

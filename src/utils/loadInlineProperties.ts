@@ -19,7 +19,7 @@ export function loadInlineProperties(file: VaultNote): VaultNote {
             FileName: file.BaseName,
             raw: userInput,
             SourceLink: file.Frontmatter?.URL,
-            PriorLine: priorLine,
+            Content: priorLine,
             Date: Temporal.Now.plainDateTimeISO(),
             DateString: "01-01-2026",
             Display: "Basic",

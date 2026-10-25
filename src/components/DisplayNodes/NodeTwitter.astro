@@ -7,7 +7,7 @@ interface Props {
 }
 const { entry } = Astro.props
 
-const output = await markdownToHtmlPlus(entry.Properties.PriorLine)
+const output = await markdownToHtmlPlus(entry.Properties.Content)
 const output2 = output.replace(/!\[\[(.*?)\]\]/g, '<img src="images/$1"/>');
 let Commentary = `
 <button class="commentary-button" popovertarget="commentary-${entry.Index}"> ? </button>
@@ -134,6 +134,11 @@ img.twitter.user-icon {
     border: 1px solid var(--twitter-border);
     border-radius: 8px;
 }
+.twitter.content :global(video)  {
+    max-width: 288px;
+    border: 1px solid var(--twitter-border);
+    border-radius: 8px;
+}
 .twitter.source-link {
     display: block;
     width: 100%;
@@ -207,7 +212,7 @@ img.twitter.user-icon {
             </div>
             <img src="images/twitter-logo.png" class="twitter logo"/>  
         </div>
-        <span class="twitter content" set:html={output2}/>
+        <span class="twitter content" set:html={output}/>
         <div class="twitter footer">
             <p class="twitter date">{entry.Properties.Frontmatter.Date}</p>
             <p class="twitter views"><b>{entry.Properties.Frontmatter.Views}</b> views</p>

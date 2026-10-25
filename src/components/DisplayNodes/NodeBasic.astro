@@ -8,7 +8,7 @@ interface Props {
 }
 const { entry } = Astro.props
 
-const priorLineHtml = await markdownToHtmlPlus(entry.Properties.PriorLine)
+const priorLineHtml = await markdownToHtmlPlus(entry.Properties.Content)
 
 ---
 <style>
