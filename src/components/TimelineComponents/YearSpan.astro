@@ -28,12 +28,12 @@ const { year, start, end } = Astro.props;
     align-items:            center;
     font-weight:            600;
     position:               sticky;
-    top:                    0px;
+    top:                    100px;
     overflow-y:             visible;
     background:             light-dark(var(--color-accent), var(--primary-bg));
     z-index:                7;
 }
-@media only screen and (max-width: 640px) { 
+@container timeline (max-width: 640px) { 
     .timeline-range.year .slider.year {
         top: 50px;
     }

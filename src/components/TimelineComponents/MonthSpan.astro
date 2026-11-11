@@ -23,11 +23,11 @@ const { month, start, end } = Astro.props;
     font-size:              1.1rem;
     font-weight:            600;
     position:               sticky;
-    top:                    55px;
+    top:                    155px;
     background-color:       var(--border-basic);
     z-index:                6;
 }
-@media only screen and (max-width: 640px) { 
+@container timeline (max-width: 640px) { 
     .timeline-range.month .slider.month {
         top: 105px;
     }

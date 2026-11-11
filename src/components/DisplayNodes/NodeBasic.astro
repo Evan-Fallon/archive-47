@@ -55,7 +55,7 @@ const priorLineHtml = await markdownToHtmlPlus(entry.Properties.Content)
         pointer-events: none;
     }
 }
-@media only screen and (max-width: 640px) {
+@container timeline (max-width: 640px) {
 .display-node.basic {
         margin: 6px 0;
         grid-column: 2 / 3; 

@@ -27,6 +27,8 @@ h1 {
     width: 100%;
     max-width: 100%;
     min-width: 0% !important;
+    overflow: clip;
+    border-radius: 16px;
     > * {
         min-width: 0%;
     }
@@ -34,7 +36,12 @@ h1 {
 .timeline-sizer {
     max-width: 100%;
     width: 100%;
+    container-type: inline-size;
+    container-name: timeline;
+    border-radius: 16px;
+    outline: 1px solid var(--border-basic);
 }
+
 .timeline-cell {
     display: grid;
     align-items: center;
@@ -103,7 +110,7 @@ h1 {
 
 
 
-@media only screen and (max-width: 640px) { 
+@container timeline (max-width: 640px) { 
     .timeline-base {
         grid-template-columns: min-content auto min-content;
     }
@@ -184,10 +191,11 @@ h1 {
     }
 
 }
-@media only screen and (min-width: 640px) {
+@container timeline (min-width: 640px) {
     .timeline-sizer {
         position: relative;
         overflow: clip;
+        border-radius: 16px;
     }
     .timeline-sizer::after {
         border: 1px solid var(--border-basic);
