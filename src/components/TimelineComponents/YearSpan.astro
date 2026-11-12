@@ -33,11 +33,7 @@ const { year, start, end } = Astro.props;
     background:             light-dark(var(--color-accent), var(--primary-bg));
     z-index:                7;
 }
-@container timeline (max-width: 640px) { 
-    .timeline-range.year .slider.year {
-        top: 50px;
-    }
-}
+
 </style>
 
 <div class="timeline-cell year spacer" style={`grid-row: ${start} / ${start + 1}`}/>

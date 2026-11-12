@@ -27,11 +27,7 @@ const { month, start, end } = Astro.props;
     background-color:       var(--border-basic);
     z-index:                6;
 }
-@container timeline (max-width: 640px) { 
-    .timeline-range.month .slider.month {
-        top: 105px;
-    }
-}
+
 </style>
 <div class="timeline-cell month spacer" style={`grid-row: ${start} / ${start + 1}`}>
     {month}
