@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Debug from 'astro/components/Debug.astro';
+import path from 'node:path' 
+import TimelineVertical from '../components/TimelineVertical.astro';
+import { vaultQuery, type VaultNote }  from '../utils/vaultQuery';
+import { loadInlineProperties } from '../utils/loadInlineProperties';
+import { Temporal } from '@js-temporal/polyfill';
+import { inlineToTimeline } from '../utils/inlineToTimeline'
+import { groupEntries } from '../utils/groupEntries'
+
+export async function getStaticPaths() {
+  const query = await vaultQuery()
+  const seriesPages = query
+  .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Components"]?.includes("timeline"))
+
+  const para = seriesPages.map(series => {
+    const basename = path.basename(series.BaseName, path.extname(series.BaseName))
+    return ( 
+      {
+        params: { 
+          timelines: `${basename.toLowerCase().replace(/\s+/g, '-')}-timeline`
+        }, 
+        props: { 
+          fileName: basename,
+          frontmatter: series.Frontmatter
+
+        }
+      } 
+    )
+  })
+
+  return para
+}
+
+
+const { timelines } = Astro.params
+const { frontmatter, fileName } = Astro.props
+
+const pages = await vaultQuery()
+const inlines = pages
+  .filter(page => page.FileContent.toLowerCase().includes("biden 2021 border enforcement".toLowerCase()))
+  .map(page => loadInlineProperties(page))
+  .flatMap(page => page.InlineProperties)
+  .filter(inline => inline.Series?.map(s => s.toLowerCase()).includes("biden 2021 border enforcement".toLowerCase()))
+  .sort((a, b) => Temporal.PlainDateTime.compare(a.Date, b.Date))
+const timelineData = inlineToTimeline(inlines)
+groupEntries(timelineData)
+
+
+---
+<style is:global>
+  .timeline-sizer {
+    grid-column: 2 / 3;
+  }
+@container timeline (max-width: 640px) { 
+    .timeline-range.year .slider.year {
+        top: 50px;
+    }
+        .timeline-range.month .slider.month {
+        top: 105px;
+    }
+}
+</style>
+<Layout>
+<h1>{fileName}</h1>
+<TimelineVertical timelineData={timelineData}/>
+</Layout>
