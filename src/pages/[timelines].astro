@@ -50,13 +50,19 @@ groupEntries(timelineData)
 
 ---
 <style is:global>
+.timeline-sizer .timeline-base .timeline-range.year .slider.year {
+    top: 90px;
+}
+.timeline-sizer .timeline-base  .timeline-range.month .slider.month {
+    top: 145px;
+}
 @container timeline (max-width: 640px) { 
-    .timeline-range.year .slider.year {
-        top: 50px;
-    }
-        .timeline-range.month .slider.month {
-        top: 105px;
-    }
+  .timeline-range.year .slider.year {
+      top: 50px;
+  }
+      .timeline-range.month .slider.month {
+      top: 105px;
+  }
 }
 </style>
 <Layout>
