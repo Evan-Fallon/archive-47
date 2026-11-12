@@ -49,6 +49,14 @@ groupEntries(timelineData)
 
 
 ---
+<style is:global>
+.timeline-base .timeline-range.year .year.slider.year.slider {   
+    top: 90px;
+}
+.timeline-base .timeline-range.month .month.slider.month.slider {   
+    top: 145px;
+}
+</style>
 <Layout>
 <h1>{fileName}</h1>
 <TimelineVertical timelineData={timelineData}/>
