@@ -42,7 +42,7 @@ const inlines = pages
   .filter(page => page.FileContent.toLowerCase().includes(fileName.toLowerCase()))
   .map(page => loadInlineProperties(page))
   .flatMap(page => page.InlineProperties)
-  .filter(inline => inline.Series?.includes(fileName))
+  .filter(inline => inline.Series?.map(s => s.toLowerCase()).includes(fileName.toLowerCase()))
   .sort((a, b) => Temporal.PlainDateTime.compare(a.Date, b.Date))
 const timelineData = inlineToTimeline(inlines)
 groupEntries(timelineData)
