@@ -61,7 +61,99 @@ const notePages = query
   </head>
   <body>
     <Layout>
-
+      <div class="series-node full">
+        <style>
+          .series-node.full {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            height: 240px;
+            width: 720px;
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-basic);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 64px;
+          }
+          .series-image {
+            grid-column: 1 / 2;
+            grid-row: 1 / 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+          .series-content {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            display: grid;
+            grid-template-rows: 25px 1fr auto;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            h3 {
+              font-size: 1.5rem;
+              font-weight: 600;
+              margin-bottom: 2px;
+            }
+          }
+          .series-description {
+            display: flex;
+            font-size: .75rem;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            text-align: center;
+            p {
+              margin: 0;
+              padding: 0 16px;
+            }
+          }
+          .series-components {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            gap: 16px;
+            overflow-x: auto;
+          }
+          .series-component {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: auto;
+            height: 40px;
+            background: var(--primary-bg);
+            border: 1px solid var(--border-basic);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-normal);
+            font-size: 1rem;
+            padding: 8px;
+          }
+        </style>
+        <div class="series-content">
+          <h3>The C.E.C.O.T. Lie</h3>
+          <div class="series-description">
+            <p>
+              The C.E.C.O.T. Lie is a series of events and documents that explore the history and impact of the C.E.C.O.T. organization. This timeline provides a detailed look at the key moments and figures involved in this complex narrative.
+            </p>
+            </div>
+          <div class="series-components">
+            <a class="series-component" href="./the-cecot-lie-timeline">View Timeline</a>
+          </div>
+        </div>
+        <div class="series-image">
+          <img src="./images/Philip-Holsinger02.jpg"/>
+        </div>
+      </div>
     </Layout>
   </body>
 </html>
