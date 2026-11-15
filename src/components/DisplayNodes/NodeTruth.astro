@@ -3,7 +3,7 @@ import { Marked } from "marked";
 import { Temporal } from "@js-temporal/polyfill";
 import type { TimelineEntry } from "../../utils/inlineToTimeline";
 import { markdownToHtmlPlus } from "../../utils/markdownToHtmlPlus";
-
+import { resolveVaultImage } from '../../utils/copyVaultImages'
 
 interface Props {
     entry: TimelineEntry;
@@ -19,6 +19,8 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${entr
     ${entry.Properties?.Commentary}
 </div>`
 }
+const resolvedProfile = resolveVaultImage(entry.Properties.Frontmatter.Icon)
+
 ---
 
 <style>
@@ -211,7 +213,7 @@ img.truth.user-icon {
     <div class="truth embed">
         <div class="truth header">
             <div class="truth user-info">
-                <img src={`images/${entry.Properties.Frontmatter.Icon.slice(2, -2)}`} class="truth user-icon"/>
+                <img src={resolvedProfile} class="truth user-icon"/>
                 <p class="truth fullname">{entry.Properties.Frontmatter["User Fullname"]}</p>
                 <p class="truth handle">{entry.Properties.Frontmatter["Handle"]}</p>
             </div>

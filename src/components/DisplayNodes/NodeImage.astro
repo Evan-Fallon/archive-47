@@ -1,6 +1,6 @@
 ---
 import type { TimelineEntry } from '../../utils/inlineToTimeline'
-import DynamicModalLink from '../DynamicModalLink.astro'
+import { resolveVaultImage } from '../../utils/copyVaultImages'
 
 interface Props {
     entry: TimelineEntry
@@ -15,7 +15,7 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${entr
     ${entry.Properties.Commentary}
 </div>`
 }
-
+const resolvedImage = resolveVaultImage(entry.Properties["Display Image"])
 ---
 <style>
 .display-node.image {
@@ -88,7 +88,7 @@ Commentary = `<button class="commentary-button" popovertarget="commentary-${entr
 </style>
 <div class="display-node image">
     <div class="image">
-        <img src={`images/${entry.Properties["Display Image"]}`}/>
+        <img src={resolvedImage}/>
     </div>
     <div class="name-link">
        <p>{entry.EntryName}</p>   

@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeRaw from 'rehype-raw';
 import rehypeStringify from 'rehype-stringify';
+import { resolveVaultImage } from '@utils/copyVaultImages'
 
 function processWikiLinks(content: string): string {
   return content.replace(/!?\[\[(.*?)\]\]/g, (match, wikilinkContent) => {
@@ -18,7 +19,8 @@ function processWikiLinks(content: string): string {
                 <source src="videos/${linkTarget}" type="video/mp4">
               </video>`
     } else if (isEmbed && supportedImages.some((ext) => linkTarget.endsWith(ext))) {
-      return `<img src="images/${linkTarget}" style="width: ${linkText}px;" alt="${linkText}" />`
+      const resolvedImage = resolveVaultImage(linkTarget)
+      return `<img src="${resolvedImage}" style="width: ${linkText}px;" alt="${linkText}" />`
     }
     return `<a href="${linkTarget}">${linkTarget}</a>`
   })
@@ -39,7 +41,7 @@ function convertCallouts(htmlString: string): string {
 
 export async function markdownToHtmlPlus(string: string): Promise<string> {
   const strippedString = string.split('\n').filter(line => !line.trim().startsWith('%%(inline')).join('\n');
-  console.log('strippedString', strippedString)
+
     const htmlContent = String(
         await unified()
           .use(remarkParse)

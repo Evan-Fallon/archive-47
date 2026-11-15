@@ -38,7 +38,6 @@ function convertCallouts(htmlString) {
 }
 async function markdownToHtmlPlus(string) {
 	const strippedString = string.split("\n").filter((line) => !line.trim().startsWith("%%(inline")).join("\n");
-	console.log("strippedString", strippedString);
 	return processWikiLinks(convertCallouts(String(await unified().use(remarkParse).use(remarkGfm).use(remarkRehype, { allowDangerousHtml: true }).use(rehypeRaw).use(rehypeStringify).process(strippedString))));
 }
 export { markdownToHtmlPlus as t };

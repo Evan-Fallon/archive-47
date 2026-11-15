@@ -1,6 +1,8 @@
 ---
 import { markdownToHtmlPlus } from "../../utils/markdownToHtmlPlus";
 import type { TimelineEntry } from "../../utils/inlineToTimeline";
+import { resolveVaultImage } from '../../utils/copyVaultImages'
+
 
 interface Props {
     entry: TimelineEntry;
@@ -8,13 +10,14 @@ interface Props {
 const { entry } = Astro.props
 
 const output = await markdownToHtmlPlus(entry.Properties.Content)
-const output2 = output.replace(/!\[\[(.*?)\]\]/g, '<img src="images/$1"/>');
 let Commentary = `
 <button class="commentary-button" popovertarget="commentary-${entry.Index}"> ? </button>
 <div popover id="commentary-${entry.Index}" class="node-commentary-popover">
     ${entry.Properties?.Commentary}
 </div>
 `
+
+const resolvedProfile = resolveVaultImage(entry.Properties.Frontmatter.Icon)
 ---
 
 <style>
@@ -206,7 +209,7 @@ img.twitter.user-icon {
     <div class="twitter embed">
         <div class="twitter header">
             <div class="twitter user-info">
-                <img src={`images/${entry.Properties.Frontmatter.Icon.slice(2, -2)}`} class="twitter user-icon"/>
+                <img src={resolvedProfile} class="twitter user-icon"/>
                 <p class="twitter fullname">{entry.Properties.Frontmatter["User Fullname"]}</p>
                 <p class="twitter handle">{entry.Properties.Frontmatter["Handle"]}</p>
             </div>
