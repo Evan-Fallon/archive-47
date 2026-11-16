@@ -39,7 +39,7 @@ const resolvedProfile = resolveVaultImage(entry.Properties.Frontmatter.Icon)
     margin-top: 10px;
     display: flex;
     flex-direction: column;
-    background: rgb(250, 250, 250);
+    background: light-dark(rgb(250, 250, 250), #08041b);
     border-radius: 6px;
     --title-padding: 24px;
     box-sizing: border-box;
@@ -52,6 +52,7 @@ const resolvedProfile = resolveVaultImage(entry.Properties.Frontmatter.Icon)
     font-size: 18px;
     line-height: 28px;
     margin: 16px 0px;
+    color: light-dark(black, white);
 }
 
 
@@ -81,6 +82,7 @@ const resolvedProfile = resolveVaultImage(entry.Properties.Frontmatter.Icon)
     width: auto;
     justify-self: right;
     padding: 4px;
+    display: light-dark(none, block);
 }
 .truth.user-info {
     display: grid;
@@ -93,9 +95,10 @@ const resolvedProfile = resolveVaultImage(entry.Properties.Frontmatter.Icon)
 .truth.fullname {
     font-weight: bold;
     font-size: 1.1em;
+    color: light-dark(grey, white)
 }
 .truth.handle {
-    color: grey;
+    color: light-dark(grey, rgb(134, 131, 147));
 }
 img.truth.user-icon {
     grid-row: 1 / 3;
@@ -112,11 +115,12 @@ img.truth.user-icon {
 .truth.embed :global(blockquote.img-grid) { 
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-auto-rows: 1fr;
     place-items: center;
     margin: 24px 0 24px 0;
     width: auto;
-    height: auto;
+    height: 375;
+    overflow: hidden;
     box-sizing: border-box;
     border-radius: 16px;
     gap: 6px;
@@ -126,7 +130,7 @@ img.truth.user-icon {
         display: unset;
         aspect-ratio: 564 / 317;
         object-fit: cover;
-        border-radius:8px;
+        border-radius: 0px;
     }
 }
 .truth.content :global(img)  {
@@ -140,24 +144,24 @@ img.truth.user-icon {
 .truth.footer {
     display: flex;
     margin: 0px 0 12px 0;
-    color: dimgrey;
+    color: light-dark(grey, rgb(134, 131, 147));
     p {
         margin: 0 1rem 0 0;
         b {
-            color: black;
+            color: light-dark(grey, white);
         }
     }
 }
 .truth.footer .truth.date {
     margin-left: auto;
     margin-right: 0;
-    color: dimgrey;
+    color: light-dark(grey, rgb(134, 131, 147));
 }
 .truth.source-link {
     display: block;
     width: 100%;
     height: 42px;
-    border: 1px solid silver;
+    border: 1px solid rgb(32, 28, 60);
     border-radius: 64px;
     text-align: center;
     align-content: center;
@@ -166,7 +170,7 @@ img.truth.user-icon {
         text-decoration: none;
         font-weight: bold;
         align-content: center;
-        color: grey;
+        color: light-dark(grey, rgb(134, 131, 147));
         width: 100%;
         height: 100%;
         margin: auto;
@@ -177,7 +181,7 @@ img.truth.user-icon {
 }
 @container timeline (max-width: 640px) {
     :global(.timeline-cell:has(.display-node.truth)) {
-        background: rgb(246, 246, 246) !important;
+        background: light-dark(rgb(250, 250, 250), #08041b) !important;
     }
     .display-node.truth {
         grid-column: 2 / 3;
