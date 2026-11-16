@@ -82,7 +82,18 @@ const resolvedProfile = resolveVaultImage(entry.Properties.Frontmatter.Icon)
     width: auto;
     justify-self: right;
     padding: 4px;
-    display: light-dark(none, block);
+    display: none;
+    &.light {
+        display: block;
+    }
+}
+@media (prefers-color-scheme: dark) {
+  .truth.logo.dark {
+    display: block;
+  }
+  .truth.logo.light {
+    display: none; /* or inline, flex, etc. */
+  }
 }
 .truth.user-info {
     display: grid;
@@ -221,7 +232,8 @@ img.truth.user-icon {
                 <p class="truth fullname">{entry.Properties.Frontmatter["User Fullname"]}</p>
                 <p class="truth handle">{entry.Properties.Frontmatter["Handle"]}</p>
             </div>
-            <img src="images/Truth_Social_logo_2022-light.png" class="truth logo"/>  
+            <img src="images/Truth_Social_logo_2022-light.png" class="truth logo light"/>  
+            <img src="images/Truth_Social_logo_2022-dark.png" class="truth logo dark"/>  
         </div>
         <span class="truth content" set:html={output}/>
         <div class="truth footer">

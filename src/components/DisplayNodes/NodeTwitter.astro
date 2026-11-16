@@ -83,6 +83,19 @@ const resolvedProfile = resolveVaultImage(entry.Properties.Frontmatter.Icon)
     width: auto;
     justify-self: right;
     padding: 4px;
+    display: none;
+    &.light {
+        display: block;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+  .twitter.logo.dark {
+    display: block;
+  }
+  .twitter.logo.light {
+    display: none; /* or inline, flex, etc. */
+  }
 }
 .twitter.user-info {
     display: grid;
@@ -214,7 +227,10 @@ img.twitter.user-icon {
                 <p class="twitter fullname">{entry.Properties.Frontmatter["User Fullname"]}</p>
                 <p class="twitter handle">{entry.Properties.Frontmatter["Handle"]}</p>
             </div>
-            <img src="images/twitter-logo.png" class="twitter logo"/>  
+
+            <img src="images/twitter-logo.png" class="twitter logo dark"/>  
+            <img src="images/twitter-logo-light.png" class="twitter logo light"/>  
+
         </div>
         <span class="twitter content" set:html={output}/>
         <div class="twitter footer">
