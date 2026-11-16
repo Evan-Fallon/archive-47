@@ -27,8 +27,9 @@ const resolvedProfile = resolveVaultImage(entry.Properties.Frontmatter.Icon)
 
 .display-node.twitter {
     --twitter-border: rgb(47, 51, 54);
+    --twitter-text-faded: light-dark(rgb(83, 100, 113), rgb(113, 118, 123));
     margin: 16px 0;
-    color: white;
+    color: light-dark(black, white);
 }
 .twitter.embed {
     zoom: .8;
@@ -37,7 +38,7 @@ const resolvedProfile = resolveVaultImage(entry.Properties.Frontmatter.Icon)
     margin-top: 10px;
     display: flex;
     flex-direction: column;
-    background: black;
+    background: light-dark(white, black);
     border-radius: 6px;
     --title-padding: 24px;
     box-sizing: border-box;
@@ -169,9 +170,9 @@ img.twitter.user-icon {
     margin: 0px 0 12px 0;;
     p {
         margin: 0 1rem 0 0;
-        color: grey;
+        color: var(--twitter-text-faded);
         b {
-            color: white;
+            color: light-dark(black, white);
         }
     }
 }
