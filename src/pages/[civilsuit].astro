@@ -12,7 +12,7 @@ async function getStaticPaths() {
         return ( 
         {
             params: { 
-            timelines: `civil-docket-${suit.Frontmatter?.["Case Number"].replace(":", "")}`
+            timelines: `civil-suit-${basename.toLowerCase().replace(/\s+/g, '-')}`
             }, 
             props: { 
             fileName: basename,
