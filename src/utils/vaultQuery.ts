@@ -29,6 +29,7 @@ export interface VaultNote {
   FileContent: string;
   BaseName: string;
   InlineProperties: InlineProperty[];
+  SafeName: string;
 }
 
 const vaultpath = import.meta.env.VAULT_PATH;
@@ -36,15 +37,14 @@ const limit = pLimit(500);
 
 let cachedQuery: Promise<VaultNote[]> | null = null
 
-// In vaultQuery.ts, modify the vaultQuery function:
+
 export async function vaultQuery(): Promise<VaultNote[]> {
-  // Remove caching in development mode
   if (import.meta.env.DEV) {
     console.log("Development mode - bypassing cache");
     return await queryVault();
   }
   
-  // Keep existing caching for production
+
   if (cachedQuery) {
     console.log("cached already");
     return cachedQuery;
@@ -56,10 +56,8 @@ export async function vaultQuery(): Promise<VaultNote[]> {
   return results;
 }
 
-// Create a separate function for querying
 async function queryVault(): Promise<VaultNote[]> {
   const files = await glob('**/*.md', { cwd: vaultpath, absolute: true });
-  // ... rest of your existing logic
 
   const tasks = files.map((filePath) =>
     limit(async () => {
@@ -74,7 +72,8 @@ async function queryVault(): Promise<VaultNote[]> {
         Frontmatter: frontmatter,
         FileContent: rawfile, 
         BaseName: path.basename(filePath, path.extname(filePath)), 
-        InlineProperties: []
+        InlineProperties: [],
+        SafeName: path.basename(filePath, path.extname(filePath)).replaceAll(" ", "-").replaceAll(".","").replaceAll(",","").toLowerCase()
       } as VaultNote
     })
   );

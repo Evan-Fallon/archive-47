@@ -85,7 +85,7 @@ const civilsuits = query
         <h1>All Civil Suits</h1>
         {civilsuits.map(note => {
           return (
-            <a class="view-link" href={`./${note.BaseName.replaceAll(" ", "-").replaceAll(".","").toLowerCase()}-home`}>{note.BaseName}</a>
+            <a class="view-link" href={`./${note.SafeName}-home`}>{note.BaseName}</a>
           )
         })}
       </div>

@@ -13,12 +13,12 @@ export async function getStaticPaths() {
         return ( 
         {
             params: { 
-            civilsuits: `${suit.BaseName.replaceAll(" ", "-").replaceAll(".","").toLowerCase()}-home`
+            civilsuits: `${suit.SafeName}-home`
             }, 
             props: { 
             fileName: basename,
-            frontmatter: suit.Frontmatter
-
+            frontmatter: suit.Frontmatter,
+            query: query
             }
         } 
         )
@@ -26,7 +26,7 @@ export async function getStaticPaths() {
     return para
 }
 const { civilsuits } = Astro.params
-const { frontmatter, fileName } = Astro.props
+const { frontmatter, fileName, query } = Astro.props
 ---
 <Layout>
     {civilsuits}
