@@ -1,18 +1,19 @@
 ---
-import type { GetStaticPaths } from "astro";
 import { vaultQuery } from "@utils/vaultQuery";
 import path from 'node:path'
-import { Layout } from "../layouts/Layout.astro";
+import Layout from '../layouts/Layout.astro';
 
 export async function getStaticPaths() {
     const query = await vaultQuery()
     const civilSuits = query.filter(suit => suit.Frontmatter?.["Archive-47"] && suit.Frontmatter?.["A47-Class"] === "civilsuit")
+    console.log(civilSuits)
     const para = civilSuits.map(suit => {
         const basename = path.basename(suit.BaseName, path.extname(suit.BaseName))
+        console.log(suit.BaseName.toLowerCase().replace(/\s+/g, '-'))
         return ( 
         {
             params: { 
-            civilsuits: `civil-suit-${basename.toLowerCase().replace(/\s+/g, '-')}`
+            civilsuits: `${suit.BaseName.replaceAll(" ", "-").replaceAll(".","").toLowerCase()}-home`
             }, 
             props: { 
             fileName: basename,
