@@ -10,6 +10,11 @@ const seriesPages = query
 const notePages = query
   .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"] && note.Frontmatter?.["A47-Class"] !== "series")
 
+const civilsuits = query
+  .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"] && note.Frontmatter?.["A47-Class"] === "civilsuit")
+
+
+
 ---
 <style>
 .link-holder, .file-links {
@@ -71,6 +76,14 @@ const notePages = query
       <div class="file-links">
         <h1>All Notes</h1>
         {notePages.map(note => {
+          return (
+            <a class="view-link" href={`./${note.BaseName}`}>{note.BaseName}</a>
+          )
+        })}
+      </div>
+      <div class="file-links">
+        <h1>All Civil Suits</h1>
+        {civilsuits.map(note => {
           return (
             <a class="view-link" href={`./${note.BaseName}`}>{note.BaseName}</a>
           )
