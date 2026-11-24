@@ -72,10 +72,9 @@ const htmlContent = await markdownToHtmlPlus(stringOutput)
   .pdf-content :global(blockquote) {
     font-size: .9em;
     line-height: 1.2;
-    padding: 1px 32px;
-    margin: 0 0 0 16px;
     color: #333;
-    background: hsl(0 0 92%);
+    padding-left: 16px;
+    background: hsl(0 0 95%);
     position: relative;
     border-radius: 8px;
     &::after {
@@ -83,7 +82,7 @@ const htmlContent = await markdownToHtmlPlus(stringOutput)
       position: absolute;
       width: 10px;
       inset: 0 auto 0 0;
-      background: hsl(0, 0%, 85%);
+      background: hsl(0, 0%, 90%);
       border-radius: 16px;
     }
   }
