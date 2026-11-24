@@ -38,22 +38,13 @@ function convertCallouts(htmlString: string): string {
   });
 }
 
-function removeBlockTags(content: string): string {
-  // Remove block tags that start with ^ and contain no whitespace at the end of lines
-  // This regex matches ^ followed by non-whitespace characters at the end of a line
-  // It avoids matching footnotes which start with [^
-  return content.replace(/(\s+)\^([^\s]+)$/gm, '$1');
-}
-
 
 export async function markdownToHtmlPlus(string: string): Promise<string> {
   const strippedString = string
     .split('\n')
     .filter(line => !line.trim().startsWith('%%(inline') || !line.trim().startsWith("^"))
-    .join('\n');
-    
-  // Remove block tags from the content
-  const cleanedString = removeBlockTags(strippedString);
+    .join('\n')
+    .replace(/(\s+)\^([^\s]+)$/gm, '$1');
 
     const htmlContent = String(
         await unified()
@@ -62,7 +53,7 @@ export async function markdownToHtmlPlus(string: string): Promise<string> {
           .use(remarkRehype, {allowDangerousHtml: true})
           .use(rehypeRaw)
           .use(rehypeStringify)
-          .process(cleanedString)
+          .process(strippedString)
       )
 
 
