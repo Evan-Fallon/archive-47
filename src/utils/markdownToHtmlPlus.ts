@@ -38,19 +38,13 @@ function convertCallouts(htmlString: string): string {
   });
 }
 
-function normalizeLineBreaks(content: string): string {
-  // This function helps normalize line breaks to follow markdown spec
-  // For strict line breaks, we maintain single line breaks as <br> and double as paragraph breaks
-  return content.replace(/\n{3,}/g, '\n\n'); // Normalize multiple line breaks to double line breaks
-}
 
 export async function markdownToHtmlPlus(string: string): Promise<string> {
   const strippedString = string
     .split('\n')
     .filter(line => !line.trim().startsWith('%%(inline') || !line.trim().startsWith("^"))
     .join('\n')
-    .replace(/(\s+)\^([^\s]+)$/gm, '$1')
-    .replace(/\n{3,}/g, '\n\n');
+    .replace(/(\s+)\^([^\s]+)$/gm, '$1');
 
     const htmlContent = String(
         await unified()
