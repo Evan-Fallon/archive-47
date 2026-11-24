@@ -87,9 +87,6 @@ const htmlContent = await markdownToHtmlPlus(stringOutput)
       border-radius: 16px;
     }
   }
-  .pdf-content :global(.pdf-scrolltarget) {
-    scroll-margin-top: 256px;
-  }
   .pdf-content :global(p):has(:target), .pdf-content > span > :global(:target) {
     background: hsl(from orange h s l / .1);
     border-radius: 8px;
@@ -98,8 +95,8 @@ const htmlContent = await markdownToHtmlPlus(stringOutput)
   .pdf-content :global(.redaction) {
     background: black;
   }
-  .pdf-content :global(.footnotes li) {
-    scroll-margin-top: 256px;
+ :global(:target) {
+    scroll-margin-top: 50cqb;
   }
   @media only screen and (max-width: 640px) { 
     .pdf-content {
