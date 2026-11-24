@@ -40,7 +40,10 @@ function convertCallouts(htmlString: string): string {
 
 
 export async function markdownToHtmlPlus(string: string): Promise<string> {
-  const strippedString = string.split('\n').filter(line => !line.trim().startsWith('%%(inline')).join('\n');
+  const strippedString = string
+    .split('\n')
+    .filter(line => !line.trim().startsWith('%%(inline') || !line.trim().startsWith("^"))
+    .join('\n');
 
     const htmlContent = String(
         await unified()
