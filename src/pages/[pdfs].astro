@@ -87,7 +87,7 @@ const htmlContent = await markdownToHtmlPlus(stringOutput)
       border-radius: 16px;
     }
   }
-  .pdf-content :global(p):has(:target), .pdf-content > span > :global(:target) {
+  .pdf-content :global(p):has(:target), .pdf-content > span > :global(:target), :global(.footnotes li:target) {
     background: hsl(from orange h s l / .1);
     border-radius: 8px;
     outline: 8px solid hsl(from orange h s l / .1);
@@ -97,6 +97,11 @@ const htmlContent = await markdownToHtmlPlus(stringOutput)
   }
  :global(:target) {
     scroll-margin-top: 50cqb;
+  }
+  :global(.footnotes) {
+    font-size: .8em;
+    margin: 0;
+    text-indent: 0;
   }
   @media only screen and (max-width: 640px) { 
     .pdf-content {
