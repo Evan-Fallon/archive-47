@@ -43,6 +43,7 @@ export function loadInlineProperties(file: VaultNote): VaultNote {
                 .slice(0, 30)
                 .replace(/[^a-z0-9-\s]/gi, '')
                 .replaceAll(" ", "-")
+                .replace("div", "")
                 .toLocaleLowerCase()
             thisInline.SourceLink = `${linkBase}#${anchor}`
 

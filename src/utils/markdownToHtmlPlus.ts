@@ -44,12 +44,17 @@ export async function markdownToHtmlPlus(string: string): Promise<string> {
     .split('\n')
     .map((line, ind, array) => {
       let output = line
-      if (array[ind+1]?.startsWith("%%(inline-")) {
+      if (array[ind+1]?.startsWith("%%(inline-") && !line.startsWith("%%inline-")) {
         const id = line
           .slice(0, 30)
           .replace(/[^a-z0-9-\s]/gi, '')
           .replaceAll(" ", "-")
+          .replace("div", "")
           .toLocaleLowerCase()
+          if(line.startsWith("<div>")) {
+            console.log("ENAGR")
+            return `<div id=${id} class="pdf-scrolltarget">${line.slice(5)}`
+          }
         output = `<span class="pdf-scrolltarget" id=${id}>${line}</span>`
       }
       return (
