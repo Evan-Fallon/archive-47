@@ -38,7 +38,7 @@ export function loadInlineProperties(file: VaultNote): VaultNote {
             thisInline.Content = contentSection
         }
         if (file.Frontmatter?.["Archive-47"] === true) {
-            const linkBase = thisInline.FileName
+            const linkBase = file.SafeName
             const searchTerms = priorLine.split(/(?<!\b(?:Mr|Mrs|Dr|Sr|Jr|Inc|Co|Ltd|i\.e|e|\d\.g))\.\s/).map((s: string) => encodeURIComponent(s)).join("&text=")
             thisInline.SourceLink = `${linkBase}#:~:text=${searchTerms}`
 
