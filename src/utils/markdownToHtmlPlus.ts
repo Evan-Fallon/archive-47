@@ -46,7 +46,8 @@ export async function markdownToHtmlPlus(string: string): Promise<string> {
     .map((line, ind, array) => {
       let output = line
       if (array[ind+1]?.startsWith("%%(inline-")) {
-        output = `<span>${line}</span>`
+        const id = array[ind+1].replace(/^\%%\(inline-(\d+)::.+%%/gm, "$1")
+        output = `<span id="scroll-${id}">${line}</span>`
       }
       return (
         output
