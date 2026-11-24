@@ -5,12 +5,12 @@ import { markdownToHtmlPlus } from '../utils/markdownToHtmlPlus';
 
 
 export async function getStaticPaths() {
-const query = await vaultQuery()
-const pages = query
-  .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"] === "courtdoc")
-  .map(courtdoc => ({params: { courtdoc: courtdoc.BaseName }, props: { fileContent: courtdoc.FileContent, url: courtdoc.Frontmatter.URL }}))
+  const query = await vaultQuery()
+  const pages = query
+    .filter(note => note.Frontmatter?.["Archive-47"] === true && note.Frontmatter?.["A47-Class"] === "courtdoc")
+    .map(courtdoc => ({params: { courtdoc: courtdoc.SafeName }, props: { fileContent: courtdoc.FileContent, url: courtdoc.Frontmatter.URL }}))
 
-    return pages;
+      return pages;
 } 
 const { courtdoc } = Astro.params;
 const { fileContent, url } = Astro.props;
@@ -18,10 +18,12 @@ let stringOutput = fileContent
   .split("---")
   .slice(2)
   .join("")
+  .replaceAll("\\[REDACTED]", "<span class='redaction'>████████</span>")
+
 stringOutput = await markdownToHtmlPlus(stringOutput)
 ---
 <style>
-  .pdf-disclaimer {
+  .courtdoc-disclaimer {
     width: 100%;
     position: sticky;
     top: 0;
@@ -32,7 +34,7 @@ stringOutput = await markdownToHtmlPlus(stringOutput)
     filter: drop-shadow(0px 4px 0px rgba(0, 0, 0, 0.2));
     text-align: center;
   }
-  .pdf-content {
+  .courtdoc-content {
     max-width: 1000px;
     margin: 0 auto;
     padding: 96px;
@@ -41,28 +43,44 @@ stringOutput = await markdownToHtmlPlus(stringOutput)
     font-family: "Times New Roman", Tinos, Charis SIL, Courier Prime, Georgia, serif;
     text-indent: 2em;
   }
-  .pdf-content :global(h1){
+  .courtdoc-content :global(h1){
     font-size: 1.2em;
   }
-  .pdf-content :global(h2){
+  .courtdoc-content :global(h2){
     font-size: 1.1em;
   }
-  .pdf-content :global(h2),
-  .pdf-content :global(h3),
-  .pdf-content :global(h4),
-  .pdf-content :global(h5),
-  .pdf-content :global(h6){
+  .courtdoc-content :global(h2),
+  .courtdoc-content :global(h3),
+  .courtdoc-content :global(h4),
+  .courtdoc-content :global(h5),
+  .courtdoc-content :global(h6){
     font-size: 1em;
   }
+  .courtdoc-content :global(p):has(:target), .pdf-content > span > :global(:target), :global(.footnotes li:target) {
+    background: hsl(from orange h s l / .1);
+    border-radius: 8px;
+    outline: 8px solid hsl(from orange h s l / .1);
+  }
+  .courtdoc-content :global(.redaction) {
+    background: black;
+  }
+ :global(:target) {
+    scroll-margin-top: 50cqb;
+  }
+  :global(.footnotes) {
+    font-size: .8em;
+    margin: 0;
+    text-indent: 0;
+  }
   @media only screen and (max-width: 640px) { 
-    .pdf-content {
+    .courtdoc-content {
       padding: 16px;
     }
   }
 </style>
-<div class="pdf-disclaimer">The following is a tool assisted archive of the original source for easier navigation. Mistakes are likely. View the original PDF <a href={url} target="_blank" rel="noopener noreferrer">here</a>.</div>
+<div class="courtdoc-disclaimer">The following is a tool assisted archive of the original source for easier navigation. Mistakes are likely. View the original PDF <a href={url} target="_blank" rel="noopener noreferrer">here</a>.</div>
 <Layout>
-  <div class="pdf-content">
+  <div class="courtdoc-content">
     <span set:html={stringOutput}></span>
   </div>
 </Layout>
