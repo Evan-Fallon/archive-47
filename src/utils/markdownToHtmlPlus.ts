@@ -44,7 +44,7 @@ export async function markdownToHtmlPlus(string: string): Promise<string> {
     .split('\n')
     //.filter(line => !line.trim().startsWith('%%(inline') && !line.trim().startsWith('^'))
     .join('\n')
-    .replace(/^\%%\(inline-\d+::.+%%/gm, "<div id='scroll-1'/>")
+    .replace(/^\%%\(inline-(\d+)::.+%%/gm, "<div id='scroll-$1'></div>")
     .replace(/(\s+)\^([^\s]+)$/gm, '$1')
 
 
