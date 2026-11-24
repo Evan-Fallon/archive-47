@@ -42,10 +42,10 @@ function convertCallouts(htmlString: string): string {
 export async function markdownToHtmlPlus(string: string): Promise<string> {
   const strippedString = string
     .split('\n')
-    .filter(line => !line.trim().startsWith('%%(inline'))
+    .filter(line => !line.trim().startsWith('%%(inline') && !line.trim().startsWith("^"))
     .join('\n')
     .replace(/(\s+)\^([^\s]+)$/gm, '$1')
-    .replace(/$\n^\S/gm, "Hi")
+
 
     const htmlContent = String(
         await unified()
