@@ -19,7 +19,7 @@ let stringOutput = fileContent
   .split("---")
   .slice(2)
   .join("")
-  .replaceAll("\\[REDACTED]", "<span class='redaction'>REDACTED</span>")
+  .replaceAll("\\[REDACTED]", "<span class='redaction'>████████</span>")
 
 
 
@@ -97,6 +97,9 @@ const htmlContent = await markdownToHtmlPlus(stringOutput)
   }
   .pdf-content :global(.redaction) {
     background: black;
+  }
+  .pdf-content :global(.footnotes li) {
+    scroll-margin-top: 256px;
   }
   @media only screen and (max-width: 640px) { 
     .pdf-content {
