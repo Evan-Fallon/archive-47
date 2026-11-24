@@ -42,11 +42,7 @@ function convertCallouts(htmlString: string): string {
 export async function markdownToHtmlPlus(string: string): Promise<string> {
   const strippedString = string
     .split('\n')
-    .filter(line => !line.trim().startsWith('%%(inline') || !line.trim().startsWith("^"))
-    .map(line => {
-      console.log('Filtered line:', line);
-      return line;
-    })
+    .filter(line => !line.trim().startsWith('%%(inline') && !line.trim().startsWith('^'))
     .join('\n')
     .replace(/(\s+)\^([^\s]+)$/gm, '$1')
 

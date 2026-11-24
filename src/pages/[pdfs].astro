@@ -19,9 +19,7 @@ let stringOutput = fileContent
   .split("---")
   .slice(2)
   .join("")
-stringOutput = stringOutput
-  .replace(/<p>\s*%%[\s\S]*?%%\s*<\/p>|%%[\s\S]*?%%/g, '')
-  
+
 
 
 const htmlContent = await markdownToHtmlPlus(stringOutput)
@@ -52,10 +50,11 @@ const htmlContent = await markdownToHtmlPlus(stringOutput)
     margin: 0 auto;
     padding: 128px;
     background: #f9f9f9;
-    color: #333;
+    color: black;
     font-family: serif;
     text-indent: 2em;
     font-size: 19px;
+    line-height: 1.5;
   }
   .pdf-content :global(h1){
     font-size: 1.2em;
@@ -69,6 +68,24 @@ const htmlContent = await markdownToHtmlPlus(stringOutput)
   .pdf-content :global(h5),
   .pdf-content :global(h6){
     font-size: 1em;
+  }
+  .pdf-content :global(blockquote) {
+    font-size: .9em;
+    line-height: 1.2;
+    padding: 1px 32px;
+    margin: 0 0 0 16px;
+    color: #333;
+    background: hsl(0 0 92%);
+    position: relative;
+    border-radius: 8px;
+    &::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      inset: 0 auto 0 0;
+      background: hsl(0, 0%, 85%);
+      border-radius: 16px;
+    }
   }
   @media only screen and (max-width: 640px) { 
     .pdf-content {
