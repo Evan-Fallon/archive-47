@@ -39,8 +39,12 @@ export function loadInlineProperties(file: VaultNote): VaultNote {
         }
         if (file.Frontmatter?.["Archive-47"] === true) {
             const linkBase = file.SafeName
-            const searchTerms = priorLine.split(/(?<!\b(?:Mr|Mrs|Dr|Sr|Jr|Inc|Co|Ltd|i\.e|e|\d\.g))\.\s/).map((s: string) => encodeURIComponent(s)).join("&text=")
-            thisInline.SourceLink = `${linkBase}#:~:text=${searchTerms}`
+            const anchor = priorLine
+                .slice(0, 30)
+                .replace(/[^a-z0-9-\s]/gi, '')
+                .replaceAll(" ", "-")
+                .toLocaleLowerCase()
+            thisInline.SourceLink = `${linkBase}#${anchor}`
 
         } else if (!file.Frontmatter?.Paywalled) {
             const searchTerms = priorLine.split(/(?<!\b(?:Mr|Mrs|Dr|Sr|Jr|Inc|Co|Ltd|i\.e|e\.g))\.\s/).map((s: string) => encodeURIComponent(s)).join("&text=")

@@ -88,12 +88,12 @@ const htmlContent = await markdownToHtmlPlus(stringOutput)
     }
   }
   .pdf-content :global(.pdf-scrolltarget) {
-    scroll-margin-top: 100px;
+    scroll-margin-top: 256px;
   }
   .pdf-content :global(p):has(:target) {
     background: hsl(from orange h s l / .2);
     border-radius: 8px;
-    outline: 16px solid hsl(from orange h s l / .2);
+    outline: 10px solid hsl(from orange h s l / .2);
   }
   @media only screen and (max-width: 640px) { 
     .pdf-content {

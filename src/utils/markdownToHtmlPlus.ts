@@ -45,11 +45,12 @@ export async function markdownToHtmlPlus(string: string): Promise<string> {
     .map((line, ind, array) => {
       let output = line
       if (array[ind+1]?.startsWith("%%(inline-")) {
-        const id = line.slice(0, 30)
-          .replace(/[^a-z0-9-\s]/gi, '') // Remove all non-alphanumeric and non-dash characters
+        const id = line
+          .slice(0, 30)
+          .replace(/[^a-z0-9-\s]/gi, '')
           .replaceAll(" ", "-")
           .toLocaleLowerCase()
-        output = `<span class="pdf-scrolltarget" id="scroll-${id}">${line}</span>`
+        output = `<span class="pdf-scrolltarget" id=${id}>${line}</span>`
       }
       return (
         output
@@ -57,7 +58,6 @@ export async function markdownToHtmlPlus(string: string): Promise<string> {
     })
     .filter(line => !line.trim().startsWith('%%(inline') && !line.trim().startsWith('^'))
     .join('\n')
-    //.replace(/^\%%\(inline-(\d+)::.+%%/gm, "<div id='scroll-1'></div>")
     .replace(/(\s+)\^([^\s]+)$/gm, '$1')
 
 
