@@ -37,11 +37,13 @@ stringOutput = await markdownToHtmlPlus(stringOutput)
   .courtdoc-content {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 96px;
+    padding: 100px;
     background: #f9f9f9;
-    color: #333;
-    font-family: "Times New Roman", Tinos, Charis SIL, Courier Prime, Georgia, serif;
-    text-indent: 2em;
+    color: black;
+    font-family: "Times New Roman", serif;
+    font-size: 20px;
+    text-indent: .5in;
+    line-height: 2.5;
   }
   .courtdoc-content :global(h1){
     font-size: 1.2em;
@@ -54,7 +56,22 @@ stringOutput = await markdownToHtmlPlus(stringOutput)
   .courtdoc-content :global(h4),
   .courtdoc-content :global(h5),
   .courtdoc-content :global(h6){
+    text-decoration: underline;
     font-size: 1em;
+    margin: 0;
+  }
+
+  .courtdoc-content :global(ol) {
+    list-style-position: inside;
+    margin: 0;
+    padding-left: 0;
+    li {
+      text-indent: 0.5in;
+      p {
+        display: inline;
+        margin-left: .25in;
+      }
+    }
   }
   .courtdoc-content :global(p):has(:target), .pdf-content > span > :global(:target), :global(.footnotes li:target) {
     background: hsl(from orange h s l / .1);
@@ -67,14 +84,24 @@ stringOutput = await markdownToHtmlPlus(stringOutput)
  :global(:target) {
     scroll-margin-top: 50cqb;
   }
-  :global(.footnotes) {
+  .courtdoc-content :global(.footnotes) {
     font-size: .8em;
     margin: 0;
     text-indent: 0;
   }
+  .courtdoc-content :global(.footnotes li) { 
+      text-indent: 0in;
+      line-height: 1.5;
+  }
+  .courtdoc-content :global(.footnotes li p) {
+    text-indent: 0in;
+    margin: 0;
+    
+  }
   @media only screen and (max-width: 640px) { 
     .courtdoc-content {
-      padding: 16px;
+      padding: 24px;
+      text-indent: .25in;
     }
   }
 </style>
